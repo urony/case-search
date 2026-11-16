@@ -1,0 +1,22 @@
+# גיבוי תוכן שבועי אוטומטי. אינו מופעל עד שמגדירים סוד FIREBASE_SERVICE_ACCOUNT_JSON ומשתנה ENABLE_BACKUP=true
+# ב-Settings > Secrets and variables של המאגר. המאגר חייב להיות פרטי. הגיבוי הוא תוכן בלבד (ללא תלמידים).
+# הקובץ נשמר כ-artifact למשך 90 יום. שחזור: node scripts/restore.mjs <קובץ>.
+name: backup-content
+on:
+  schedule: [{ cron: '0 3 * * 0' }]
+  workflow_dispatch: {}
+jobs:
+  backup:
+    if: ${{ vars.ENABLE_BACKUP == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci
+      - run: node scripts/backup.mjs
+        env:
+          FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+      - uses: actions/upload-artifact@v4
+        with: { name: content-backup, path: backups/, retention-days: 90 }

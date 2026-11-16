@@ -20,6 +20,11 @@ const NOTE_TYPE: Record<string, string> = { condition: 'תנאי התאמה', di
 
 export default function TopicPage() {
   const { id } = useParams();
+  return <TopicPageInner key={id} />; // איפוס מצב הלשונית והבדיקה בעת מעבר בין נושאים
+}
+
+function TopicPageInner() {
+  const { id } = useParams();
   const [sp] = useSearchParams();
   const { catalog, loading, error, reload, topicById, sourceCounts } = useCatalog();
   const [tab, setTab] = useState<Tab>((sp.get('tab') as Tab) || 'conditions');
