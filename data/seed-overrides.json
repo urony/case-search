@@ -1,0 +1,46 @@
+{
+  "_comment": "תוספות ידניות לייבוא, כולן מבוססות על הנחיות המפרט (סעיף 28 ו־9.3) או על הערות הסקירה שבנספח עצמו. אין כאן כלל רפואי חדש. נוסח גולמי ישן על גיל אינו מקבל עדיפות על החלטת גיל 18 כולל.",
+  "ageMax": {
+    "S020": 18,
+    "S034": 18,
+    "S064": 18
+  },
+  "family": {
+    "S054": "fam-copd",
+    "S055": "fam-copd"
+  },
+  "kindSuggestion": {
+    "S009": "redirect",
+    "S036": "category",
+    "S040": "category",
+    "S065": "category",
+    "S076": "category",
+    "S087": "category",
+    "S093": "category",
+    "S094": "category",
+    "S095": "category",
+    "S096": "category",
+    "S097": "category",
+    "S103": "redirect",
+    "S113": "condition"
+  },
+  "relations": {
+    "S030": [{ "type": "excludes", "targetId": "t-S098", "note": "דלקת כבד: לא כולל כבד שומני (נוסח המקור)" }],
+    "S098": [{ "type": "excludes", "targetId": "t-S030", "note": "מוחרג במפורש מתוך סעיף דלקת הכבד" }],
+    "S089": [{ "type": "conflicts_with", "targetId": "t-S100", "note": "סתירה במקור בין אישור אוטואימוני להחרגת תת־פעילות תריס; טרם הוכרע" }],
+    "S100": [{ "type": "conflicts_with", "targetId": "t-S089" }],
+    "S054": [{ "type": "same_family", "targetId": "t-S055", "note": "COPD ואמפיזמה הם אותו נושא לצורך כפילות (החלטה)" }, { "type": "related", "targetId": "t-S059", "note": "קשר אפשרי לברונכיטיס כרונית; משפחת כפילות תיקבע בידי מנהל" }],
+    "S055": [{ "type": "same_family", "targetId": "t-S054" }],
+    "S059": [{ "type": "related", "targetId": "t-S054" }],
+    "S034": [{ "type": "allowed_together", "targetId": "t-S035", "note": "אפשר באותה כיתה כאשר הצליאק בילדים (נוסח המקור)" }],
+    "S035": [{ "type": "allowed_together", "targetId": "t-S034" }],
+    "S094": [
+      { "type": "broader_than", "targetId": "t-S036" }, { "type": "broader_than", "targetId": "t-S040" },
+      { "type": "broader_than", "targetId": "t-S058" }, { "type": "broader_than", "targetId": "t-S073" },
+      { "type": "broader_than", "targetId": "t-S087" }
+    ],
+    "S065": [{ "type": "conflicts_with", "targetId": "t-S102", "note": "זיהום בדרכי השתן מוחרג במפורש; אין לאשר כל דלקת אוטומטית" }],
+    "S103": [{ "type": "redirects_to", "targetId": "t-S014", "note": "הטיפול אינו נושא; יש לבחור מחלה בסיסית. S014 הוא רק מקרה אחד אפשרי." }],
+    "S114": [{ "type": "related", "targetId": "t-S035", "note": "קוליטיס כיבית וקרוהן הן רשומות שונות" }]
+  }
+}

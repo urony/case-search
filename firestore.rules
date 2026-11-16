@@ -1,0 +1,161 @@
+rules_version = '2';
+
+// כללי הרשאות: האכיפה האמיתית של כל קריאה וכתיבה, בלי תלות בממשק (סעיפים 20.2 ו־21 במפרט).
+// תפקידים נשמרים במסמכי roles/{uid} שרק מנהל יכול לכתוב. מנהל ראשון נקבע ידנית בקונסולה או בסקריפט
+// scripts/bootstrap-admin.mjs (ראו docs/SETUP-he.md). אין סיסמת ניהול בקוד ואין קוד מוסד שמקנה הרשאה.
+// הבדיקות לכללים: tests/rules/rules.test.ts (דורשות אמולטור Firestore ו-Java).
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function verified() { return signedIn() && request.auth.token.email_verified == true; }
+    function uid() { return request.auth.uid; }
+    function roleExists() { return exists(/databases/$(database)/documents/roles/$(uid())); }
+    function roleData() { return get(/databases/$(database)/documents/roles/$(uid())).data; }
+    function isAdmin() { return verified() && roleExists() && roleData().role == 'admin'; }
+    function isCoordOf(schoolId) {
+      return verified() && roleExists() && roleData().role == 'coordinator' && roleData().schoolId == schoolId;
+    }
+    function membershipPath(schoolId) { return /databases/$(database)/documents/memberships/$(uid() + '_' + schoolId); }
+    function isMember(schoolId) {
+      return verified() && exists(membershipPath(schoolId)) && get(membershipPath(schoolId)).data.endedAt == null;
+    }
+    function isNum(v) { return v is number; }
+
+    // ── ציבורי ──
+    match /public/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /config/{doc} {
+      // כתובת האחראי נראית רק למשתמשים מחוברים ומאומתים
+      allow read: if doc != 'contact' || verified();
+      allow write: if isAdmin();
+    }
+
+    // ── תוכן מקצועי: מנהל בלבד (אורחים קוראים את הקטלוג המפורסם ב-public) ──
+    match /topics/{id} {
+      allow read, write: if isAdmin();
+    }
+    match /topicVersions/{id} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();   // גרסה מפורסמת אינה נדרסת: אין עדכון או מחיקה
+    }
+    match /seedEntries/{id} { allow read, write: if isAdmin(); }
+    match /suggestions/{id} { allow read, write: if isAdmin(); }
+    match /policyQuestions/{id} { allow read, write: if isAdmin(); }
+    match /deletionLedger/{id} { allow read, write: if isAdmin(); }
+    match /audit/{id} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+    }
+
+    // ── מקורות איתור ──
+    match /sources/{id} {
+      allow read: if resource == null || resource.data.visible == true || isAdmin();   // resource==null: בדיקת קיום לצורך חוזר־בטוח
+      allow create: if verified()
+        && request.resource.data.keys().hasOnly(['topicId', 'title', 'kind', 'text', 'url', 'phone', 'region', 'population', 'createdBy', 'createdAt', 'visible'])
+        && request.resource.data.createdBy == uid()
+        && request.resource.data.visible == true
+        && request.resource.data.title is string && request.resource.data.title.size() >= 3 && request.resource.data.title.size() <= 120
+        && request.resource.data.text is string && request.resource.data.text.size() <= 1500
+        && request.resource.data.url is string && request.resource.data.url.size() <= 500
+        && (request.resource.data.url == '' || request.resource.data.url.matches('^https?://.*'))
+        && request.resource.data.phone is string && request.resource.data.phone.size() <= 20
+        && request.resource.data.region is string && request.resource.data.region.size() <= 80
+        && request.resource.data.population is string && request.resource.data.population.size() <= 120
+        && isNum(request.resource.data.createdAt);
+      // גם מי שהוסיף מקור אינו יכול לערוך, להסתיר או למחוק אותו (R03, סעיף 13.2)
+      allow update, delete: if isAdmin();
+    }
+
+    // ── התראות ותור דוא"ל ──
+    match /notifications/{id} {
+      allow read, update, delete: if isAdmin();
+      allow create: if verified()
+        && request.resource.data.keys().hasOnly(['type', 'refId', 'topicId', 'createdAt', 'readBy', 'summary'])
+        && request.resource.data.type in ['new_request', 'source_added', 'request_completed', 'suggestion', 'source_reported', 'overdue']
+        && request.resource.data.readBy.size() == 0
+        && request.resource.data.summary is string && request.resource.data.summary.size() <= 300;
+    }
+    match /outbox/{id} {
+      allow read, update, delete: if isAdmin();
+      allow create: if isAdmin() || (verified()
+        && request.resource.data.to == 'admins'
+        && request.resource.data.status == 'queued'
+        && request.resource.data.keys().hasOnly(['to', 'toUid', 'subject', 'body', 'status', 'attempts', 'createdAt'])
+        && request.resource.data.body.size() <= 600);
+    }
+
+    // ── בקשות ──
+    match /requests/{id} {
+      allow read: if isAdmin() || (signedIn() && (resource == null || resource.data.createdBy == uid()));
+      allow create: if verified()
+        && request.resource.data.createdBy == uid()
+        && request.resource.data.status == 'open'
+        && request.resource.data.description is string && request.resource.data.description.size() <= 2000
+        && !('adminReply' in request.resource.data) && !('decisionKind' in request.resource.data);
+      allow update: if isAdmin() || (verified() && resource.data.createdBy == uid()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['supplement', 'status', 'updatedAt'])
+        && request.resource.data.status == 'open');
+      allow delete: if isAdmin();
+    }
+
+    // ── חשבון, שיוך ותפקידים ──
+    match /profiles/{id} {
+      allow read: if isAdmin() || (signedIn() && id == uid());
+      allow create, update: if signedIn() && id == uid()
+        && request.resource.data.uid == uid()
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.emailVerified == (request.auth.token.email_verified == true);
+      allow delete: if isAdmin();
+    }
+    match /roles/{id} {
+      allow read: if isAdmin() || (signedIn() && id == uid());
+      allow write: if isAdmin();
+    }
+    match /schools/{id} {
+      allow get: if true;                       // קוד מוסד מאפשר לברר שם ולהצטרף; אין רשימה ציבורית
+      allow list: if isAdmin() || (verified() && roleExists() && roleData().role == 'coordinator');
+      allow write: if isAdmin();
+    }
+    match /memberships/{id} {
+      allow read: if isAdmin() || (signedIn() && (resource == null || resource.data.uid == uid())) || (resource != null && isCoordOf(resource.data.schoolId));
+      allow create: if verified()
+        && request.resource.data.uid == uid()
+        && id == uid() + '_' + request.resource.data.schoolId
+        && exists(/databases/$(database)/documents/schools/$(request.resource.data.schoolId))
+        && request.resource.data.endedAt == null;
+      allow update: if isAdmin() || isCoordOf(resource.data.schoolId)
+        || (verified() && resource.data.uid == uid() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['endedAt']));
+      allow delete: if isAdmin();
+    }
+
+    // ── קבוצות: מורה רואה את שלו, רכז את מוסדו, מנהל את המרחב שהוגדר לו ──
+    match /groups/{id} {
+      allow read: if isAdmin() || (signedIn() && (resource == null || resource.data.ownerUid == uid())) || (resource != null && isCoordOf(resource.data.schoolId));
+      allow create: if verified()
+        && request.resource.data.ownerUid == uid()
+        && isMember(request.resource.data.schoolId)
+        && request.resource.data.studentCount in [1, 2, 3]
+        && request.resource.data.students.size() <= request.resource.data.studentCount
+        && !exists(/databases/$(database)/documents/deletionLedger/$(request.resource.data.yearId));  // מחזור שנסגר
+      allow update: if verified() && (resource.data.ownerUid == uid() || isCoordOf(resource.data.schoolId) || isAdmin())
+        && request.resource.data.ownerUid == resource.data.ownerUid
+        && request.resource.data.schoolId == resource.data.schoolId
+        && request.resource.data.yearId == resource.data.yearId
+        && request.resource.data.studentCount in [1, 2, 3]
+        && request.resource.data.students.size() <= request.resource.data.studentCount;
+      allow delete: if verified() && (resource.data.ownerUid == uid() || isCoordOf(resource.data.schoolId) || isAdmin());
+    }
+
+    // ── היסטוריית נושאים: ציבורית לפי קוד מוסד ושנה (get בלבד, ללא רשימה), ללא פרטים מזהים ──
+    match /schoolHistory/{id} {
+      allow get: if true;
+      allow list: if isAdmin();
+      allow write: if (isAdmin() || isCoordOf(request.resource.data.schoolId) || isMember(request.resource.data.schoolId))
+        && id == request.resource.data.schoolId + '_' + request.resource.data.yearId;
+    }
+  }
+}

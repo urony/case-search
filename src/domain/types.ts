@@ -1,0 +1,196 @@
+import type { Coverage, Policy, RuleSet } from '../engine/types';
+export type { Policy } from '../engine/types';
+
+export type PublishStatus = 'draft' | 'published' | 'unpublished' | 'merged';
+export type Kind = 'unclassified' | 'disease' | 'condition' | 'event' | 'injury' | 'syndrome' | 'category' | 'redirect';
+export type NoteType = 'condition' | 'difficulty' | 'attention' | 'clarification';
+export type NoteSeverity = 'info' | 'warning' | 'high';
+
+export interface Note {
+  id: string;
+  type: NoteType;
+  title: string;
+  text: string;
+  severity: NoteSeverity;
+  active: boolean;
+  showInResults: boolean;
+}
+
+export interface Relation {
+  type: 'excludes' | 'conflicts_with' | 'same_family' | 'related' | 'broader_than' | 'redirects_to' | 'allowed_together';
+  targetId: string;
+  note?: string;
+}
+
+/** 0 = ללא סימון, 1 = מאתגר, 2 = מאתגר מאוד (סעיף 9.2). אינו תנאי פסילה. */
+export type Difficulty = 0 | 1 | 2;
+
+export interface Topic {
+  id: string;
+  seedIds: string[];
+  he: string;
+  en: string;
+  aliases: string[];
+  kind: Kind;
+  kindSuggestion?: Kind;
+  systems: string[]; // מזהי מערכות; הראשונה עיקרית
+  systemsRaw: string[]; // המינוח המקורי מהמקור (נשמר)
+  systemsNeedReview: boolean;
+  tags: string[];
+  suggestedTags: string[]; // הצעות ממתינות לאישור מנהל (R05)
+  policy: Policy;
+  publish: PublishStatus;
+  ageMin: number | null;
+  ageMax: number | null;
+  difficulty: Difficulty;
+  notes: Note[];
+  sourceCondition: string;
+  reviewNote: string;
+  sourcePages: string;
+  mappingStatusRaw: string;
+  familyId: string;
+  relations: Relation[];
+  rules: RuleSet;
+  coverage: Coverage;
+  generalThreshold: boolean;
+  addedYear: string | null; // מזהה שנת לימודים שבה נוסף כחדש
+  sourceMapped: boolean; // מיפוי ראשוני מהמקורות, טרם נבדק סופית בידי מנהל
+  version: number;
+  updatedAt: number;
+  updatedBy: string;
+}
+
+export interface SystemDef { id: string; label: string }
+export interface TagDef { id: string; label: string; description?: string }
+
+export type SourceKind = 'association' | 'website' | 'facebook' | 'social' | 'professional' | 'phone' | 'free';
+export interface RecruitmentSource {
+  id: string;
+  topicId: string;
+  title: string;
+  kind: SourceKind;
+  text: string;
+  url: string;
+  phone: string;
+  region: string;
+  population: string;
+  createdBy: string;
+  createdAt: number;
+  visible: boolean;
+  editedBy?: string;
+  editedAt?: number;
+}
+
+export type Role = 'teacher' | 'coordinator' | 'admin';
+export interface RoleDoc { role: Role; schoolId?: string; grantedBy: string; grantedAt: number }
+
+export interface Profile { uid: string; displayName: string; email: string; emailVerified: boolean; createdAt: number }
+export interface School { id: string; name: string; city: string; active: boolean }
+export interface Membership { id: string; uid: string; schoolId: string; startedAt: number; endedAt: number | null }
+
+export type GroupStatus = 'draft' | 'self_check' | 'case_check_done' | 'needs_clarification' | 'submitted_external' | 'done' | 'cancelled';
+export interface Group {
+  id: string;
+  ownerUid: string;
+  schoolId: string;
+  yearId: string;
+  topicId: string | null;
+  studentCount: 1 | 2 | 3;
+  /** שם פרטי או כינוי, רשות. נשמרים במסמך הקבוצה בלבד כדי שמחיקת המסמך תמחק הכול. */
+  students: { label: string }[];
+  status: GroupStatus;
+  casesDeclared: number; // מספר בדיקות שהמורה מדווח שהושלמו, ללא פרטי מקרה
+  ruleVersionAtCheck: number | null;
+  createdAt: number;
+  updatedAt: number;
+}
+
+export type RequestKind = 'new_topic' | 'inquiry' | 'exception_general';
+export type RequestStatus = 'open' | 'waiting_teacher' | 'answered' | 'closed';
+export interface RequestDoc {
+  id: string;
+  kind: RequestKind;
+  createdBy: string;
+  createdAt: number;
+  updatedAt: number;
+  status: RequestStatus;
+  groupId?: string;
+  topicId?: string;
+  proposedHe?: string;
+  proposedEn?: string;
+  proposedKind?: string;
+  proposedSystem?: string;
+  description: string;
+  rationale: string;
+  supplement?: string;
+  adminReply?: string;
+  decisionKind?: 'supplement' | 'general_approval' | 'case_specific' | 'rejection';
+  dueAt: number;
+}
+
+export interface NotificationDoc {
+  id: string;
+  type: 'new_request' | 'source_added' | 'request_completed' | 'suggestion' | 'source_reported' | 'overdue';
+  refId: string;
+  topicId?: string;
+  createdAt: number;
+  readBy: string[];
+  summary: string;
+}
+
+export interface OutboxDoc {
+  id: string;
+  to: 'admins' | 'teacher';
+  toUid?: string;
+  subject: string;
+  body: string; // ללא נתונים קליניים או שמות תלמידים
+  status: 'queued' | 'sent' | 'failed' | 'no_provider';
+  attempts: number;
+  createdAt: number;
+}
+
+export interface SchoolYearHistory {
+  id: string; // `${schoolId}_${yearId}`
+  schoolId: string;
+  yearId: string;
+  /** groupId אקראי ואינו מזהה אדם. state: declared = נבחר במחזור הפעיל, done/cancelled/approved_not_done = לאחר סגירת מחזור */
+  items: { groupId: string; topicId: string; familyId: string; topicHe: string; state: 'done' | 'cancelled' | 'approved_not_done' | 'declared' }[];
+  updatedAt: number;
+}
+
+export interface PolicyQuestion {
+  id: string;
+  topic: string;
+  source: string;
+  question: string;
+  owner: string;
+  state: 'open' | 'answered';
+  answer: string;
+  answeredBy?: string;
+  answeredAt?: number;
+}
+
+export interface AcademicYear { id: string; label: string; start: string; end: string; cycleEnd: string | null; closed: boolean }
+
+export interface Settings {
+  officialFormUrl: string;
+  responsibleEmail: string;
+  responsibleName: string;
+  responseDueDays: number;
+  submissionNote: string;
+  emailProviderConfigured: boolean;
+  currentYearId: string;
+}
+
+export interface AuditEvent { id: string; at: number; actor: string; action: string; ref: string; scope: string }
+
+export interface Catalog {
+  topics: Topic[];
+  generalRules: RuleSet;
+  systems: SystemDef[];
+  tags: TagDef[];
+  settings: Settings;
+  years: AcademicYear[];
+  generatedAt: number;
+  origin: 'bundled' | 'service' | 'demo';
+}

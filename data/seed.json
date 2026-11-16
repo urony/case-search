@@ -1,0 +1,1425 @@
+{
+  "schemaVersion": 1,
+  "description": "מיפוי מקורות ראשוני; החלטות המפרט והכרעות מנהל גוברות",
+  "entries": [
+    {
+      "seedId": "S001",
+      "he": "אוטם בשריר הלב",
+      "en": "Myocardial infarction",
+      "proposedSystems": [
+        "לב וכלי דם"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "באקוטי: בשנה האחרונה; ברשימה הכרונית: בחצי השנה האחרונה. יש לברר חלון זמן וסיבוכים או טיפול נוכחיים.",
+      "reviewNote": "סתירה בין חלונות הזמן; אין לבחור אוטומטית בחלון המקל או המחמיר.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S002",
+      "he": "שבץ מוחי / אירוע מוחי",
+      "en": "Stroke",
+      "proposedSystems": [
+        "מערכת העצבים",
+        "כלי דם"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "אירוע אקוטי בשנה האחרונה; ברשימה הכרונית נדרשים ביטויים קליניים.",
+      "reviewNote": "יש לברר אם נותרו ביטויים כיום ומה הטיפול; אירוע ישן ללא ביטוי נוכחי אינו עומד בסף הכללי.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S003",
+      "he": "תאונת דרכים או פציעה המלווה בדימומים",
+      "en": "Traumatic injury with bleeding",
+      "proposedSystems": [
+        "טראומה",
+        "לפי האיבר הנפגע"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "אירוע בשנה האחרונה, בצירוף עמידה בסף הכללי של מצב פעיל וטיפול נוכחי.",
+      "reviewNote": "תאונת דרכים היא נסיבה; יש לתעד גם את האבחנה או הפגיעה שנבחרה לנושא.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S004",
+      "he": "אי־ספיקת כליות חריפה",
+      "en": "Acute kidney injury",
+      "proposedSystems": [
+        "כליות ודרכי השתן"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "מצב אקוטי בשנה האחרונה, בכפוף לסף הכללי.",
+      "reviewNote": "יש לשמור בנפרד מאי־ספיקה כרונית; החלמה מלאה דורשת בחינה מול הסף הכללי.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S005",
+      "he": "פקקת ורידים עמוקה",
+      "en": "Deep vein thrombosis (DVT)",
+      "proposedSystems": [
+        "כלי דם"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "מופיעה ברשימת המצבים האקוטיים בשנה האחרונה.",
+      "reviewNote": "נדרשים מועד האירוע, מצב נוכחי וטיפול; אין במסמך משך טיפול מזערי.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S006",
+      "he": "דלקת קרום המוח",
+      "en": "Meningitis",
+      "proposedSystems": [
+        "מערכת העצבים",
+        "זיהומים"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "מצב אקוטי בשנה האחרונה, בכפוף לסף הכללי.",
+      "reviewNote": "אין תנאי ייעודי נוסף במסמך.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S007",
+      "he": "דלקת מוח",
+      "en": "Encephalitis",
+      "proposedSystems": [
+        "מערכת העצבים",
+        "זיהומים"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "מצב אקוטי בשנה האחרונה, בכפוף לסף הכללי.",
+      "reviewNote": "אין תנאי ייעודי נוסף במסמך.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S008",
+      "he": "כיב עיכולי, לרבות עקב הליקובקטר פילורי",
+      "en": "Peptic ulcer disease",
+      "proposedSystems": [
+        "מערכת העיכול"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "כיב שנמצא בטיפול; בדוגמה האקוטית עקב הליקובקטר: מטופל בזמן כתיבת העבודה.",
+      "reviewNote": "אבחון בעבר ללא טיפול בהווה אינו מספיק לפי הנוסח. יש להפריד את הכיב מזיהום ללא כיב.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S009",
+      "he": "ניתוח שנעשה בשנה האחרונה, ככותרת נושא",
+      "en": "Surgery as a project topic",
+      "proposedSystems": [
+        "לפי המחלה הבסיסית"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "מופיע ברשימת האקוטיים, אך ניתוח כשלעצמו מופיע גם ברשימת הלא מאושרים.",
+      "reviewNote": "יש לבחור את המחלה או הפגיעה שהובילה לניתוח; להכריע אם נושא שעוסק בתהליך ניתוחי מסוים יוכל להיבחן כחריג.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S010",
+      "he": "הריון בסיכון",
+      "en": "High-risk pregnancy",
+      "proposedSystems": [
+        "רבייה והריון"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "מעקב החל מתחילת ההריון ועד שבוע 20, ולא התחלת עבודה לאחר לידה; יש הנחיות לראיון נוסף לאחר הלידה.",
+      "reviewNote": "נדרש להבהיר מהו מועד הכניסה המאוחר למעקב ומה היחס לראיון שלאחר שלושה חודשים. אין לקבוע סף שבועי נוסף על דעת המערכת.",
+      "sourcePages": "14,21,35"
+    },
+    {
+      "seedId": "S011",
+      "he": "יתר לחץ דם",
+      "en": "Hypertension",
+      "proposedSystems": [
+        "לב וכלי דם"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיע ברשימת הנושאים המאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "מטופל מאוזן תרופתית: נדרשת הבהרת מדיניות כללית לגבי מחלה כרונית מאוזנת.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S012",
+      "he": "אי־ספיקת כליות כרונית",
+      "en": "Chronic kidney disease / chronic renal failure",
+      "proposedSystems": [
+        "כליות ודרכי השתן"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "מופיעה ברשימת לב וכלי דם ללא תנאי ייעודי, וברשימת השתן עם דיאליזה או השתלת כליה.",
+      "reviewNote": "אין להסיק שלכל שלבי המחלה אותו אישור. נדרשת הכרעה אם דיאליזה או השתלה הן חובה או דוגמאות.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S013",
+      "he": "אי־ספיקת לב",
+      "en": "Heart failure",
+      "proposedSystems": [
+        "לב וכלי דם"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה עם או בלי השתלת לב, בכפוף לסף הכללי.",
+      "reviewNote": "ההשתלה היא מאפיין קליני ולא נושא מחלה חלופי.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S014",
+      "he": "מחלת מסתמי לב / החלפת מסתמים",
+      "en": "Heart valve disease / valve replacement",
+      "proposedSystems": [
+        "לב וכלי דם"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "החלפת מסתמים מופיעה במאושרים; ניתוח כשלעצמו מוחרג ברשימת הלא מאושרים.",
+      "reviewNote": "מומלץ לשמור את מחלת המסתם כנושא ואת ההחלפה כטיפול; האבחנה המדויקת תאושר בידי המנהלת.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S015",
+      "he": "תעוקת חזה",
+      "en": "Angina pectoris",
+      "proposedSystems": [
+        "לב וכלי דם"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים וכדוגמה למחלה הנובעת מטרשת עורקים.",
+      "reviewNote": "בכותרת עדיף להשתמש באבחנה המדויקת; נדרש מצב נוכחי לפי הסף הכללי.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S016",
+      "he": "הפרעות קצב הלב",
+      "en": "Cardiac arrhythmias",
+      "proposedSystems": [
+        "לב וכלי דם"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעות במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "יש לציין את הפרעת הקצב המסוימת; אין במסמך רשימת תתי־סוגים מאושרת.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S017",
+      "he": "מפרצת באבי העורקים",
+      "en": "Aortic aneurysm",
+      "proposedSystems": [
+        "לב וכלי דם"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין במסמך סף גודל או תנאי ניתוח; אין להמציאם.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S018",
+      "he": "מומי לב מולדים",
+      "en": "Congenital heart defects",
+      "proposedSystems": [
+        "לב וכלי דם"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "כיחלוניים או לא כיחלוניים, בכפוף לסף הכללי.",
+      "reviewNote": "יש לבחור מום מסוים ולבדוק מצב קליני נוכחי גם אם תוקן בעבר.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S019",
+      "he": "סוכרת מסוג 2",
+      "en": "Type 2 diabetes mellitus",
+      "proposedSystems": [
+        "המערכת האנדוקרינית"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "כל מטופלי הקבוצה חייבים להיות עם אותו סוג סוכרת.",
+      "reviewNote": "אין תנאי גיל ייעודי ברשימה; מחלה מאוזנת קשורה להבהרה הכללית של פעילות מחלה.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S020",
+      "he": "סוכרת מסוג 1",
+      "en": "Type 1 diabetes mellitus",
+      "proposedSystems": [
+        "המערכת האנדוקרינית",
+        "מערכת החיסון"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "רק אצל ילדים בסעיף האנדוקריני; מופיעה שוב ברשימה האוטואימונית ללא חזרה על מגבלת הגיל. כל המטופלים באותו סוג.",
+      "reviewNote": "להציג את מגבלת הילדים במפורש; אין לראות בהשמטתה מהרשימה השנייה היתר למבוגרים. נדרש סף גיל מוסכם.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S021",
+      "he": "סוכרת הריונית",
+      "en": "Gestational diabetes mellitus",
+      "proposedSystems": [
+        "המערכת האנדוקרינית",
+        "רבייה והריון"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "כל מטופלי הקבוצה באותו סוג סוכרת.",
+      "reviewNote": "נדרש לברר אם חל גם חלון ההריון בסיכון וכיצד מטפלים באבחון לאחר שבוע 20; זו אינה החרגה שנקבעה במסמך.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S022",
+      "he": "אינסולינומה",
+      "en": "Insulinoma",
+      "proposedSystems": [
+        "המערכת האנדוקרינית"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "גידול אינו בהכרח ממאיר; אין להחיל אוטומטית תנאי סרטן על כל גידול.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S023",
+      "he": "יתר־פעילות בלוטת התריס",
+      "en": "Hyperthyroidism",
+      "proposedSystems": [
+        "המערכת האנדוקרינית"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מאושר במפורש, לעומת תת־פעילות שמוחרגת.",
+      "reviewNote": "יש לשמור את האבחנה והגורם בנפרד, למשל גרייבס.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S024",
+      "he": "תסמונת קושינג",
+      "en": "Cushing syndrome",
+      "proposedSystems": [
+        "המערכת האנדוקרינית"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במסגרת מחלות יותרת הכליה, בכפוף לסף הכללי.",
+      "reviewNote": "אין במסמך תנאי ייעודי; הסיווג הסיבתי המדויק ייקבע לפי האבחנה.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S025",
+      "he": "מחלת אדיסון",
+      "en": "Addison disease",
+      "proposedSystems": [
+        "המערכת האנדוקרינית"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין להסיק ממנגנון אפשרי שהמחלה אוטואימונית בכל מטופל.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S026",
+      "he": "אקרומגליה",
+      "en": "Acromegaly",
+      "proposedSystems": [
+        "המערכת האנדוקרינית"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין תנאי ייעודי נוסף במסמך.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S027",
+      "he": "סוכרת תפלה",
+      "en": "Diabetes insipidus",
+      "proposedSystems": [
+        "המערכת האנדוקרינית",
+        "כליות"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין לאחד עם סוכרת מסוג 1 או 2; יש לבחור תת־סוג לפי האבחנה.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S028",
+      "he": "פרולקטינומה",
+      "en": "Prolactinoma",
+      "proposedSystems": [
+        "המערכת האנדוקרינית"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין להחיל אוטומטית תנאי גידול ממאיר.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S029",
+      "he": "אוסטאופורוזיס",
+      "en": "Osteoporosis",
+      "proposedSystems": [
+        "שלד",
+        "המערכת האנדוקרינית"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "במאושרים: ביטויים קליניים, שברים ובדיקות לגילוי המצב; בלא מאושרים: מאושר רק כשקיימים שברים.",
+      "reviewNote": "אין להסתפק בבדיקת צפיפות עצם או בטיפול בלבד. יש להבהיר מה נחשב שבר רלוונטי ומתי אירע. חובה הרחבה על שלד ורקע אנדוקריני.",
+      "sourcePages": "9,35–36"
+    },
+    {
+      "seedId": "S030",
+      "he": "דלקת כבד",
+      "en": "Hepatitis",
+      "proposedSystems": [
+        "מערכת העיכול",
+        "כבד"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "מופיעה במאושרים, לא כולל כבד שומני.",
+      "reviewNote": "יש לבחור סוג דלקת; אין לאחד את כל האטיולוגיות לתנאי אחד.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S031",
+      "he": "אי־ספיקת כבד",
+      "en": "Liver failure",
+      "proposedSystems": [
+        "מערכת העיכול",
+        "כבד"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "יש לתעד אם המצב חריף או כרוני.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S032",
+      "he": "שחמת הכבד",
+      "en": "Liver cirrhosis",
+      "proposedSystems": [
+        "מערכת העיכול",
+        "כבד"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין תנאי ייעודי נוסף במסמך.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S033",
+      "he": "אבנים בדרכי המרה",
+      "en": "Bile duct stones / gallstone disease",
+      "proposedSystems": [
+        "מערכת העיכול",
+        "דרכי מרה"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "לפני ניתוח.",
+      "reviewNote": "לא נכתב היתר אחרי ניתוח; אין לייבא אליו את התנאי של אבנים בדרכי השתן.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S034",
+      "he": "צליאק",
+      "en": "Celiac disease / coeliac disease",
+      "proposedSystems": [
+        "מערכת העיכול",
+        "מערכת החיסון"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "רק אצל ילדים; ניתן לאשר צליאק וקרוהן באותה כיתה כאשר הצליאק הוא אצל ילדים.",
+      "reviewNote": "לא הוגדר גיל ילדים. ילד ללא תסמינים בעקבות תזונה נטולת גלוטן מחייב הבהרה של הסף הכללי; אין לפסול בגלל היעדר תרופה.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S035",
+      "he": "מחלת קרוהן",
+      "en": "Crohn disease",
+      "proposedSystems": [
+        "מערכת העיכול",
+        "מערכת החיסון"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "מופיעה במאושרים; אפשר באותה כיתה עם צליאק בילדים.",
+      "reviewNote": "להבחין בין קרוהן לקוליטיס כיבית. אין במסמך סף חומרה או תרופה מסוימת.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S036",
+      "he": "סרטן במערכת העיכול",
+      "en": "Gastrointestinal cancer",
+      "proposedSystems": [
+        "מערכת העיכול",
+        "אונקולוגיה"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "לפני הניתוח או חצי שנה אחרי הניתוח, כולל טיפולים משלימים.",
+      "reviewNote": "נדרש להבהיר אם הכוונה עד חצי שנה, ומה הדין בלי ניתוח או אחרי יותר מחצי שנה בטיפול פעיל.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S037",
+      "he": "השמנת יתר חולנית",
+      "en": "Morbid obesity",
+      "proposedSystems": [
+        "חילוף חומרים",
+        "מערכת העיכול"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "עם ניתוח בריאטרי או בלעדיו.",
+      "reviewNote": "אין במסמך סף BMI מספרי או תנאי ניתוח; אין להוסיף סף אוטומטי בלי החלטה.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S038",
+      "he": "אבנים בדרכי השתן",
+      "en": "Urinary tract stones / urolithiasis",
+      "proposedSystems": [
+        "כליות ודרכי השתן"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "לפני ניתוח או מיד לאחר הניתוח.",
+      "reviewNote": "יש להגדיר מהו מיד לאחר; אין לקבוע מספר ימים שרירותי.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S039",
+      "he": "הגדלת הערמונית",
+      "en": "Prostate enlargement",
+      "proposedSystems": [
+        "כליות ודרכי השתן",
+        "רבייה"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "לפני ניתוח.",
+      "reviewNote": "אין לאחד עם סרטן הערמונית; אין להרחיב לאחר ניתוח אוטומטית.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S040",
+      "he": "סרטן במערכת השתן",
+      "en": "Urinary system cancer",
+      "proposedSystems": [
+        "כליות ודרכי השתן",
+        "אונקולוגיה"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "לפני הניתוח או חצי שנה אחריו, כולל טיפולים משלימים.",
+      "reviewNote": "אותה עמימות כמו תנאי הסרטן הכללי; יש לבחור איבר וסוג.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S041",
+      "he": "לוקמיה",
+      "en": "Leukemia",
+      "proposedSystems": [
+        "דם",
+        "אונקולוגיה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה ברשימת מחלות הדם המאושרות.",
+      "reviewNote": "אין להחיל חובת ניתוח על מחלה שמופיעה במפורש; יש להבהיר את היחס לסף פעילות ולתנאי הסרטן הכללי.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S042",
+      "he": "לימפומה",
+      "en": "Lymphoma",
+      "proposedSystems": [
+        "לימפה",
+        "דם",
+        "אונקולוגיה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה ברשימת מחלות הדם המאושרות.",
+      "reviewNote": "יש להבהיר את היחס לתנאי הסרטן הכללי ולמחלה בהפוגה.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S043",
+      "he": "תלסמיה מג׳ור",
+      "en": "Thalassemia major",
+      "proposedSystems": [
+        "דם"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "הנוסח מציין major במפורש.",
+      "reviewNote": "אין להרחיב אוטומטית לתלסמיה מינור או לנשאות.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S044",
+      "he": "המופיליה",
+      "en": "Hemophilia",
+      "proposedSystems": [
+        "דם"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין במסמך דרישת דימום נוכחי; טיפול מניעתי יעיל קשור להבהרת מחלה מאוזנת.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S045",
+      "he": "אפילפסיה",
+      "en": "Epilepsy",
+      "proposedSystems": [
+        "מערכת העצבים"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין במסמך תדירות פרכוסים מזערית. היעדר פרכוסים תחת טיפול אינו כלל פסילה מפורש.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S046",
+      "he": "מחלת פרקינסון",
+      "en": "Parkinson disease",
+      "proposedSystems": [
+        "מערכת העצבים"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין תנאי ייעודי נוסף במסמך.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S047",
+      "he": "טרשת נפוצה",
+      "en": "Multiple sclerosis",
+      "proposedSystems": [
+        "מערכת העצבים"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "הפוגה או טיפול מונע מחייבים את ההבהרה הכללית של מצב פעיל.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S048",
+      "he": "ניוון שרירים",
+      "en": "Muscular dystrophy / muscle wasting disorders",
+      "proposedSystems": [
+        "עצבים ושרירים"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "מופיע הביטוי ניוון שרירים ולצדו ALS.",
+      "reviewNote": "זהו ניסוח רחב, ולא שם נרדף מדויק ל-ALS. יש לבחור אבחנה מדויקת לפני פרסום כרטיס מחלה.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S049",
+      "he": "טרשת אמיוטרופית צידית",
+      "en": "Amyotrophic lateral sclerosis (ALS)",
+      "proposedSystems": [
+        "מערכת העצבים"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה הן בנוירולוגיה והן ברשימה האוטואימונית.",
+      "reviewNote": "אין ליצור שתי מחלות. שיוך אוטואימוני במסמך דורש תיקון או הבהרה רפואית; אין להעתיק אותו לתגית מאומתת.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S050",
+      "he": "מיגרנה",
+      "en": "Migraine",
+      "proposedSystems": [
+        "מערכת העצבים"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "עם תופעות קשות.",
+      "reviewNote": "אין הגדרת חומרה מספרית. יש תיאור תדירות, השפעה תפקודית וטיפול, אך אלה שדות לבירור ולא ספים חדשים.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S051",
+      "he": "מחלת אלצהיימר",
+      "en": "Alzheimer disease",
+      "proposedSystems": [
+        "מערכת העצבים"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "יש לבחון אפשרות לקבלת מידע ומעקב; שאלות הסכמה וייצוג יוגדרו בנוהל מתאים.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S052",
+      "he": "פיברומיאלגיה",
+      "en": "Fibromyalgia",
+      "proposedSystems": [
+        "כאב",
+        "רב־מערכתי"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה בהמשך הרשימה הנוירולוגית.",
+      "reviewNote": "שיוך תפעולי למערכת טעון אישור; אין דרישה מפורשת להדמיה או בדיקת דם חריגה.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S053",
+      "he": "סיסטיק פיברוזיס",
+      "en": "Cystic fibrosis (CF)",
+      "proposedSystems": [
+        "נשימה",
+        "רב־מערכתי"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "יש להוסיף תגית תורשתי לאחר אימות ולגזור הרחבה מתאימה; לא ליצור מחלה נפרדת לכל מערכת.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S054",
+      "he": "מחלת ריאות חסימתית כרונית",
+      "en": "Chronic obstructive pulmonary disease (COPD)",
+      "proposedSystems": [
+        "מערכת הנשימה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אמפיזמה וברונכיטיס כרונית מוזכרות גם בנפרד; קביעת כפילות ביניהן דורשת מדיניות נושאים.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S055",
+      "he": "אמפיזמה",
+      "en": "Emphysema",
+      "proposedSystems": [
+        "מערכת הנשימה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין לאחד ללא הבחנה רפואית עם כל מקרה של COPD; יש קשר היררכי לבחינת כפילות.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S056",
+      "he": "סיליקוזיס",
+      "en": "Silicosis",
+      "proposedSystems": [
+        "מערכת הנשימה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין תנאי ייעודי נוסף במסמך.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S057",
+      "he": "דלקת ריאות אקוטית",
+      "en": "Acute pneumonia",
+      "proposedSystems": [
+        "מערכת הנשימה",
+        "זיהומים"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "מופיעה במאושרים; חלה גם מסגרת האירוע האקוטי והסף הכללי.",
+      "reviewNote": "נדרש פתרון למעקב של שלושה חודשים כאשר המטופל מחלים מהר; אין לפסול אוטומטית או להבטיח אישור.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S058",
+      "he": "סרטן ריאות",
+      "en": "Lung cancer",
+      "proposedSystems": [
+        "מערכת הנשימה",
+        "אונקולוגיה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיע במאושרים; נדרש בירור היחס לתנאי הסרטן הכללי.",
+      "reviewNote": "לא כל טיפול כרוך בניתוח; אין להמציא דרישת ניתוח.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S059",
+      "he": "ברונכיטיס כרונית",
+      "en": "Chronic bronchitis",
+      "proposedSystems": [
+        "מערכת הנשימה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "יש קשר אפשרי ל-COPD לצורך קביעת משפחת כפילות.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S060",
+      "he": "מומים מולדים במערכת הנשימה",
+      "en": "Congenital respiratory malformations",
+      "proposedSystems": [
+        "מערכת הנשימה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעים במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "יש לציין מום מסוים; מולד אינו בהכרח תורשתי.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S061",
+      "he": "חזה אוויר",
+      "en": "Pneumothorax",
+      "proposedSystems": [
+        "מערכת הנשימה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיע במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "יש לברר מועד ומצב נוכחי, לרבות אם מדובר באירוע שכבר חלף.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S062",
+      "he": "חזה דם",
+      "en": "Hemothorax",
+      "proposedSystems": [
+        "מערכת הנשימה",
+        "טראומה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיע במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "יש לברר מועד ומצב נוכחי; אין תנאי זמן ייעודי במסמך.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S063",
+      "he": "אסתמה",
+      "en": "Asthma",
+      "proposedSystems": [
+        "מערכת הנשימה"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "מאושרת רק במצב שמחייב טיפול קבוע.",
+      "reviewNote": "אין לפרש קבוע כתרופה מסוימת או תדירות מסוימת ללא הגדרה מוסכמת; אין לדרוש התקף בזמן הבדיקה.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S064",
+      "he": "דלקות אוזניים חוזרות בילדים",
+      "en": "Recurrent otitis in children",
+      "proposedSystems": [
+        "אף אוזן גרון"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "אצל ילדים, כולל ניתוח.",
+      "reviewNote": "יש להבהיר אם הניתוח כבר בוצע או מתוכנן; לא הוגדרו מספר דלקות או סף גיל.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S065",
+      "he": "דלקות חריפות או כרוניות, כקטגוריה",
+      "en": "Acute or chronic inflammatory conditions",
+      "proposedSystems": [
+        "לפי האיבר הנפגע"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "מופיעה קטגוריה רחבה ברשימת המאושרים.",
+      "reviewNote": "אין לאשר כל דלקת אוטומטית, בפרט כאשר זיהום בדרכי השתן מוחרג במפורש.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S066",
+      "he": "קטרקט",
+      "en": "Cataract",
+      "proposedSystems": [
+        "עיניים"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "לפני ניתוח או זמן קצר לאחר ניתוח.",
+      "reviewNote": "יש להגדיר זמן קצר; אין להמירו אוטומטית לחצי שנה.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S067",
+      "he": "גלאוקומה",
+      "en": "Glaucoma",
+      "proposedSystems": [
+        "עיניים"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "מלווה בטיפול.",
+      "reviewNote": "אין דרישה מפורשת לאובדן ראייה או לניתוח.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S068",
+      "he": "היפרדות רשתית",
+      "en": "Retinal detachment",
+      "proposedSystems": [
+        "עיניים"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "בנוסח מופיע הצירוף היפרדות הרשתית וראייה כפולה.",
+      "reviewNote": "יש לברר אם אלה שני נושאים נפרדים או תנאי משולב; לא לבנות תנאי AND אוטומטי.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S069",
+      "he": "ראייה כפולה",
+      "en": "Diplopia",
+      "proposedSystems": [
+        "עיניים",
+        "מערכת העצבים"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "מוזכרת לצד היפרדות רשתית.",
+      "reviewNote": "נדרש בירור מעמד כנושא והאבחנה הבסיסית; לא להסיק שכל תסמין מאושר.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S070",
+      "he": "ניוון רשתית",
+      "en": "Retinal degeneration",
+      "proposedSystems": [
+        "עיניים"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיע במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "יש לבחור אבחנה מדויקת ככל האפשר.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S071",
+      "he": "פסוריאזיס",
+      "en": "Psoriasis",
+      "proposedSystems": [
+        "עור"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיע במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין סף שטח עור, חומרה או סוג טיפול במסמך.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S072",
+      "he": "הרפס",
+      "en": "Herpes infections",
+      "proposedSystems": [
+        "עור",
+        "זיהומים",
+        "רבייה לפי האבחנה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיע בעור ובמחלות מין.",
+      "reviewNote": "לשמור כרטיס עם תתי־סוגים; לא להניח שכל הרפס הוא מחלת מין.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S073",
+      "he": "מלנומה",
+      "en": "Melanoma",
+      "proposedSystems": [
+        "עור",
+        "אונקולוגיה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים; נדרש בירור היחס לתנאי הסרטן הכללי.",
+      "reviewNote": "יש לתעד טיפול ותזמון, בלי להמציא סף שלב מחלה.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S074",
+      "he": "פצעי בגרות",
+      "en": "Acne",
+      "proposedSystems": [
+        "עור"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "במצב בעייתי.",
+      "reviewNote": "לא הוגדרה חומרה. יש לשאול על השפעה וטיפול ולהעביר מקרה גבולי לבחינה.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S075",
+      "he": "פריצת דיסק",
+      "en": "Herniated disc",
+      "proposedSystems": [
+        "שלד",
+        "מערכת העצבים"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "במצב אקוטי.",
+      "reviewNote": "אין הגדרה של משך האקוטיות; לא כל פריצת דיסק ישנה מאושרת מכוח השם בלבד.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S076",
+      "he": "פציעות שונות",
+      "en": "Injuries",
+      "proposedSystems": [
+        "טראומה",
+        "לפי האיבר הנפגע"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "קטגוריה רחבה במאושרים האורתופדיים.",
+      "reviewNote": "נדרשת אבחנה מסוימת ובדיקת עמידה בסף הכללי; אין אישור גורף לכל חבלה.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S077",
+      "he": "סקוליוזיס / עקמת",
+      "en": "Scoliosis",
+      "proposedSystems": [
+        "שלד"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיע במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין זווית מזערית או דרישת ניתוח במסמך.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S078",
+      "he": "עיוותים מולדים בעמוד השדרה",
+      "en": "Congenital spinal deformities",
+      "proposedSystems": [
+        "שלד"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעים במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "יש לבחור את העיוות המסוים; מולד אינו קובע תורשתי.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S079",
+      "he": "שברים, לרבות צוואר הירך או האגן",
+      "en": "Fractures including femoral neck or pelvis",
+      "proposedSystems": [
+        "שלד",
+        "טראומה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעים במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין דרישת מיקום בלעדית: המקומות הם דוגמאות. שבר ישן שהחלים דורש בדיקת הסף.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S080",
+      "he": "איידס",
+      "en": "Acquired immunodeficiency syndrome (AIDS)",
+      "proposedSystems": [
+        "מערכת החיסון",
+        "זיהומים"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיע במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין להרחיב אוטומטית לכל נשאות HIV ללא הבהרת מדיניות; יש להבחין בין המונחים.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S081",
+      "he": "זיבה",
+      "en": "Gonorrhea",
+      "proposedSystems": [
+        "זיהומים",
+        "רבייה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "מצב אקוטי שהחלים מעורר את שאלת המעקב; אין תנאי ייעודי נוסף.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S082",
+      "he": "פפילומה",
+      "en": "Human papillomavirus-related disease (HPV)",
+      "proposedSystems": [
+        "זיהומים",
+        "רבייה",
+        "עור"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "מופיעה פפילומה ברשימת מחלות המין המאושרות.",
+      "reviewNote": "יש להבהיר אם הכוונה לנשאות, נגעים או מצב קליני מסוים; אין להחליף אבחנה אוטומטית.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S083",
+      "he": "עגבת",
+      "en": "Syphilis",
+      "proposedSystems": [
+        "זיהומים",
+        "רבייה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "יש לתאר מצב נוכחי וטיפול.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S084",
+      "he": "אנדומטריוזיס",
+      "en": "Endometriosis",
+      "proposedSystems": [
+        "מערכת הרבייה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין תנאי ייעודי נוסף במסמך.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S085",
+      "he": "מיומה",
+      "en": "Uterine fibroid / leiomyoma",
+      "proposedSystems": [
+        "מערכת הרבייה"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין להחיל תנאי סרטן על גידול רק בגלל המילה גידול.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S086",
+      "he": "תסמונת השחלות הפוליציסטיות",
+      "en": "Polycystic ovary syndrome (PCOS)",
+      "proposedSystems": [
+        "רבייה",
+        "המערכת האנדוקרינית"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה במאושרים, בכפוף לסף הכללי.",
+      "reviewNote": "אין סף ייעודי או תנאי ניתוח במסמך.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S087",
+      "he": "סרטן במערכת המין, לרבות רחם, צוואר הרחם וערמונית",
+      "en": "Reproductive system cancers",
+      "proposedSystems": [
+        "מערכת הרבייה",
+        "אונקולוגיה"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "מופיע בנקבות ובזכרים; חל בירור תנאי הסרטן הכללי.",
+      "reviewNote": "שלוש הדוגמאות צריכות להופיע גם כמונחי חיפוש. יצירת תתי־כרטיסים לא תקבע אוטומטית מדיניות כפילות.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S088",
+      "he": "לופוס / זאבת",
+      "en": "Systemic lupus erythematosus (SLE)",
+      "proposedSystems": [
+        "מערכת החיסון",
+        "רב־מערכתי"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה ברשימה האוטואימונית, בכפוף לסף הכללי.",
+      "reviewNote": "הרחבה על מערכת החיסון נדרשת לפי נספח ב.",
+      "sourcePages": "36,38"
+    },
+    {
+      "seedId": "S089",
+      "he": "השימוטו",
+      "en": "Hashimoto thyroiditis",
+      "proposedSystems": [
+        "המערכת האנדוקרינית",
+        "מערכת החיסון"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "מופיעה במאושרים האוטואימוניים, לצד פסילה מפורשת של תת־פעילות תריס.",
+      "reviewNote": "אין להכריע אוטומטית אם ההחרגה או ההכללה גוברות. נדרשת החלטת מדיניות מפורשת.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S090",
+      "he": "גרייבס",
+      "en": "Graves disease",
+      "proposedSystems": [
+        "המערכת האנדוקרינית",
+        "מערכת החיסון"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה ברשימה האוטואימונית; יתר־פעילות תריס מאושרת גם בנפרד.",
+      "reviewNote": "אותה מחלה לא תפורסם פעמיים; יש קשר בין מחלה לגורם/ביטוי.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S091",
+      "he": "מיאסטניה גרביס",
+      "en": "Myasthenia gravis",
+      "proposedSystems": [
+        "מערכת העצבים",
+        "מערכת החיסון"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה ברשימה האוטואימונית, בכפוף לסף הכללי.",
+      "reviewNote": "אין תנאי ייעודי נוסף במסמך.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S092",
+      "he": "דלקת מפרקים שגרונית",
+      "en": "Rheumatoid arthritis",
+      "proposedSystems": [
+        "מפרקים",
+        "מערכת החיסון"
+      ],
+      "mappingStatus": "מופיע",
+      "sourceCondition": "מופיעה ברשימה האוטואימונית, בכפוף לסף הכללי.",
+      "reviewNote": "אין להרחיב לכל כאב מפרקים או לכל דלקת מפרקים.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S093",
+      "he": "מחלות נוספות הכוללות את מערכת החיסון",
+      "en": "Other immune system disorders",
+      "proposedSystems": [
+        "מערכת החיסון"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "מופיעה קטגוריה רחבה ברשימת המאושרים.",
+      "reviewNote": "מסלול הצעה למחלה מסוימת; אינו גובר אוטומטית על החרגה מפורשת.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S094",
+      "he": "גידולים ממאירים שונים",
+      "en": "Malignant neoplasms / cancer",
+      "proposedSystems": [
+        "לפי האיבר",
+        "אונקולוגיה"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "לפני הניתוח או חצי שנה אחרי הניתוח כולל טיפולים משלימים.",
+      "reviewNote": "יש להגדיר חלון זמן, טיפול ללא ניתוח והפוגה. גידול שפיר אינו מאושר מכוח קטגוריה זו.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S095",
+      "he": "תסמונות נדירות",
+      "en": "Rare syndromes",
+      "proposedSystems": [
+        "לפי התסמונת"
+      ],
+      "mappingStatus": "מותנה",
+      "sourceCondition": "עם תסמינים וטיפולים.",
+      "reviewNote": "אין אישור לכל תסמונת מכוח נדירותה; נדרשת אבחנה מסוימת ובחינה מרכזית אם אין כרטיס.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S096",
+      "he": "מחלות נדירות נוספות במערכת האנדוקרינית",
+      "en": "Other rare endocrine diseases",
+      "proposedSystems": [
+        "המערכת האנדוקרינית"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "מופיעה פתיחה למחלות נדירות אחרות.",
+      "reviewNote": "יש להגיש מחלה מסוימת, בלי להפוך את הקטגוריה לאישור בלתי מוגבל.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S097",
+      "he": "מצב בריאותי חריף אחר",
+      "en": "Other acute health conditions",
+      "proposedSystems": [
+        "לפי המצב"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "מצבים אקוטיים בשנה האחרונה נכללים בניסוח פתוח.",
+      "reviewNote": "מסלול הצעה למצב מסוים; החרגות מפורשות ודרישת מחלה פעילה עדיין חלות.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S098",
+      "he": "כבד שומני",
+      "en": "Fatty liver disease",
+      "proposedSystems": [
+        "מערכת העיכול",
+        "כבד"
+      ],
+      "mappingStatus": "לא מאושר",
+      "sourceCondition": "מוחרג במפורש מתוך סעיף דלקת הכבד.",
+      "reviewNote": "אבחנה אחרת כגון שחמת תיבחן לפי הכרטיס שלה; אין לעקוף את ההחרגה בשינוי כותרת בלבד.",
+      "sourcePages": "35"
+    },
+    {
+      "seedId": "S099",
+      "he": "אנמיה מחוסר ברזל",
+      "en": "Iron deficiency anemia",
+      "proposedSystems": [
+        "דם"
+      ],
+      "mappingStatus": "לא מאושר",
+      "sourceCondition": "נפסלת במפורש, גם בתוך סעיף הדם וגם ברשימת הלא מאושרים.",
+      "reviewNote": "אנמיה אחרת אינה נפסלת אוטומטית ואינה מאושרת אוטומטית מכוח זה.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S100",
+      "he": "תת־פעילות בלוטת התריס",
+      "en": "Hypothyroidism",
+      "proposedSystems": [
+        "המערכת האנדוקרינית"
+      ],
+      "mappingStatus": "לא מאושר",
+      "sourceCondition": "מוחרגת במפורש.",
+      "reviewNote": "כאשר נבחרה השימוטו יש להפנות למסלול הבירור של הסתירה, ולא להבטיח אישור.",
+      "sourcePages": "35–36"
+    },
+    {
+      "seedId": "S101",
+      "he": "חסר באנזים G6PD",
+      "en": "Glucose-6-phosphate dehydrogenase deficiency",
+      "proposedSystems": [
+        "דם"
+      ],
+      "mappingStatus": "לא מאושר",
+      "sourceCondition": "נפסל במפורש.",
+      "reviewNote": "לא נקבע חריג מפורש למשבר חריף; ניתן לבקש חריג מנומק במקום להמציא היתר.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S102",
+      "he": "זיהום בדרכי השתן",
+      "en": "Urinary tract infection (UTI)",
+      "proposedSystems": [
+        "כליות ודרכי השתן",
+        "זיהומים"
+      ],
+      "mappingStatus": "לא מאושר",
+      "sourceCondition": "נפסל במפורש.",
+      "reviewNote": "הניסוח דלקות חריפות או כרוניות אינו מתיר אותו אוטומטית. אבחנה שונה תיבחן בנפרד.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S103",
+      "he": "ניתוח מעקפים או קוצב לב כנושא",
+      "en": "Coronary bypass surgery / pacemaker as topic",
+      "proposedSystems": [
+        "לב וכלי דם"
+      ],
+      "mappingStatus": "לא מאושר",
+      "sourceCondition": "טיפול אינו נושא העבודה; הנושא צריך להיות הגורם לטיפול.",
+      "reviewNote": "להציע למורה לבחור מחלה בסיסית מתאימה, בלי לאשר אותה רק מכוח הטיפול.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S104",
+      "he": "טרשת עורקים כללית",
+      "en": "General atherosclerosis",
+      "proposedSystems": [
+        "כלי דם"
+      ],
+      "mappingStatus": "לא מאושר",
+      "sourceCondition": "לא מאושר כנושא כללי; מובאות דוגמאות למחלה קלינית נלווית.",
+      "reviewNote": "יש לבחור אבחנה מסוימת שאושרה או להגיש בקשה; לא די בגורם סיכון או בתוצאה מעבדתית.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S105",
+      "he": "כולסטרול גבוה",
+      "en": "Hypercholesterolemia",
+      "proposedSystems": [
+        "חילוף חומרים",
+        "כלי דם"
+      ],
+      "mappingStatus": "לא מאושר",
+      "sourceCondition": "רמה גבוהה של כולסטרול כשלעצמה אינה מאושרת.",
+      "reviewNote": "מחלה נלווית אינה מאשרת בדיעבד את הכולסטרול כנושא; יש לשנות את הנושא באופן מפורש.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S106",
+      "he": "מחלות נפש",
+      "en": "Mental disorders",
+      "proposedSystems": [
+        "בריאות הנפש"
+      ],
+      "mappingStatus": "לא מאושר",
+      "sourceCondition": "קטגוריה מוחרגת במפורש.",
+      "reviewNote": "לצורך המערכת משתמשים בשמות מכבדים ומדויקים; אבחנה נלווית אינה פוסלת אדם מנושא רפואי אחר.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S107",
+      "he": "הפרעות אכילה",
+      "en": "Eating disorders",
+      "proposedSystems": [
+        "בריאות הנפש"
+      ],
+      "mappingStatus": "לא מאושר",
+      "sourceCondition": "מוחרגות במפורש.",
+      "reviewNote": "אין לערבב עם השמנת יתר חולנית, שמופיעה בנפרד במאושרים.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S108",
+      "he": "הפרעת קשב וריכוז",
+      "en": "Attention-deficit/hyperactivity disorder (ADHD)",
+      "proposedSystems": [
+        "נוירו־התפתחות"
+      ],
+      "mappingStatus": "לא מאושר",
+      "sourceCondition": "מוחרגת במפורש.",
+      "reviewNote": "ההחרגה היא של נושא העבודה; אין בה פסילה של מטופל בשל תחלואה נלווית.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S109",
+      "he": "אוטיזם",
+      "en": "Autism spectrum disorder",
+      "proposedSystems": [
+        "נוירו־התפתחות"
+      ],
+      "mappingStatus": "לא מאושר",
+      "sourceCondition": "מוחרג במפורש.",
+      "reviewNote": "ההחרגה היא של הנושא, ולא של אדם שיש לו גם מחלה אחרת מתאימה.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S110",
+      "he": "מוגבלות שכלית התפתחותית",
+      "en": "Intellectual disability",
+      "proposedSystems": [
+        "נוירו־התפתחות"
+      ],
+      "mappingStatus": "לא מאושר",
+      "sourceCondition": "המסמך משתמש במונח ישן; הקטגוריה מוחרגת.",
+      "reviewNote": "המונח המקורי יישמר רק בשדה מקור; בתצוגה יופיע מינוח מכבד ועדכני.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S111",
+      "he": "היצרות עורקי הצוואר / קרוטיס",
+      "en": "Carotid artery stenosis",
+      "proposedSystems": [
+        "כלי דם"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "מופיעה כדוגמה למחלה בהקשר לטרשת עורקים, ולא ככרטיס עם תנאי סף נפרדים.",
+      "reviewNote": "אפשר לשייך כדוגמה מותנית; פרסום קריטריונים אוטומטיים מצריך השלמה ניהולית.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S112",
+      "he": "היצרות עורקי הכליה",
+      "en": "Renal artery stenosis",
+      "proposedSystems": [
+        "כלי דם",
+        "כליות"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "מופיעה כדוגמה בהקשר לטרשת עורקים.",
+      "reviewNote": "יש לאשר אבחנה מדויקת ותנאי שימוש; אין תנאים ייעודיים במסמך.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S113",
+      "he": "בצקות",
+      "en": "Edema",
+      "proposedSystems": [
+        "לפי הגורם"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "מוזכרות כדוגמה בסעיף טרשת עורקים.",
+      "reviewNote": "אין להכריז מכך שכל בצקת היא מחלה מאושרת; יש לזהות את המחלה הבסיסית ולהבהיר את הנוסח.",
+      "sourcePages": "36"
+    },
+    {
+      "seedId": "S114",
+      "he": "קוליטיס כיבית",
+      "en": "Ulcerative colitis",
+      "proposedSystems": [
+        "מערכת העיכול",
+        "מערכת החיסון"
+      ],
+      "mappingStatus": "בירור",
+      "sourceCondition": "מופיעה כסיפור מקרה לדוגמה בעמ׳ 53–54; אינה מוזכרת בשם ברשימת נספח א.",
+      "reviewNote": "אין להעלים אותה מהחיפוש או להסיק שקרוהן הוא שמה החלופי. המלצה: לבקש אישור מפורש להוספה למאגר.",
+      "sourcePages": "53–54"
+    }
+  ]
+}
