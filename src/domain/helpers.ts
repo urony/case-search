@@ -90,7 +90,7 @@ export function dueAtFor(createdAt: number, days: number): number {
   return createdAt + Math.max(1, days) * 24 * 60 * 60 * 1000;
 }
 export function isOverdue(r: Pick<RequestDoc, 'status' | 'dueAt'>, now: number): boolean {
-  return (r.status === 'open') && now > r.dueAt; // "ממתין למורה" אינו נספר כאיחור של המנהל; איחור אינו משנה תוצאה
+  return (r.status === 'open' || r.status === 'in_progress') && now > r.dueAt; // "ממתין למורה" אינו נספר כאיחור של המנהל; איחור אינו משנה תוצאה
 }
 
 // ───────── כפילות נושאים במוסד (סעיף 16.3) ─────────
@@ -123,4 +123,18 @@ export function duplicateWarnings(args: {
     }
   }
   return out;
+}
+
+// ───────── תוויות בקשות (משותף למורה ולמנהל) ─────────
+export const REQUEST_KIND_LABEL: Record<string, string> = { new_topic: 'הצעת נושא חדש', inquiry: 'בירור כללי', exception_general: 'פנייה כללית לחריג' };
+export const REQUEST_STATUS_LABEL: Record<string, string> = { open: 'ממתינה לטיפול', in_progress: 'בטיפול', waiting_teacher: 'ממתינה להשלמה מהמורה', answered: 'נענתה', closed: 'סגורה' };
+export const GROUP_STATUS_LABEL: Record<string, string> = { draft: 'טיוטה', self_check: 'בבדיקה עצמית', case_check_done: 'בדיקת מקרה הושלמה', needs_clarification: 'דורשת בירור', submitted_external: 'הוגשה בטופס החיצוני', done: 'בוצעה', cancelled: 'בוטלה' };
+/** התווית שמוצגת לצד הבקשה: ההחלטה (אושרה / לא אושרה) אם נמסרה, אחרת המצב. */
+export function requestStateLabel(r: Pick<RequestDoc, 'status' | 'decisionKind'>): string {
+  if (r.status === 'answered' || r.status === 'closed') {
+    if (r.decisionKind === 'general_approval') return 'אושרה';
+    if (r.decisionKind === 'case_specific') return 'אושרה נקודתית';
+    if (r.decisionKind === 'rejection') return 'לא אושרה';
+  }
+  return REQUEST_STATUS_LABEL[r.status] ?? r.status;
 }

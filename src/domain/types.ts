@@ -79,6 +79,22 @@ export interface RecruitmentSource {
   visible: boolean;
   editedBy?: string;
   editedAt?: number;
+  /** false עד שמנהל סימן שבדק את המקור (המקור מתפרסם מיד, ללא תלות בבדיקה) */
+  reviewed?: boolean;
+  reviewedBy?: string;
+  reviewedAt?: number;
+  clientId?: string;
+}
+
+export interface SourceReport {
+  id: string;
+  sourceId: string;
+  reason: string;
+  createdBy: string;
+  createdAt: number;
+  handled: boolean;
+  handledBy?: string;
+  handledAt?: number;
 }
 
 export type Role = 'teacher' | 'coordinator' | 'admin';
@@ -106,7 +122,7 @@ export interface Group {
 }
 
 export type RequestKind = 'new_topic' | 'inquiry' | 'exception_general';
-export type RequestStatus = 'open' | 'waiting_teacher' | 'answered' | 'closed';
+export type RequestStatus = 'open' | 'in_progress' | 'waiting_teacher' | 'answered' | 'closed';
 export interface RequestDoc {
   id: string;
   kind: RequestKind;
@@ -126,27 +142,10 @@ export interface RequestDoc {
   adminReply?: string;
   decisionKind?: 'supplement' | 'general_approval' | 'case_specific' | 'rejection';
   dueAt: number;
-}
-
-export interface NotificationDoc {
-  id: string;
-  type: 'new_request' | 'source_added' | 'request_completed' | 'suggestion' | 'source_reported' | 'overdue';
-  refId: string;
-  topicId?: string;
-  createdAt: number;
-  readBy: string[];
-  summary: string;
-}
-
-export interface OutboxDoc {
-  id: string;
-  to: 'admins' | 'teacher';
-  toUid?: string;
-  subject: string;
-  body: string; // ללא נתונים קליניים או שמות תלמידים
-  status: 'queued' | 'sent' | 'failed' | 'no_provider';
-  attempts: number;
-  createdAt: number;
+  /** מועד המענה האחרון של המנהל, ומועד שבו המורה ראה אותו (חיווי "חדש" בלי דוא"ל) */
+  repliedAt?: number;
+  teacherSeenAt?: number;
+  clientId?: string;
 }
 
 export interface SchoolYearHistory {
@@ -192,5 +191,7 @@ export interface Catalog {
   settings: Settings;
   years: AcademicYear[];
   generatedAt: number;
+  /** מספר מקורות לכל נושא נכון לפרסום הקטלוג האחרון (חוסך קריאה לכל מקור בכל ביקור) */
+  sourceCounts?: Record<string, number>;
   origin: 'bundled' | 'service' | 'demo';
 }

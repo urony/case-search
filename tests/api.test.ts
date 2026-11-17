@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { Api, Mailer } from '../src/services/api';
+import { Api } from '../src/services/api';
 import { AuthService, AuthUser } from '../src/services/auth';
 import { DEMO_ACCOUNTS, DEMO_SCHOOL_ID, seedStore } from '../src/services/demoSeed';
 import { LocalStore } from '../src/services/localStore';
@@ -52,15 +52,37 @@ describe('T01/T02 אורח', () => {
 });
 
 describe('T07/T30/T37 מקורות', () => {
-  it('מקור מתפרסם מיד ויוצר התראה אחת; לחיצה כפולה לא מכפילה (T24)', async () => {
+  it('מקור מתפרסם מיד, מסומן "חדש" למנהל, ולחיצה כפולה לא מכפילה (T24)', async () => {
     auth.as('demo-teacher');
     const before = (await api.listSources()).length;
     const s1 = await api.addSource({ ...goodSource, clientId: 'src-abc' });
     const s2 = await api.addSource({ ...goodSource, clientId: 'src-abc' });
     expect(s1.id).toBe(s2.id);
-    expect((await api.listSources()).length).toBe(before + 1);
+    expect((await api.listSources()).length).toBe(before + 1); // מתפרסם מיד, בלי תלות בבדיקת מנהל
+    expect((await api.listSources(goodSource.topicId)).some(x => x.id === s1.id)).toBe(true);
     auth.as('demo-admin');
-    expect((await api.listNotifications()).filter(n => n.refId === 'src-abc')).toHaveLength(1);
+    expect((await api.adminListSources(true)).some(x => x.id === s1.id)).toBe(true);
+    expect((await api.adminBadges()).unreviewedSources).toBe(1);
+  });
+  it('מנהל מסמן "נבדק": החיווי יורד והמקור נשאר גלוי', async () => {
+    auth.as('demo-teacher');
+    const s1 = await api.addSource(goodSource);
+    auth.as('demo-admin');
+    await api.adminMarkSourcesReviewed([s1.id]);
+    expect((await api.adminBadges()).unreviewedSources).toBe(0);
+    expect((await api.listSources()).some(x => x.id === s1.id && x.visible)).toBe(true);
+    auth.as('demo-teacher');
+    await expect(api.adminMarkSourcesReviewed([s1.id])).rejects.toThrow(PermissionError);
+  });
+  it('מכסה יומית: 5 מקורות ביום למשתמש, ומחר אפשר שוב; משתמש אחר אינו מושפע', async () => {
+    auth.as('demo-teacher');
+    for (let i = 0; i < 5; i++) await api.addSource({ ...goodSource, title: `מקור מלאכותי מספר ${i}` });
+    await expect(api.addSource({ ...goodSource, title: 'מקור מלאכותי שישי' })).rejects.toThrow(/מכסה/);
+    auth.as('demo-teacher2');
+    await expect(api.addSource({ ...goodSource, title: 'מקור של מורה אחר' })).resolves.toBeTruthy();
+    const tomorrow = new Api(store, auth, 'demo', () => NOW + 86_400_000);
+    auth.as('demo-teacher');
+    await expect(tomorrow.addSource({ ...goodSource, title: 'מקור של מחר' })).resolves.toBeTruthy();
   });
   it('מורה אינו יכול לערוך, להסתיר או למחוק, גם את המקור שלו', async () => {
     auth.as('demo-teacher');
@@ -76,14 +98,19 @@ describe('T07/T30/T37 מקורות', () => {
     auth.as(null);
     expect((await api.listSources()).some(x => x.id === s.id)).toBe(false);
   });
-  it('דיווח על מקור יוצר התראה ואינו מסתיר אותו', async () => {
+  it('דיווח על מקור מופיע למנהל, אינו מסתיר אותו, וחוזר־בטוח; מנהל מסמן "טופל"', async () => {
     auth.as('demo-teacher');
     const s = await api.addSource(goodSource);
     auth.as('demo-teacher2');
     await api.reportSource(s.id, 'לא מעודכן');
+    await api.reportSource(s.id, 'לא מעודכן');
     auth.as('demo-admin');
-    expect((await api.listNotifications()).some(n => n.type === 'source_reported' && n.refId === s.id)).toBe(true);
+    const reps = await api.adminListSourceReports();
+    expect(reps.filter(r => r.sourceId === s.id)).toHaveLength(1);
     expect((await api.listSources()).some(x => x.id === s.id && x.visible)).toBe(true);
+    expect((await api.adminBadges()).openReports).toBe(1);
+    await api.adminHandleReport(reps[0].id);
+    expect((await api.adminBadges()).openReports).toBe(0);
   });
   it('קישור זדוני נדחה', async () => {
     auth.as('demo-teacher');
@@ -246,15 +273,21 @@ describe('קבוצות (T15, T21, T29, T31)', () => {
 });
 
 describe('בקשות (T14, T24, T28)', () => {
-  it('בקשה נוצרת פעם אחת, עם התראה, ויעד שבוע', async () => {
+  it('בקשה נוצרת פעם אחת, מופיעה למנהל כחדשה, ויעד שבוע', async () => {
     auth.as('demo-teacher');
     const a = await api.createRequest({ kind: 'new_topic', proposedHe: 'נושא מוצע מלאכותי', description: 'תיאור כללי', rationale: 'מעניין', clientId: 'rq1' });
     const b = await api.createRequest({ kind: 'new_topic', proposedHe: 'נושא מוצע מלאכותי', description: 'תיאור כללי', rationale: 'מעניין', clientId: 'rq1' });
     expect(a.id).toBe(b.id);
     expect(a.dueAt - a.createdAt).toBe(7 * 86400000);
-    expect((await api.listMyRequests()).filter(r => r.id === 'rq1')).toHaveLength(1);
+    expect((await api.listMyRequests()).filter(r => r.id === a.id)).toHaveLength(1);
     auth.as('demo-admin');
-    expect((await api.listNotifications()).filter(n => n.refId === 'rq1')).toHaveLength(1);
+    expect((await api.adminBadges()).openRequests).toBe(1);
+    expect((await api.adminListRequests(['open'])).map(r => r.id)).toContain(a.id);
+  });
+  it('מכסת בקשות יומית: 10', async () => {
+    auth.as('demo-teacher');
+    for (let i = 0; i < 10; i++) await api.createRequest({ kind: 'inquiry', description: `שאלה כללית ${i}` });
+    await expect(api.createRequest({ kind: 'inquiry', description: 'עוד שאלה' })).rejects.toThrow(/מכסה/);
   });
   it('מנהל משנה יעד טיפול בהגדרות', async () => {
     auth.as('demo-admin');
@@ -268,35 +301,40 @@ describe('בקשות (T14, T24, T28)', () => {
     auth.as('demo-teacher');
     await expect(api.createRequest({ kind: 'exception_general', description: 'צרו קשר 123456789' })).rejects.toThrow();
   });
-  it('תשובת מנהל לא מכילה מידע קליני ויוצרת תור מייל ללא טענת שליחה', async () => {
+  it('מקצה לקצה בלי דוא״ל: הגשה, צפיית מנהל, מענה, וצפיית המורה במענה ובחיווי "חדש"', async () => {
     auth.as('demo-teacher');
     const r = await api.createRequest({ kind: 'inquiry', description: 'שאלה כללית', clientId: 'rq2' });
+    expect(await api.myUnseenReplies()).toBe(0);
     auth.as('demo-admin');
+    expect((await api.adminBadges()).openRequests).toBe(1);
+    await api.adminSetRequestStatus(r.id, 'in_progress');
+    expect((await api.adminBadges()).inProgress).toBe(1);
     await api.adminReply(r.id, { decisionKind: 'supplement', text: 'נא להשלים תיאור כללי', status: 'waiting_teacher' });
-    const outbox = await api.listOutbox();
-    const toTeacher = outbox.find(o => o.to === 'teacher' && o.toUid === 'demo-teacher')!;
-    expect(toTeacher.status).toBe('queued'); // לא "sent"
-    expect(toTeacher.body).not.toMatch(/נא להשלים/);
     auth.as('demo-teacher');
-    expect((await api.listMyRequests()).find(x => x.id === 'rq2')!.status).toBe('waiting_teacher');
+    expect(await api.myUnseenReplies()).toBe(1); // חיווי "חדש"
+    const mine = (await api.listMyRequests()).find(x => x.id === r.id)!;
+    expect(mine.status).toBe('waiting_teacher');
+    expect(mine.adminReply).toBe('נא להשלים תיאור כללי');
+    await api.markMyRepliesSeen([mine]);
+    expect(await api.myUnseenReplies()).toBe(0);
+    await api.supplementRequest(r.id, 'השלמה כללית');
+    auth.as('demo-admin');
+    expect((await api.adminBadges()).openRequests).toBe(1); // חזרה לתור המנהל
+    await api.adminReply(r.id, { decisionKind: 'rejection', text: 'לא ניתן לאשר. פנייה אישית לאחראי.', status: 'answered' });
+    auth.as('demo-teacher');
+    expect(await api.myUnseenReplies()).toBe(1);
+    expect((await api.listMyRequests()).find(x => x.id === r.id)!.decisionKind).toBe('rejection');
+    auth.as('demo-teacher2');
+    expect(await api.myUnseenReplies()).toBe(0); // מורה אחר אינו רואה
+    await expect(api.adminReply(r.id, { decisionKind: 'supplement', text: 'x', status: 'open' })).rejects.toThrow(PermissionError);
   });
-  it('כשל שליחת מייל אינו מאבד את ההחלטה ומוצג כשל; הצלחה רק כשה-Mailer הצליח (T24/T36)', async () => {
+  it('אין תור דוא״ל ואין התראות שנשמרות מחוץ לבקשות ולמקורות עצמם', async () => {
     auth.as('demo-teacher');
-    const r = await api.createRequest({ kind: 'inquiry', description: 'שאלה כללית', clientId: 'rq3' });
-    auth.as('demo-admin');
-    const failing: Mailer = { send: async () => { throw new Error('smtp down'); } };
-    const res = await api.processOutbox(failing, { admins: ['a@demo.test'], teachers: {} });
-    expect(res.failed).toBeGreaterThan(0);
-    expect(res.sent).toBe(0);
-    expect((await api.listOutbox()).every(o => o.status !== 'sent')).toBe(true);
-    auth.as('demo-teacher');
-    expect((await api.listMyRequests()).some(x => x.id === r.id)).toBe(true);
-    auth.as('demo-admin');
-    const sentTo: string[] = [];
-    const ok: Mailer = { send: async to => { sentTo.push(to); } };
-    const res2 = await api.processOutbox(ok, { admins: ['a@demo.test'], teachers: {} });
-    expect(res2.sent).toBeGreaterThan(0);
-    expect(sentTo).toContain('a@demo.test');
+    await api.createRequest({ kind: 'inquiry', description: 'שאלה כללית' });
+    await api.addSource(goodSource);
+    const colls = Object.keys(store.dump());
+    expect(colls).not.toContain('outbox');
+    expect(colls).not.toContain('notifications');
   });
 });
 
@@ -315,7 +353,7 @@ describe('T23/T34/T38 סיום מחזור, מחיקה וגיבוי', () => {
     await makeGroups();
     expect(everythingText()).toContain('שם־סודי');
     auth.as('demo-admin');
-    const res = await api.closeCycle(YEAR);
+    const res = await api.closeCycle(YEAR, { force: true });
     expect(res.deleted).toBe(4); // כולל קבוצת ההדגמה
     const dump = everythingText();
     expect(dump).not.toContain('שם־סודי');
@@ -330,15 +368,15 @@ describe('T23/T34/T38 סיום מחזור, מחיקה וגיבוי', () => {
   });
   it('אחרי סגירה לא ניתן ליצור קבוצות חדשות במחזור', async () => {
     auth.as('demo-admin');
-    await api.closeCycle(YEAR);
+    await api.closeCycle(YEAR, { force: true });
     auth.as('demo-teacher');
     await expect(api.createGroup({ schoolId: DEMO_SCHOOL_ID, yearId: YEAR, studentCount: 1 })).rejects.toThrow(/נסגר/);
   });
   it('סגירה חוזרת בטוחה', async () => {
     await makeGroups();
     auth.as('demo-admin');
-    await api.closeCycle(YEAR);
-    expect((await api.closeCycle(YEAR)).deleted).toBe(0);
+    await api.closeCycle(YEAR, { force: true });
+    expect((await api.closeCycle(YEAR, { force: true })).deleted).toBe(0);
   });
   it('גיבוי תוכן בלבד אינו כולל קבוצות, תלמידים, בקשות או כתובות מייל', async () => {
     await makeGroups();
@@ -349,24 +387,35 @@ describe('T23/T34/T38 סיום מחזור, מחיקה וגיבוי', () => {
     expect(text).not.toContain('@demo.test');
     expect(b.data.groups).toBeUndefined();
   });
-  it('שחזור מגיבוי ישן לא מחזיר שמות ממחזור שכבר נמחק (T34/T38)', async () => {
+  it('שחזור מגיבוי ישן אינו מחזיר שמות ממחזור שכבר נמחק (T34/T38)', async () => {
     await makeGroups();
     auth.as('demo-admin');
     const oldBackup = await api.exportBackup(true); // לפני הסגירה, כולל קבוצות
     expect(JSON.stringify(oldBackup)).toContain('שם־סודי');
-    await api.closeCycle(YEAR);
-    // שחזור לתוך מאגר שבו הלדג'ר קיים אך הקבוצות חזרו מהגיבוי
-    const res = await api.restoreBackup(oldBackup);
-    expect(res.reDeleted).toBeGreaterThan(0);
-    expect(everythingText()).not.toContain('שם־סודי');
+    await api.closeCycle(YEAR, { force: true });
+    for (const mode of ['add_missing', 'overwrite'] as const) {
+      await api.restoreBackup(oldBackup, { mode });
+      expect(everythingText()).not.toContain('שם־סודי');
+    }
     auth.as('demo-teacher');
     expect(await api.listMyGroups()).toEqual([]);
+  });
+  it('סגירת מחזור שטרם הסתיים נדחית בלי אישור מפורש', async () => {
+    await makeGroups();
+    auth.as('demo-admin');
+    await expect(api.closeCycle(YEAR)).rejects.toThrow(/טרם הסתיים/);
+    const p = await api.cycleClosePreview(YEAR);
+    expect(p.groups).toBe(4);
+    expect(p.yearEnded).toBe(false);
+    expect(p.activeGroups).toBeGreaterThan(0);
+    expect(p.studentLabels).toBeGreaterThanOrEqual(4);
+    expect(everythingText()).toContain('שם־סודי'); // התצוגה המקדימה והדחייה לא מחקו דבר
   });
   it('שחזור למאגר ריק: תוכן חוזר, ויומן המחיקות מונע חזרה של תלמידים', async () => {
     await makeGroups();
     auth.as('demo-admin');
     const privateBackup = await api.exportBackup(true);
-    await api.closeCycle(YEAR);
+    await api.closeCycle(YEAR, { force: true });
     const ledgerBackup = await api.exportBackup(false); // כולל deletionLedger
     const fresh = new LocalStore(null);
     const api2 = new Api(fresh, auth, 'demo', () => NOW);

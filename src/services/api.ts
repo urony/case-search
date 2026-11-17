@@ -5,8 +5,8 @@ import { checkSourceInput, dueAtFor, looksLikePersonalData, SourceInput } from '
 import { previewSchoolImport } from '../domain/csv';
 import { planSeedImport, SeedRecord } from '../domain/seedImport';
 import type {
-  AcademicYear, AuditEvent, Catalog, Group, GroupStatus, Membership, NotificationDoc, OutboxDoc, PolicyQuestion,
-  Profile, RecruitmentSource, RequestDoc, RequestKind, Role, RoleDoc, School, SchoolYearHistory, Settings, SystemDef, TagDef, Topic,
+  AcademicYear, AuditEvent, Catalog, Group, GroupStatus, Membership, PolicyQuestion,
+  Profile, RecruitmentSource, RequestDoc, RequestKind, Role, RoleDoc, School, SchoolYearHistory, Settings, SourceReport, SystemDef, TagDef, Topic,
 } from '../domain/types';
 import type { AuthService, AuthUser } from './auth';
 import { buildBundledCatalog, DEFAULT_TAGS, defaultSettings, defaultYears, SEED, SEED_AUX } from './bundled';
@@ -17,7 +17,10 @@ export type Mode = 'service' | 'demo' | 'bundled';
 
 export interface Ctx { user: AuthUser | null; role: Role | null; roleDoc: RoleDoc | null; verified: boolean }
 
-export interface Mailer { send(to: string, subject: string, body: string): Promise<void> }
+/** מכסות יומיות להוספה (מונעות הצפה בלי לבטל פרסום מיידי). נאכפות גם בכללי השירות דרך מבנה המזהה. */
+export const DAILY_SOURCE_CAP = 5;
+export const DAILY_REQUEST_CAP = 10;
+export const dayKey = (ms: number) => new Date(ms).toISOString().slice(0, 10).replace(/-/g, '');
 
 const uuid = () => (typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `id-${Math.random().toString(36).slice(2)}${Date.now().toString(36)}`);
 
@@ -60,7 +63,7 @@ export class Api {
   async loadCatalog(): Promise<Catalog> {
     if (this.mode === 'bundled') return buildBundledCatalog(this.now());
     try {
-      const meta = await this.store.get<{ chunks: number; generatedAt: number }>('public/catalogMeta');
+      const meta = await this.store.get<{ chunks: number; generatedAt: number; sourceCounts?: Record<string, number> }>('public/catalogMeta');
       if (!meta) {
         if (this.mode === 'service') return { ...buildBundledCatalog(this.now()), origin: 'bundled' };
         throw new Error('catalog not published');
@@ -81,15 +84,12 @@ export class Api {
         systems: vocab?.systems ?? SEED_AUX.systems, tags: vocab?.tags ?? DEFAULT_TAGS,
         settings: { ...defaultSettings(new Date(this.now())), ...(settings ?? {}) },
         years: years?.years ?? defaultYears(new Date(this.now())),
-        generatedAt: meta.generatedAt, origin: this.mode === 'demo' ? 'demo' : 'service',
+        generatedAt: meta.generatedAt, sourceCounts: meta.sourceCounts ?? {}, origin: this.mode === 'demo' ? 'demo' : 'service',
       };
     } catch (e) {
       if (this.mode === 'service') return { ...buildBundledCatalog(this.now()), origin: 'bundled' };
       throw e;
     }
-  }
-  async listSources(): Promise<RecruitmentSource[]> {
-    return this.store.list<RecruitmentSource>('sources', [['visible', '==', true]]);
   }
   async getSchoolHistory(schoolId: string, yearId: string): Promise<SchoolYearHistory | null> {
     return this.store.get<SchoolYearHistory>(`schoolHistory/${schoolId}_${yearId}`);
@@ -226,73 +226,96 @@ export class Api {
     await this.store.set(`schoolHistory/${id}`, { schoolId: g.schoolId, yearId: g.yearId, items, updatedAt: this.now() });
   }
 
+  // ───────── מכסה יומית ─────────
+  /**
+   * מזהה מסמך יומי למשתמש: `uid_YYYYMMDD_n`, n עד המכסה. כללי השירות אוכפים את אותו מבנה, ולכן המכסה אמיתית ולא רק בממשק.
+   * חוזר־בטוח: clientId זהה מחזיר את המסמך שכבר נוצר.
+   */
+  private async dailySlot<T extends { clientId?: string }>(coll: string, uid: string, cap: number, clientId: string | undefined): Promise<{ id: string; existing: T | null }> {
+    const day = dayKey(this.now());
+    for (let n = 1; n <= cap; n++) {
+      const id = `${uid}_${day}_${n}`;
+      const cur = await this.store.get<T>(`${coll}/${id}`);
+      if (!cur) return { id, existing: null };
+      if (clientId && cur.clientId === clientId) return { id, existing: cur };
+    }
+    throw new Error(`הגעתם למכסה היומית (${cap}). אפשר להמשיך מחר.`);
+  }
+
   // ───────── מקורות איתור (סעיף 13) ─────────
-  /** פרסום מיידי + התראה למנהל באותה פעולה אטומית. חוזר־בטוח לפי clientId. */
+  /** פרסום מיידי; המקור מסומן "טרם נבדק" עד שמנהל מאשר שראה אותו. מכסה יומית למשתמש. חוזר־בטוח לפי clientId. */
   async addSource(input: SourceInput & { clientId?: string }): Promise<RecruitmentSource> {
     const c = await this.need('verified');
     const chk = checkSourceInput(input);
     if (!chk.ok || !chk.clean) throw new Error(chk.errors.join(' '));
-    const id = input.clientId ?? uuid();
-    const exists = await this.store.get<RecruitmentSource>(`sources/${id}`);
-    if (exists) return exists;
-    const s: RecruitmentSource = { id, ...chk.clean, createdBy: c.user!.uid, createdAt: this.now(), visible: true };
-    await this.store.batch([
-      { op: 'set', path: `sources/${id}`, data: s },
-      ...this.notify('source_added', id, `נוסף מקור איתור: ${s.title}`, s.topicId, id),
-    ]);
+    const { id, existing } = await this.dailySlot<RecruitmentSource>('sources', c.user!.uid, DAILY_SOURCE_CAP, input.clientId);
+    if (existing) return existing;
+    const s: RecruitmentSource = stripUndefined({ id, ...chk.clean, createdBy: c.user!.uid, createdAt: this.now(), visible: true, reviewed: false, clientId: input.clientId });
+    await this.store.set(`sources/${id}`, s);
     return s;
   }
+  /** מקורות לנושא אחד בלבד (קריאות רק למה שמוצג). ללא נושא: כולם (הדגמה ובדיקות). */
+  async listSources(topicId?: string): Promise<RecruitmentSource[]> {
+    const f: [string, '==', unknown][] = [['visible', '==', true]];
+    if (topicId) f.push(['topicId', '==', topicId]);
+    return this.store.list<RecruitmentSource>('sources', f);
+  }
+  /** דיווח אחד לכל משתמש ומקור: אין הצפה של אותו דיווח. */
   async reportSource(sourceId: string, reason: string) {
-    await this.need('verified');
-    const id = `rep-${sourceId}-${uuid().slice(0, 6)}`;
-    await this.store.batch(this.notify('source_reported', sourceId, `דיווח על מקור: ${reason.slice(0, 200)}`, undefined, id));
+    const c = await this.need('verified');
+    const r: SourceReport = { id: `${c.user!.uid}_${sourceId}`, sourceId, reason: reason.trim().slice(0, 300), createdBy: c.user!.uid, createdAt: this.now(), handled: false };
+    if (!r.reason) throw new Error('נדרש תיאור קצר של הבעיה.');
+    if (await this.store.get(`sourceReports/${r.id}`)) return;
+    await this.store.set(`sourceReports/${r.id}`, r);
+  }
+  async adminListSourceReports(onlyOpen = true): Promise<SourceReport[]> {
+    await this.need('admin');
+    return (await this.store.list<SourceReport>('sourceReports', onlyOpen ? [['handled', '==', false]] : [])).sort((a, b) => b.createdAt - a.createdAt);
+  }
+  async adminHandleReport(id: string) {
+    const c = await this.need('admin');
+    await this.store.batch([{ op: 'update', path: `sourceReports/${id}`, data: { handled: true, handledBy: c.user!.uid, handledAt: this.now() } }, this.audit('handle_report', id, c.user!.uid)]);
+  }
+  /** סימון "נבדק". מקור שנבדק ונשאר גלוי נשאר גלוי. */
+  async adminMarkSourcesReviewed(ids: string[]) {
+    const c = await this.need('admin');
+    if (ids.length === 0) return;
+    await this.store.batch([...ids.map(id => ({ op: 'update', path: `sources/${id}`, data: { reviewed: true, reviewedBy: c.user!.uid, reviewedAt: this.now() } }) as BatchOp), this.audit('review_sources', `${ids.length} sources`, c.user!.uid)]);
   }
   async adminEditSource(id: string, patch: Partial<Pick<RecruitmentSource, 'title' | 'text' | 'url' | 'phone' | 'region' | 'population' | 'kind' | 'topicId'>>) {
     const c = await this.need('admin');
-    await this.store.batch([{ op: 'update', path: `sources/${id}`, data: { ...patch, editedBy: c.user!.uid, editedAt: this.now() } }, this.audit('edit_source', id, c.user!.uid)]);
+    await this.store.batch([{ op: 'update', path: `sources/${id}`, data: { ...patch, editedBy: c.user!.uid, editedAt: this.now(), reviewed: true, reviewedBy: c.user!.uid, reviewedAt: this.now() } }, this.audit('edit_source', id, c.user!.uid)]);
   }
   async adminRemoveSource(id: string) {
     const c = await this.need('admin');
-    await this.store.batch([{ op: 'update', path: `sources/${id}`, data: { visible: false, editedBy: c.user!.uid, editedAt: this.now() } }, this.audit('remove_source', id, c.user!.uid)]);
+    await this.store.batch([{ op: 'update', path: `sources/${id}`, data: { visible: false, reviewed: true, reviewedBy: c.user!.uid, reviewedAt: this.now(), editedBy: c.user!.uid, editedAt: this.now() } }, this.audit('remove_source', id, c.user!.uid)]);
   }
   async adminRestoreSource(id: string) {
     const c = await this.need('admin');
     await this.store.batch([{ op: 'update', path: `sources/${id}`, data: { visible: true, editedBy: c.user!.uid, editedAt: this.now() } }, this.audit('restore_source', id, c.user!.uid)]);
   }
-  async adminListSources(): Promise<RecruitmentSource[]> { await this.need('admin'); return this.store.list<RecruitmentSource>('sources'); }
+  async adminListSources(onlyUnreviewed = false): Promise<RecruitmentSource[]> {
+    await this.need('admin');
+    return this.store.list<RecruitmentSource>('sources', onlyUnreviewed ? [['reviewed', '==', false]] : []);
+  }
 
-  // ───────── התראות ודוא"ל ─────────
-  private notify(type: NotificationDoc['type'], refId: string, summary: string, topicId?: string, key?: string): BatchOp[] {
-    const k = key ?? refId;
-    const n: NotificationDoc = { id: `n-${k}`, type, refId, topicId, createdAt: this.now(), readBy: [], summary };
-    const o: OutboxDoc = { id: `o-${k}`, to: 'admins', subject: `[מאגר נושאים] ${summary.slice(0, 80)}`, body: `${summary}\nלפרטים היכנסו לאזור הניהול באתר.`, status: 'queued', attempts: 0, createdAt: this.now() };
-    return [{ op: 'set', path: `notifications/${n.id}`, data: stripUndefined(n) }, { op: 'set', path: `outbox/${o.id}`, data: o }];
-  }
-  async listNotifications(): Promise<NotificationDoc[]> { await this.need('admin'); return (await this.store.list<NotificationDoc>('notifications')).sort((a, b) => b.createdAt - a.createdAt); }
-  async markNotificationRead(id: string) {
-    const c = await this.need('admin');
-    const n = await this.store.get<NotificationDoc>(`notifications/${id}`);
-    if (n && !n.readBy.includes(c.user!.uid)) await this.store.update(`notifications/${id}`, { readBy: [...n.readBy, c.user!.uid] });
-  }
-  async listOutbox(): Promise<OutboxDoc[]> { await this.need('admin'); return (await this.store.list<OutboxDoc>('outbox')).sort((a, b) => b.createdAt - a.createdAt); }
+  // ───────── חיווי פנימי "דורש טיפול" (ללא דוא"ל) ─────────
   /**
-   * שליחת תור הדוא"ל דרך Mailer. בדפדפן אין Mailer אמיתי; השליחה האמיתית נעשית בסקריפט scripts/send-outbox.mjs.
-   * הסטטוס "sent" נקבע רק אם ה-Mailer החזיר הצלחה. כשל נשמר, וההחלטה אינה אובדת.
+   * כל ספירה היא שאילתה שקוראת רק את הפריטים הממתינים (לא את כל האוסף),
+   * ולכן העלות בקריאות פרופורציונלית למה שמחכה לטיפול.
    */
-  async processOutbox(mailer: Mailer, recipients: { admins: string[]; teachers: Record<string, string> }): Promise<{ sent: number; failed: number }> {
+  async adminBadges(): Promise<{ openRequests: number; inProgress: number; unreviewedSources: number; openReports: number; openSuggestions: number; overdue: number; total: number }> {
     await this.need('admin');
-    let sent = 0, failed = 0;
-    for (const o of await this.store.list<OutboxDoc>('outbox', [['status', 'in', ['queued', 'failed']]])) {
-      const to = o.to === 'admins' ? recipients.admins : [recipients.teachers[o.toUid ?? ''] ?? ''].filter(Boolean);
-      if (to.length === 0) { await this.store.update(`outbox/${o.id}`, { status: 'failed', attempts: o.attempts + 1 }); failed++; continue; }
-      try { for (const addr of to) await mailer.send(addr, o.subject, o.body); await this.store.update(`outbox/${o.id}`, { status: 'sent', attempts: o.attempts + 1 }); sent++; }
-      catch { await this.store.update(`outbox/${o.id}`, { status: 'failed', attempts: o.attempts + 1 }); failed++; }
-    }
-    return { sent, failed };
-  }
-  async retryOutbox(id: string) {
-    await this.need('admin');
-    await this.store.update(`outbox/${id}`, { status: 'queued' });
+    const [open, prog, src, rep, sug] = await Promise.all([
+      this.store.list<RequestDoc>('requests', [['status', '==', 'open']]),
+      this.store.list<RequestDoc>('requests', [['status', '==', 'in_progress']]),
+      this.store.list<RecruitmentSource>('sources', [['reviewed', '==', false]]),
+      this.store.list<SourceReport>('sourceReports', [['handled', '==', false]]),
+      this.store.list<any>('suggestions', [['state', '==', 'open']]),
+    ]);
+    const now = this.now();
+    const overdue = [...open, ...prog].filter(r => r.dueAt < now).length;
+    return { openRequests: open.length, inProgress: prog.length, unreviewedSources: src.length, openReports: rep.length, openSuggestions: sug.length, overdue, total: open.length + src.length + rep.length + sug.length };
   }
 
   // ───────── בקשות (סעיף 15) ─────────
@@ -301,9 +324,8 @@ export class Api {
     description: string; rationale?: string; clientId?: string;
   }): Promise<RequestDoc> {
     const c = await this.need('verified');
-    const id = input.clientId ?? uuid();
-    const exists = await this.store.get<RequestDoc>(`requests/${id}`);
-    if (exists) return exists; // חוזר־בטוח: אין שתי בקשות מלחיצה כפולה (T24)
+    const { id, existing } = await this.dailySlot<RequestDoc>('requests', c.user!.uid, DAILY_REQUEST_CAP, input.clientId);
+    if (existing) return existing; // חוזר־בטוח: אין שתי בקשות מלחיצה כפולה (T24)
     if (input.kind === 'new_topic' && !(input.proposedHe ?? '').trim() && !(input.proposedEn ?? '').trim()) throw new Error('נדרש שם הנושא בעברית או באנגלית.');
     if (!input.description.trim()) throw new Error('נדרש תיאור כללי.');
     if (looksLikePersonalData(`${input.description} ${input.rationale ?? ''}`)) throw new Error('נראה שהטקסט כולל מספר זיהוי או כתובת מייל. הבקשה אינה מיועדת לפרטי אדם.');
@@ -313,10 +335,9 @@ export class Api {
       groupId: input.groupId, topicId: input.topicId, proposedHe: input.proposedHe?.trim(), proposedEn: input.proposedEn?.trim(),
       proposedKind: input.proposedKind, proposedSystem: input.proposedSystem,
       description: input.description.trim().slice(0, 2000), rationale: (input.rationale ?? '').trim().slice(0, 2000),
-      dueAt: dueAtFor(this.now(), settings.responseDueDays),
+      dueAt: dueAtFor(this.now(), settings.responseDueDays), clientId: input.clientId,
     });
-    const label = { new_topic: 'הצעת נושא חדש', inquiry: 'בירור כללי', exception_general: 'פנייה כללית לחריג' }[r.kind];
-    await this.store.batch([{ op: 'set', path: `requests/${id}`, data: r }, ...this.notify('new_request', id, `${label}: ${r.proposedHe || r.proposedEn || r.description.slice(0, 60)}`, r.topicId)]);
+    await this.store.set(`requests/${id}`, r);
     return r;
   }
   async listMyRequests(): Promise<RequestDoc[]> {
@@ -328,24 +349,35 @@ export class Api {
     const r = await this.store.get<RequestDoc>(`requests/${id}`);
     if (!r || r.createdBy !== c.user!.uid) throw new PermissionError();
     if (looksLikePersonalData(text)) throw new Error('נראה שהטקסט כולל מספר זיהוי או כתובת מייל.');
-    await this.store.batch([
-      { op: 'update', path: `requests/${id}`, data: { supplement: text.trim().slice(0, 2000), status: 'open', updatedAt: this.now() } },
-      ...this.notify('request_completed', id, 'מורה השלים מידע בבקשה', r.topicId, `${id}-sup-${this.now()}`),
-    ]);
+    await this.store.update(`requests/${id}`, { supplement: text.trim().slice(0, 2000), status: 'open', updatedAt: this.now() });
   }
-  async adminListRequests(): Promise<RequestDoc[]> { await this.need('admin'); return (await this.store.list<RequestDoc>('requests')).sort((a, b) => a.createdAt - b.createdAt); }
+  async adminListRequests(statuses?: RequestDoc['status'][]): Promise<RequestDoc[]> { await this.need('admin'); return (await this.store.list<RequestDoc>('requests', statuses ? [['status', 'in', statuses]] : [])).sort((a, b) => a.createdAt - b.createdAt); }
   async adminReply(id: string, reply: { decisionKind: NonNullable<RequestDoc['decisionKind']>; text: string; status: RequestDoc['status'] }) {
     const c = await this.need('admin');
     const r = await this.store.get<RequestDoc>(`requests/${id}`);
     if (!r) throw new Error('הבקשה לא נמצאה.');
-    const outbox: OutboxDoc = {
-      id: `o-reply-${id}-${this.now()}`, to: 'teacher', toUid: r.createdBy, subject: '[מאגר נושאים] יש עדכון בבקשתך',
-      body: 'יש עדכון במצב הבקשה שלך. היכנסו לאתר, לאזור "הבקשות שלי", לצפייה. ההודעה אינה כוללת פרטי מקרה.', status: 'queued', attempts: 0, createdAt: this.now(),
-    };
+    const at = this.now();
     await this.store.batch([
-      { op: 'update', path: `requests/${id}`, data: { adminReply: reply.text.trim().slice(0, 2000), decisionKind: reply.decisionKind, status: reply.status, updatedAt: this.now() } },
-      { op: 'set', path: `outbox/${outbox.id}`, data: outbox }, this.audit('reply_request', id, c.user!.uid),
+      { op: 'update', path: `requests/${id}`, data: { adminReply: reply.text.trim().slice(0, 2000), decisionKind: reply.decisionKind, status: reply.status, updatedAt: at, repliedAt: at, teacherSeenAt: 0 } },
+      this.audit('reply_request', id, c.user!.uid),
     ]);
+  }
+  /** שינוי מצב בלי מענה, למשל "בטיפול" או "סגורה". */
+  async adminSetRequestStatus(id: string, status: RequestDoc['status']) {
+    const c = await this.need('admin');
+    await this.store.batch([{ op: 'update', path: `requests/${id}`, data: { status, updatedAt: this.now() } }, this.audit(`request_${status}`, id, c.user!.uid)]);
+  }
+  /** מורה: מספר הבקשות שיש בהן מענה שטרם נראה. קורא רק את הבקשות של המורה עצמו. */
+  async myUnseenReplies(): Promise<number> {
+    const c = await this.ctx();
+    if (!c.user || !c.verified) return 0;
+    return (await this.listMyRequests()).filter(r => r.repliedAt && !r.teacherSeenAt).length;
+  }
+  /** המורה פתח את "הבקשות שלי": המענים שנראו מסומנים (כתיבה רק לבקשות שיש בהן חדש). */
+  async markMyRepliesSeen(reqs: RequestDoc[]) {
+    const c = await this.need('verified');
+    const at = this.now();
+    for (const r of reqs) if (r.createdBy === c.user!.uid && r.repliedAt && !r.teacherSeenAt) await this.store.update(`requests/${r.id}`, { teacherSeenAt: at });
   }
 
   // ───────── ניהול תוכן ─────────
@@ -511,23 +543,50 @@ export class Api {
   }
 
   // ───────── סיום מחזור ומחיקה (סעיף 17) ─────────
-  async cycleCloseSummary(yearId: string) {
+  /**
+   * תצוגה מקדימה לפני מחיקה: מה יושפע, בלי לשנות דבר. קוראת את קבוצות המחזור ואת הבקשות המקושרות בלבד.
+   * "פעילות" = קבוצה שלא סומנה כבוצעה או כבוטלה: מחיקתה נרשמת בהיסטוריה כ"אושר ולא בוצע".
+   */
+  async cycleClosePreview(yearId: string) {
     await this.need('admin');
     const gs = await this.store.list<Group>('groups', [['yearId', '==', yearId]]);
+    const ids = new Set(gs.map(g => g.id));
     const byStatus: Record<string, number> = {};
     gs.forEach(g => { byStatus[g.status] = (byStatus[g.status] ?? 0) + 1; });
-    return { groups: gs.length, byStatus, withNames: gs.filter(g => g.students.length > 0).length };
+    const schools = new Set(gs.map(g => g.schoolId));
+    const year = await this.getYear(yearId);
+    const ledger = await this.store.get<{ deletedAt: number; groupsDeleted: number }>(`deletionLedger/${yearId}`);
+    const linkedRequests = ids.size === 0 ? 0 : (await this.store.list<RequestDoc>('requests')).filter(r => r.groupId && ids.has(r.groupId)).length;
+    const today = new Date(this.now()).toISOString().slice(0, 10);
+    return {
+      yearId, alreadyClosed: !!ledger || !!year?.closed, closedAt: ledger?.deletedAt ?? null,
+      groups: gs.length, schools: schools.size,
+      withNames: gs.filter(g => g.students.some(s => s.label.trim())).length,
+      studentLabels: gs.reduce((n, g) => n + g.students.filter(s => s.label.trim()).length, 0),
+      byStatus,
+      activeGroups: gs.filter(g => g.status !== 'done' && g.status !== 'cancelled').length,
+      historyRecordsToWrite: gs.filter(g => g.topicId).length,
+      linkedRequests,
+      yearEnded: year ? today > year.end : null,
+      yearEnd: year?.end ?? null,
+    };
   }
+  /** תאימות לאחור לשם הישן */
+  async cycleCloseSummary(yearId: string) { const p = await this.cycleClosePreview(yearId); return { groups: p.groups, byStatus: p.byStatus, withNames: p.withNames }; }
   /**
    * סגירת מחזור: מעדכן היסטוריה לא מזהה (מוסד/שנה/נושא/מצב), מוחק את כל הקבוצות של המחזור (ושמות התלמידים שבתוכן),
    * מנתק הפניות קבוצה מבקשות, ורושם יומן מחיקות שמונע החזרה בשחזור. ניתן להרצה חוזרת בבטחה.
+   * מחזור שטרם הסתיים (לפי תאריך הסיום שהוגדר) נסגר רק עם force מפורש.
+   * הכתיבה בקבוצות של עד 400 פעולות: אם נקטעה באמצע, הרצה חוזרת משלימה (היומן נכתב אחרון).
    */
-  async closeCycle(yearId: string): Promise<{ deleted: number }> {
+  async closeCycle(yearId: string, opts: { force?: boolean } = {}): Promise<{ deleted: number }> {
     const c = await this.need('admin');
+    const year = await this.getYear(yearId);
+    if (year && !opts.force && new Date(this.now()).toISOString().slice(0, 10) <= year.end) throw new Error(`המחזור ${yearId} טרם הסתיים (עד ${year.end}). סגירה לפני הסיום מוחקת עבודות פעילות; אם זה מכוון, יש לאשר במפורש.`);
     const gs = await this.store.list<Group>('groups', [['yearId', '==', yearId]]);
     const bySchool = new Map<string, Group[]>();
     gs.forEach(g => bySchool.set(g.schoolId, [...(bySchool.get(g.schoolId) ?? []), g]));
-    const ops: BatchOp[] = [];
+    const historyOps: BatchOp[] = [];
     const topics = new Map((await this.store.list<Topic>('topics')).map(t => [t.id, t]));
     for (const [schoolId, groups] of bySchool) {
       const id = `${schoolId}_${yearId}`;
@@ -542,8 +601,9 @@ export class Api {
           state: g.status === 'done' ? 'done' : g.status === 'cancelled' ? 'cancelled' : 'approved_not_done',
         });
       }
-      ops.push({ op: 'set', path: `schoolHistory/${id}`, data: { schoolId, yearId, items, updatedAt: this.now() } });
+      historyOps.push({ op: 'set', path: `schoolHistory/${id}`, data: { schoolId, yearId, items, updatedAt: this.now() } });
     }
+    const ops: BatchOp[] = [...historyOps];
     for (const r of await this.store.list<RequestDoc>('requests')) if (r.groupId && gs.some(g => g.id === r.groupId)) ops.push({ op: 'update', path: `requests/${r.id}`, data: { groupId: '' } });
     for (const g of gs) ops.push({ op: 'delete', path: `groups/${g.id}` });
     const years = (await this.store.get<{ years: AcademicYear[] }>('config/years'))?.years ?? defaultYears(new Date(this.now()));
@@ -553,40 +613,109 @@ export class Api {
     await this.store.batch(ops);
     return { deleted: gs.length };
   }
-  /** אחרי שחזור מגיבוי: מוחק מחדש כל מה שכבר הגיע מועד מחיקתו, לפי יומן המחיקות. */
+  /** שנות לימוד שנסגרו: לפי היומן החי וגם לפי יומן שמגיע מגיבוי. */
+  private async closedYears(extra: { yearId: string }[] = []): Promise<Set<string>> {
+    const live = await this.store.list<{ yearId: string }>('deletionLedger');
+    return new Set([...live, ...extra].map(l => (l as any).yearId ?? (l as any).id));
+  }
+  /** מוחק קבוצות של שנות לימוד שנסגרו (למקרה שחזרו באיזושהי דרך). */
   async reapplyDeletions(): Promise<{ deleted: number }> {
     await this.need('admin');
-    const ledger = await this.store.list<{ yearId: string }>('deletionLedger');
     let deleted = 0;
     const ops: BatchOp[] = [];
-    for (const l of ledger) for (const g of await this.store.list<Group>('groups', [['yearId', '==', l.yearId]])) { ops.push({ op: 'delete', path: `groups/${g.id}` }); deleted++; }
+    for (const y of await this.closedYears()) for (const g of await this.store.list<Group>('groups', [['yearId', '==', y]])) { ops.push({ op: 'delete', path: `groups/${g.id}` }); deleted++; }
     if (ops.length) await this.store.batch(ops);
     return { deleted };
   }
 
-  // ───────── גיבוי ושחזור (סעיף 20.1) ─────────
-  /** includePrivate=false (ברירת מחדל): תוכן בלבד, בלי קבוצות, תלמידים, בקשות או כתובות מייל. */
-  async exportBackup(includePrivate = false): Promise<{ format: 'mat-backup-1'; createdAt: number; includesPrivate: boolean; data: Record<string, any[]> }> {
-    await this.need('admin');
-    const pub = ['topics', 'topicVersions', 'config', 'public', 'schools', 'schoolHistory', 'policyQuestions', 'sources', 'seedEntries', 'deletionLedger', 'suggestions'];
-    const priv = ['groups', 'requests', 'memberships', 'roles', 'profiles'];
+  // ───────── גיבוי ושחזור ידניים (סעיף 20.1) ─────────
+  /**
+   * גיבוי תוכן: נושאים, גרסאות, הגדרות, מוסדות, היסטוריית נושאים, מקורות, בירורים מקצועיים, הצעות, יומן מחיקות.
+   * גיבוי פרטי מוסיף: קבוצות (כינויי תלמידים), בקשות, דיווחי מקורות, חברויות, תפקידים ופרופילים (שם ומייל).
+   * אינו כולל: חשבונות הכניסה עצמם (Firebase Authentication: סיסמאות ומיילים), יומן הפעולות (audit), וקבצים (אין בכלי).
+   */
+  async exportBackup(includePrivate = false): Promise<BackupFile> {
+    const c = await this.need('admin');
     const data: Record<string, any[]> = {};
-    for (const c of includePrivate ? [...pub, ...priv] : pub) data[c] = await this.store.list(c);
-    // כתובת האחראי היא פרט קשר אישי: נכללת רק בגיבוי פרטי
+    for (const coll of includePrivate ? [...BACKUP_CONTENT, ...BACKUP_PRIVATE] : BACKUP_CONTENT) data[coll] = await this.store.list(coll);
+    // פרטי הקשר של האחראי ומטא־נתוני גיבוי אינם חלק מגיבוי תוכן
     if (!includePrivate) data.config = (data.config ?? []).filter((d: any) => d.id !== 'contact');
-    return { format: 'mat-backup-1', createdAt: this.now(), includesPrivate: includePrivate, data };
+    data.config = (data.config ?? []).filter((d: any) => d.id !== 'backupMeta');
+    const counts = Object.fromEntries(Object.entries(data).map(([k, v]) => [k, v.length]));
+    const createdAt = this.now();
+    await this.store.set('config/backupMeta', { lastBackupAt: createdAt, lastBackupPrivate: includePrivate, by: c.user!.uid });
+    return { format: BACKUP_FORMAT, createdAt, includesPrivate: includePrivate, counts, data };
   }
-  /** שחזור: כותב את הנתונים ואז מחיל מחדש מחיקות שהגיע מועדן, לפני שהמערכת חוזרת לפעילות. */
-  async restoreBackup(b: { format: string; data: Record<string, any[]> }): Promise<{ restored: number; reDeleted: number }> {
+  async getBackupMeta(): Promise<{ lastBackupAt: number; lastBackupPrivate: boolean } | null> {
     await this.need('admin');
-    if (b.format !== 'mat-backup-1') throw new Error('פורמט גיבוי לא מוכר.');
-    const ops: BatchOp[] = [];
-    let restored = 0;
-    for (const [coll, docs] of Object.entries(b.data)) for (const d of docs) { const { id, ...rest } = d; ops.push({ op: 'set', path: `${coll}/${id}`, data: rest }); restored++; }
-    await this.store.batch(ops);
-    const { deleted } = await this.reapplyDeletions();
-    return { restored, reDeleted: deleted };
+    return this.store.get('config/backupMeta');
   }
+  /**
+   * תכנון שחזור (בלי לכתוב). לכל אוסף: חדשים (חסרים במערכת), זהים, שונים, וכאלה שנשארים כפי שהם במערכת.
+   * מצב add_missing (ברירת מחדל): מוסיף רק מה שחסר ואינו דורס דבר.
+   * מצב overwrite: דורס מסמכים שונים, חוץ מ: נושא שגרסתו במערכת חדשה יותר, גרסאות שמורות (אינן נדרסות לעולם),
+   * והיסטוריית שנת לימודים שנסגרה. אף מצב אינו מוחק מסמכים שקיימים רק במערכת.
+   * קבוצות של שנת לימודים שנסגרה (לפי היומן במערכת או בגיבוי) אינן משוחזרות כלל: שמות התלמידים אינם חוזרים.
+   */
+  private async planRestore(b: BackupFile, mode: RestoreMode) {
+    const closed = await this.closedYears((b.data.deletionLedger ?? []) as { yearId: string }[]);
+    const report: Record<string, { backup: number; add: number; same: number; overwrite: number; keptLive: number; skippedClosed: number; liveOnly: number }> = {};
+    const ops: BatchOp[] = [];
+    for (const [coll, docs] of Object.entries(b.data)) {
+      if (!BACKUP_ALLOWED.has(coll)) continue; // אוספים לא מוכרים אינם נכתבים
+      const live = new Map((await this.store.list<any>(coll)).map(d => [d.id, d]));
+      const r = report[coll] = { backup: docs.length, add: 0, same: 0, overwrite: 0, keptLive: 0, skippedClosed: 0, liveOnly: 0 };
+      const seen = new Set<string>();
+      for (const d of docs) {
+        const { id, ...rest } = d; seen.add(id);
+        if (coll === 'groups' && closed.has(rest.yearId)) { r.skippedClosed++; continue; }
+        const cur = live.get(id);
+        if (!cur) { r.add++; ops.push({ op: 'set', path: `${coll}/${id}`, data: rest }); continue; }
+        const { id: _i, ...curRest } = cur;
+        if (stable(curRest) === stable(rest)) { r.same++; continue; }
+        const keep = mode === 'add_missing' || coll === 'topicVersions'
+          || (coll === 'topics' && (cur.version ?? 0) > (rest.version ?? 0))
+          || (coll === 'schoolHistory' && closed.has(rest.yearId ?? cur.yearId))
+          || (coll === 'deletionLedger');
+        if (keep) { r.keptLive++; continue; }
+        r.overwrite++; ops.push({ op: 'set', path: `${coll}/${id}`, data: rest });
+      }
+      r.liveOnly = [...live.keys()].filter(k => !seen.has(k)).length;
+    }
+    return { ops, report, closedYears: [...closed] };
+  }
+  async previewRestore(b: BackupFile, mode: RestoreMode = 'add_missing') {
+    await this.need('admin');
+    this.checkBackupFormat(b);
+    const p = await this.planRestore(b, mode);
+    return { mode, writes: p.ops.length, report: p.report, closedYears: p.closedYears, createdAt: b.createdAt, includesPrivate: b.includesPrivate };
+  }
+  private checkBackupFormat(b: { format: string; data?: unknown }) {
+    if ((b.format !== 'mat-backup-1' && b.format !== BACKUP_FORMAT) || typeof b.data !== 'object' || !b.data) throw new Error('פורמט גיבוי לא מוכר.');
+  }
+  /** שחזור. כתיבה בקבוצות של 400; אם נקטע באמצע, הרצה חוזרת (באותו מצב) משלימה בלי לדרוס. */
+  async restoreBackup(b: BackupFile | { format: string; data: Record<string, any[]> }, opts: { mode?: RestoreMode } = {}): Promise<{ restored: number; reDeleted: number; mode: RestoreMode }> {
+    const c = await this.need('admin');
+    this.checkBackupFormat(b);
+    const mode = opts.mode ?? 'add_missing';
+    const p = await this.planRestore(b as BackupFile, mode);
+    await this.store.batch([...p.ops, this.audit('restore_backup', `${mode}: ${p.ops.length} writes`, c.user!.uid)]);
+    const { deleted } = await this.reapplyDeletions();
+    return { restored: p.ops.length, reDeleted: deleted, mode };
+  }
+}
+
+export type RestoreMode = 'add_missing' | 'overwrite';
+export const BACKUP_FORMAT = 'mat-backup-2';
+export interface BackupFile { format: 'mat-backup-1' | 'mat-backup-2'; createdAt: number; includesPrivate: boolean; counts?: Record<string, number>; data: Record<string, any[]> }
+const BACKUP_CONTENT = ['topics', 'topicVersions', 'config', 'public', 'schools', 'schoolHistory', 'policyQuestions', 'sources', 'seedEntries', 'deletionLedger', 'suggestions'];
+const BACKUP_PRIVATE = ['groups', 'requests', 'sourceReports', 'memberships', 'roles', 'profiles'];
+const BACKUP_ALLOWED = new Set([...BACKUP_CONTENT, ...BACKUP_PRIVATE]);
+/** השוואה יציבה בין מסמכים (סדר מפתחות לא משנה) */
+function stable(v: unknown): string {
+  if (Array.isArray(v)) return `[${v.map(stable).join(',')}]`;
+  if (v && typeof v === 'object') return `{${Object.keys(v as object).sort().map(k => `${JSON.stringify(k)}:${stable((v as any)[k])}`).join(',')}}`;
+  return JSON.stringify(v ?? null);
 }
 
 function stripUndefined<T extends object>(o: T): T {

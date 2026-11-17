@@ -138,3 +138,9 @@ ul.plain { list-style: none; padding: 0; margin: 0; }
 ul.tight { margin-block: 4px; padding-inline-start: 22px; }
 code, pre { direction: ltr; unicode-bidi: isolate; text-align: start; }
 pre { background: #f0f2f6; padding: 10px; border-radius: 8px; overflow: auto; font-size: .82rem; }
+
+.count { display: inline-block; min-width: 1.4em; margin-inline-start: 6px; padding: 0 6px; border-radius: 999px; background: #b42318; color: #fff; font-size: .78rem; font-weight: 700; text-align: center; line-height: 1.5; }
+.tabs-lite { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { border: 1px solid var(--line); background: transparent; padding: 4px 12px; border-radius: 999px; cursor: pointer; font: inherit; }
+.chip[aria-pressed=true] { background: var(--brand); color: #fff; border-color: transparent; }
+.isnew { border-inline-start: 4px solid #b42318; }

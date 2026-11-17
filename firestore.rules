@@ -22,6 +22,13 @@ service cloud.firestore {
       return verified() && exists(membershipPath(schoolId)) && get(membershipPath(schoolId)).data.endedAt == null;
     }
     function isNum(v) { return v is number; }
+    // מזהה יומי למשתמש: uid_YYYYMMDD_n. אוכף מכסה יומית בצד השירות: אי אפשר ליצור יותר מ-n מסמכים ביום, ולא להמציא תאריך.
+    function two(n) { return (n < 10 ? '0' : '') + string(n); }
+    function today() { return string(request.time.year()) + two(request.time.month()) + two(request.time.day()); }
+    function slotId(id, max) {
+      return id.matches(uid() + '_' + today() + '_[0-9]+')
+        && int(id.split('_')[2]) >= 1 && int(id.split('_')[2]) <= max;
+    }
 
     // ── ציבורי ──
     match /public/{doc} {
@@ -54,10 +61,12 @@ service cloud.firestore {
     // ── מקורות איתור ──
     match /sources/{id} {
       allow read: if resource == null || resource.data.visible == true || isAdmin();   // resource==null: בדיקת קיום לצורך חוזר־בטוח
-      allow create: if verified()
-        && request.resource.data.keys().hasOnly(['topicId', 'title', 'kind', 'text', 'url', 'phone', 'region', 'population', 'createdBy', 'createdAt', 'visible'])
+      // מקור מתפרסם מיד. מכסה: עד 5 ביום למשתמש (מבנה המזהה). reviewed=false עד שמנהל מסמן.
+      allow create: if verified() && slotId(id, 5)
+        && request.resource.data.keys().hasOnly(['topicId', 'title', 'kind', 'text', 'url', 'phone', 'region', 'population', 'createdBy', 'createdAt', 'visible', 'reviewed', 'clientId'])
         && request.resource.data.createdBy == uid()
         && request.resource.data.visible == true
+        && request.resource.data.reviewed == false
         && request.resource.data.title is string && request.resource.data.title.size() >= 3 && request.resource.data.title.size() <= 120
         && request.resource.data.text is string && request.resource.data.text.size() <= 1500
         && request.resource.data.url is string && request.resource.data.url.size() <= 500
@@ -69,36 +78,32 @@ service cloud.firestore {
       // גם מי שהוסיף מקור אינו יכול לערוך, להסתיר או למחוק אותו (R03, סעיף 13.2)
       allow update, delete: if isAdmin();
     }
-
-    // ── התראות ותור דוא"ל ──
-    match /notifications/{id} {
-      allow read, update, delete: if isAdmin();
-      allow create: if verified()
-        && request.resource.data.keys().hasOnly(['type', 'refId', 'topicId', 'createdAt', 'readBy', 'summary'])
-        && request.resource.data.type in ['new_request', 'source_added', 'request_completed', 'suggestion', 'source_reported', 'overdue']
-        && request.resource.data.readBy.size() == 0
-        && request.resource.data.summary is string && request.resource.data.summary.size() <= 300;
-    }
-    match /outbox/{id} {
-      allow read, update, delete: if isAdmin();
-      allow create: if isAdmin() || (verified()
-        && request.resource.data.to == 'admins'
-        && request.resource.data.status == 'queued'
-        && request.resource.data.keys().hasOnly(['to', 'toUid', 'subject', 'body', 'status', 'attempts', 'createdAt'])
-        && request.resource.data.body.size() <= 600);
+    // דיווח על מקור: מסמך אחד לכל משתמש ומקור (המזהה uid_sourceId), בלי התראות או דוא"ל. מנהל רואה ומסמן כטופל.
+    match /sourceReports/{id} {
+      allow read: if isAdmin() || (signedIn() && (resource == null || resource.data.createdBy == uid()));
+      allow create: if verified() && id == uid() + '_' + request.resource.data.sourceId
+        && request.resource.data.keys().hasOnly(['sourceId', 'reason', 'createdBy', 'createdAt', 'handled'])
+        && request.resource.data.createdBy == uid()
+        && request.resource.data.handled == false
+        && request.resource.data.reason is string && request.resource.data.reason.size() >= 1 && request.resource.data.reason.size() <= 300;
+      allow update, delete: if isAdmin();
     }
 
     // ── בקשות ──
     match /requests/{id} {
       allow read: if isAdmin() || (signedIn() && (resource == null || resource.data.createdBy == uid()));
-      allow create: if verified()
+      // מכסה: עד 10 בקשות ביום למשתמש
+      allow create: if verified() && slotId(id, 10)
         && request.resource.data.createdBy == uid()
         && request.resource.data.status == 'open'
         && request.resource.data.description is string && request.resource.data.description.size() <= 2000
-        && !('adminReply' in request.resource.data) && !('decisionKind' in request.resource.data);
-      allow update: if isAdmin() || (verified() && resource.data.createdBy == uid()
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['supplement', 'status', 'updatedAt'])
-        && request.resource.data.status == 'open');
+        && !('adminReply' in request.resource.data) && !('decisionKind' in request.resource.data)
+        && !('repliedAt' in request.resource.data) && !('teacherSeenAt' in request.resource.data);
+      allow update: if isAdmin() || (verified() && resource.data.createdBy == uid() && (
+        // השלמת מידע
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['supplement', 'status', 'updatedAt']) && request.resource.data.status == 'open')
+        // סימון "ראיתי את המענה" (חיווי "חדש" בתוך המערכת)
+        || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['teacherSeenAt'])));
       allow delete: if isAdmin();
     }
 

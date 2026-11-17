@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { academicYear } from '../../domain/years';
 import type { Group, GroupStatus, RequestDoc } from '../../domain/types';
@@ -6,7 +6,7 @@ import { authErrorHe, DemoAuthService } from '../../services/auth';
 import { DEMO_ACCOUNTS, DEMO_PASSWORD } from '../../services/demoSeed';
 import { Field, fmtDate, Loading, Notice, Tabs, useAsync, useBusy, ErrorBox } from '../components';
 import { useCatalog, useRT, useSession } from '../ctx';
-import { isOverdue } from '../../domain/helpers';
+import { isOverdue, requestStateLabel } from '../../domain/helpers';
 import { startYearOf } from '../history';
 
 // ───────── כניסה והרשמה ─────────
@@ -201,8 +201,7 @@ function GroupCard({ g, n, topicName, onChange }: { g: Group; n: number; topicNa
 
 // ───────── בקשות ─────────
 const KIND_LABEL: Record<string, string> = { new_topic: 'הצעת נושא חדש', inquiry: 'בירור כללי', exception_general: 'פנייה כללית לחריג' };
-const STATUS_RQ: Record<string, string> = { open: 'פתוחה', waiting_teacher: 'ממתינה להשלמה מהמורה', answered: 'נענתה', closed: 'סגורה' };
-const DECISION_LABEL: Record<string, string> = { supplement: 'בקשת השלמה', general_approval: 'אישור כללי', case_specific: 'החלטה נקודתית (אינה היתר כללי)', rejection: 'דחייה' };
+const DECISION_LABEL: Record<string, string> = { supplement: 'בקשת השלמה', general_approval: 'אישור כללי', case_specific: 'החלטה נקודתית (אינה היתר כללי)', rejection: 'לא אושרה' };
 
 export function RequestForm({ kind }: { kind: 'new_topic' | 'inquiry' }) {
   const { api } = useRT();
@@ -240,9 +239,18 @@ export function RequestForm({ kind }: { kind: 'new_topic' | 'inquiry' }) {
 
 export function MyRequests() {
   const { api } = useRT();
-  const { ctx } = useSession();
+  const { ctx, refreshBadges } = useSession();
   const { catalog } = useCatalog();
   const rq = useAsync(async () => (ctx.verified ? api.listMyRequests() : []), [api, ctx.verified]);
+  // מה שהיה "חדש" בעת הכניסה נשאר מסומן במסך הזה; אחרי הטעינה המענים מסומנים כנראו והחיווי בתפריט יורד.
+  const [newIds, setNewIds] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    if (!rq.data) return;
+    const fresh = rq.data.filter(r => r.repliedAt && !r.teacherSeenAt);
+    if (fresh.length === 0) return;
+    setNewIds(new Set(fresh.map(r => r.id)));
+    api.markMyRepliesSeen(rq.data).then(() => refreshBadges(true)).catch(() => {});
+  }, [rq.data, api, refreshBadges]);
   const [sup, setSup] = useState<Record<string, string>>({});
   const { busy, error, run } = useBusy();
   if (!ctx.user) return <Notice kind="warn">יש <Link to="/login?next=/requests">להיכנס</Link>.</Notice>;
@@ -253,11 +261,11 @@ export function MyRequests() {
       {rq.loading && <Loading />}
       {rq.data?.length === 0 && <div className="card empty">אין בקשות.</div>}
       {rq.data?.map(r => (
-        <div className="card stack" key={r.id}>
-          <div className="row between"><b>{KIND_LABEL[r.kind]}{r.proposedHe ? `: ${r.proposedHe}` : ''}</b><span className="badge neutral">{STATUS_RQ[r.status]}</span></div>
+        <div className={`card stack ${newIds.has(r.id) ? 'isnew' : ''}`} key={r.id}>
+          <div className="row between"><b>{KIND_LABEL[r.kind]}{r.proposedHe ? `: ${r.proposedHe}` : ''}</b><span className="row">{newIds.has(r.id) && <span className="badge warn">עדכון חדש</span>}<span className="badge neutral">{requestStateLabel(r)}</span></span></div>
           <div className="small muted">נשלחה {fmtDate(r.createdAt)} · יעד טיפול {fmtDate(r.dueAt)} {isOverdue(r, Date.now()) && <span className="badge warn">חרגה מהיעד, ההמתנה אינה אישור</span>}{r.topicId && <> · נושא: {catalog?.topics.find(t => t.id === r.topicId)?.he}</>}</div>
           <p>{r.description}</p>
-          {r.adminReply && <Notice kind="info" title={`מענה${r.decisionKind ? ` (${DECISION_LABEL[r.decisionKind]})` : ''}: `}>{r.adminReply}</Notice>}
+          {r.adminReply && <Notice kind={r.decisionKind === 'rejection' ? 'warn' : 'info'} title={`מענה${r.decisionKind ? ` (${DECISION_LABEL[r.decisionKind]})` : ''}: `}>{r.adminReply}{r.repliedAt && <span className="small muted"> · {fmtDate(r.repliedAt)}</span>}</Notice>}
           {r.status === 'waiting_teacher' && (
             <form className="stack" onSubmit={e => { e.preventDefault(); run(() => api.supplementRequest(r.id, sup[r.id] ?? '')).then(rr => { if (rr !== undefined) { setSup({}); rq.reload(); } }); }}>
               <Field label="השלמת מידע כללי (ללא פרטי מקרה רפואי)"><textarea required value={sup[r.id] ?? ''} onChange={e => setSup({ ...sup, [r.id]: e.target.value })} /></Field>

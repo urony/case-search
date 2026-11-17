@@ -4,7 +4,7 @@ import { ConflictError } from '../../services/store';
 import { validateRuleSet } from '../../engine/validate';
 import { DEFAULT_GENERAL_RULES } from '../../engine/general';
 import type { RuleSet } from '../../engine/types';
-import { isOverdue } from '../../domain/helpers';
+import { GROUP_STATUS_LABEL, isOverdue, REQUEST_KIND_LABEL, REQUEST_STATUS_LABEL, requestStateLabel } from '../../domain/helpers';
 import { academicYear } from '../../domain/years';
 import type { Kind, Note, PolicyQuestion, RequestDoc, Role, Settings, Topic } from '../../domain/types';
 import { Field, fmtDate, Loading, Notice, Tabs, useAsync, useBusy, ErrorBox, PolicyBadge, POLICY_LABEL } from '../components';
@@ -20,10 +20,12 @@ export default function Admin() {
   const { mode } = useRT();
   if (!ctx.user) return <Notice kind="warn">אזור הניהול דורש <Link to="/login?next=/admin">כניסה</Link>.</Notice>;
   if (ctx.role !== 'admin') return <Notice kind="bad" title="אין הרשאה. ">אזור זה מיועד למנהלי האתר. ההרשאה נאכפת גם בצד השירות.</Notice>;
-  const links: [string, string][] = [['/admin', 'תמונת מצב'], ['/admin/topics', 'מחלות וכללים'], ['/admin/requests', 'בקשות והחלטות'], ['/admin/sources', 'מקורות איתור'], ['/admin/suggestions', 'הצעות'], ['/admin/schools', 'מוסדות'], ['/admin/cycles', 'מחזורים'], ['/admin/users', 'משתמשים והרשאות'], ['/admin/questions', 'בירורים מקצועיים'], ['/admin/rules', 'כללי סף כלליים'], ['/admin/settings', 'הגדרות'], ['/admin/backup', 'גיבוי, דוא״ל והיסטוריה']];
+  const { badges } = useSession();
+  const cnt = (to: string): number => ({ '/admin/requests': badges.admin?.openRequests ?? 0, '/admin/sources': (badges.admin?.unreviewedSources ?? 0) + (badges.admin?.openReports ?? 0), '/admin/suggestions': badges.admin?.openSuggestions ?? 0 } as Record<string, number>)[to] ?? 0;
+  const links: [string, string][] = [['/admin', 'תמונת מצב'], ['/admin/topics', 'מחלות וכללים'], ['/admin/requests', 'בקשות והחלטות'], ['/admin/sources', 'מקורות איתור'], ['/admin/suggestions', 'הצעות'], ['/admin/schools', 'מוסדות'], ['/admin/cycles', 'מחזורים'], ['/admin/users', 'משתמשים והרשאות'], ['/admin/questions', 'בירורים מקצועיים'], ['/admin/rules', 'כללי סף כלליים'], ['/admin/settings', 'הגדרות'], ['/admin/backup', 'גיבוי ושחזור']];
   return (
     <div className="admin">
-      <nav aria-label="ניווט ניהול">{links.map(([to, l]) => <NavLink key={to} to={to} end={to === '/admin'} className={({ isActive }) => (isActive ? 'active' : '')}>{l}</NavLink>)}</nav>
+      <nav aria-label="ניווט ניהול">{links.map(([to, l]) => <NavLink key={to} to={to} end={to === '/admin'} className={({ isActive }) => (isActive ? 'active' : '')}>{l}{cnt(to) > 0 && <span className="count">{cnt(to)}</span>}</NavLink>)}</nav>
       <div className="stack" style={{ minInlineSize: 0 }}>
         {mode === 'demo' && <Notice kind="warn">מצב הדגמה: כל הנתונים מלאכותיים ושמורים בדפדפן זה בלבד.</Notice>}
         <Routes>
@@ -49,32 +51,42 @@ export default function Admin() {
 // ───────── תמונת מצב ─────────
 function Dashboard() {
   const { api } = useRT();
+  const { badges, refreshBadges } = useSession();
   const d = useAsync(async () => {
-    const [n, r, s, o, t] = await Promise.all([api.listNotifications(), api.adminListRequests(), api.listSuggestions(), api.listOutbox(), api.adminListTopics()]);
-    return { n, r, s, o, t };
+    const [b, open, prog, src, rep, bk] = await Promise.all([
+      api.adminBadges(), api.adminListRequests(['open']), api.adminListRequests(['in_progress']), api.adminListSources(true), api.adminListSourceReports(true), api.getBackupMeta(),
+    ]);
+    return { b, open, prog, src, rep, bk };
   }, [api]);
+  const { catalog } = useCatalog();
   if (d.loading) return <Loading />;
   if (d.error || !d.data) return <ErrorBox error={d.error ?? ''} retry={d.reload} />;
-  const { n, r, s, o, t } = d.data;
+  const { b, open, prog, src, rep, bk } = d.data;
   const now = Date.now();
-  const open = r.filter(x => x.status === 'open'), overdue = open.filter(x => isOverdue(x, now));
-  const unread = n.filter(x => x.readBy.length === 0);
-  const noProvider = o.filter(x => x.status === 'queued' || x.status === 'no_provider' || x.status === 'failed');
+  const topicsNotFull = (catalog?.topics ?? []).filter(x => x.coverage.level !== 'full' && x.publish === 'published').length;
+  const backupAgeDays = bk ? Math.floor((now - bk.lastBackupAt) / 86_400_000) : null;
+  void badges; void refreshBadges;
   return (
     <div className="stack">
       <h2>תמונת מצב</h2>
+      <p className="muted small">המערכת אינה שולחת דוא״ל. עדכונים מופיעים כאן וליד "ניהול" בתפריט כשנכנסים לאתר. הספירות נטענות בכניסה ובמעבר בין דפים, לכל היותר פעם בדקה.</p>
       <div className="kpi">
-        <div className="card"><b>{open.length}</b>בקשות הממתינות לטיפול{overdue.length > 0 && <span className="badge warn"> {overdue.length} חרגו מהיעד</span>}</div>
-        <div className="card"><b>{unread.length}</b>התראות שלא נקראו</div>
-        <div className="card"><b>{s.filter((x: any) => x.state === 'open').length}</b>הצעות הממתינות להכרעה</div>
-        <div className="card"><b>{t.filter(x => x.coverage.level !== 'full' && x.publish === 'published').length}</b>נושאים שכיסוי הכללים בהם אינו מלא</div>
+        <Link className="card" to="/admin/requests"><b>{b.openRequests}</b>בקשות חדשות הממתינות לטיפול{b.overdue > 0 && <span className="badge warn"> {b.overdue} חרגו מהיעד</span>}</Link>
+        <Link className="card" to="/admin/requests"><b>{b.inProgress}</b>בקשות בטיפול</Link>
+        <Link className="card" to="/admin/sources"><b>{b.unreviewedSources}</b>מקורות חדשים שטרם נבדקו</Link>
+        <Link className="card" to="/admin/sources"><b>{b.openReports}</b>דיווחים על מקורות</Link>
+        <Link className="card" to="/admin/suggestions"><b>{b.openSuggestions}</b>הצעות הממתינות להכרעה</Link>
+        <div className="card"><b>{topicsNotFull}</b>נושאים שכיסוי הכללים בהם אינו מלא</div>
       </div>
-      {noProvider.length > 0 && <Notice kind="warn" title="דוא״ל: ">{noProvider.length} הודעות ממתינות בתור ולא נשלחו. חיבור שליחה אמיתי טרם הופעל (ראו "גיבוי, דוא״ל והיסטוריה"). ההתראות באתר פועלות.</Notice>}
+      {backupAgeDays === null && <Notice kind="warn" title="גיבוי: ">עדיין לא בוצע גיבוי ידני. מומלץ לבצע אחד בלשונית "גיבוי ושחזור" ולשמור אותו בדרייב.</Notice>}
+      {backupAgeDays !== null && backupAgeDays > 30 && <Notice kind="warn" title="גיבוי: ">הגיבוי הידני האחרון בוצע לפני {backupAgeDays} ימים ({fmtDate(bk!.lastBackupAt)}).</Notice>}
+      {backupAgeDays !== null && backupAgeDays <= 30 && <p className="muted small">גיבוי ידני אחרון: {fmtDate(bk!.lastBackupAt)}.</p>}
       <h3>דורש פעולה</h3>
-      {open.length === 0 && unread.length === 0 && <p className="muted">אין פריטים הממתינים לטיפול.</p>}
+      {b.total === 0 && b.inProgress === 0 && <p className="muted">אין פריטים הממתינים לטיפול.</p>}
       <ul className="plain stack">
-        {open.slice(0, 8).map(x => <li className="card" key={x.id}><Link to="/admin/requests">{x.proposedHe || x.description.slice(0, 60)}</Link> <span className="muted small">· {fmtDate(x.createdAt)}</span>{isOverdue(x, now) && <span className="badge warn">חרגה מהיעד</span>}</li>)}
-        {unread.slice(0, 8).map(x => <li className="card" key={x.id}>{x.summary} <span className="muted small">· {fmtDate(x.createdAt)}</span> <button className="btn small secondary" onClick={() => api.markNotificationRead(x.id).then(d.reload)}>סימון כנקרא</button></li>)}
+        {[...open, ...prog].slice(0, 8).map(x => <li className="card" key={x.id}><Link to="/admin/requests">{x.proposedHe || x.description.slice(0, 60)}</Link> <span className="muted small">· {fmtDate(x.createdAt)}</span> <span className="badge neutral">{REQUEST_STATUS_LABEL[x.status]}</span>{isOverdue(x, now) && <span className="badge warn">חרגה מהיעד</span>}</li>)}
+        {src.slice(0, 6).map(x => <li className="card" key={x.id}>מקור חדש: <Link to="/admin/sources">{x.title}</Link> <span className="muted small">· {fmtDate(x.createdAt)}</span></li>)}
+        {rep.slice(0, 6).map(x => <li className="card" key={x.id}>דיווח על מקור: {x.reason} <Link to="/admin/sources">לטיפול</Link></li>)}
       </ul>
     </div>
   );
@@ -305,30 +317,42 @@ function Versions({ id }: { id: string }) {
 }
 
 // ───────── בקשות והחלטות ─────────
+type RqFilter = 'todo' | 'in_progress' | 'waiting_teacher' | 'done' | 'all';
 function RequestsAdmin() {
   const { api } = useRT();
   const { catalog } = useCatalog();
+  const { refreshBadges } = useSession();
   const rq = useAsync(() => api.adminListRequests(), [api]);
+  const [filter, setFilter] = useState<RqFilter>('todo');
   const [sel, setSel] = useState<RequestDoc | null>(null);
   const [reply, setReply] = useState(''); const [kind, setKind] = useState<NonNullable<RequestDoc['decisionKind']>>('supplement');
   const { busy, error, run } = useBusy();
   const nav = useNavigate();
   const now = Date.now();
+  const done = () => { rq.reload(); refreshBadges(true); };
+  const match = (r: RequestDoc) => filter === 'all' || (filter === 'todo' && r.status === 'open') || (filter === 'in_progress' && r.status === 'in_progress')
+    || (filter === 'waiting_teacher' && r.status === 'waiting_teacher') || (filter === 'done' && (r.status === 'answered' || r.status === 'closed'));
+  const all = rq.data ?? [];
+  const count = (f: RqFilter) => all.filter(r => (f === 'all' ? true : f === 'todo' ? r.status === 'open' : f === 'done' ? r.status === 'answered' || r.status === 'closed' : r.status === f)).length;
+  const FILTERS: [RqFilter, string][] = [['todo', 'חדשות וממתינות לטיפול'], ['in_progress', 'בטיפול'], ['waiting_teacher', 'ממתינות למורה'], ['done', 'נענו או נסגרו'], ['all', 'הכול']];
   return (
     <div className="stack">
       <h2>בקשות והחלטות</h2>
-      <p className="muted small">יעד טיפול: {catalog?.settings.responseDueDays} ימים. היעד אינו מחייב ואינו משנה תוצאה; חלוף הזמן אינו אישור. אל תעתיקו טקסט של בקשה אישית לכרטיס ציבורי.</p>
+      <p className="muted small">יעד טיפול: {catalog?.settings.responseDueDays} ימים. היעד אינו מחייב ואינו משנה תוצאה; חלוף הזמן אינו אישור. המורה רואה את המענה ב"הבקשות שלי" כשייכנס לאתר. אל תעתיקו טקסט של בקשה אישית לכרטיס ציבורי.</p>
+      <div className="tabs-lite" role="group" aria-label="סינון בקשות">{FILTERS.map(([f, l]) => <button key={f} className="chip" aria-pressed={filter === f} onClick={() => setFilter(f)}>{l} ({count(f)})</button>)}</div>
       {rq.loading && <Loading />}
-      {rq.data?.length === 0 && <div className="card empty">אין בקשות.</div>}
-      {rq.data?.map(r => (
-        <div className="card stack" key={r.id}>
-          <div className="row between"><b>{{ new_topic: 'הצעת נושא חדש', inquiry: 'בירור כללי', exception_general: 'פנייה כללית לחריג' }[r.kind]}{r.proposedHe ? `: ${r.proposedHe}` : ''}</b>
-            <span className="badge neutral">{{ open: 'פתוחה', waiting_teacher: 'ממתינה למורה', answered: 'נענתה', closed: 'סגורה' }[r.status]}</span></div>
+      {rq.data && all.filter(match).length === 0 && <div className="card empty">אין בקשות בסינון זה.</div>}
+      {all.filter(match).sort((a, b) => a.createdAt - b.createdAt).map(r => (
+        <div className={`card stack ${r.status === 'open' ? 'isnew' : ''}`} key={r.id}>
+          <div className="row between"><b>{REQUEST_KIND_LABEL[r.kind]}{r.proposedHe ? `: ${r.proposedHe}` : ''}</b>
+            <span className="badge neutral">{requestStateLabel(r)}</span></div>
           <div className="small muted">{fmtDate(r.createdAt)} · יעד {fmtDate(r.dueAt)} {isOverdue(r, now) && <span className="badge warn">חרגה מהיעד</span>}{r.topicId && ` · נושא: ${catalog?.topics.find(t => t.id === r.topicId)?.he}`}</div>
           <p>{r.description}</p>{r.rationale && <p><b>נימוק:</b> {r.rationale}</p>}{r.supplement && <p><b>השלמת המורה:</b> {r.supplement}</p>}
-          {r.adminReply && <Notice kind="info" title="מענה שנשלח: ">{r.adminReply}</Notice>}
+          {r.adminReply && <Notice kind="info" title="המענה שנמסר: ">{r.adminReply}{r.repliedAt && <span className="small muted"> · {fmtDate(r.repliedAt)}{r.teacherSeenAt ? ' · המורה ראה' : ' · טרם נראה בידי המורה'}</span>}</Notice>}
           <div className="row">
-            <button className="btn small secondary" onClick={() => { setSel(r); setReply(r.adminReply ?? ''); }}>מענה</button>
+            <button className="btn small secondary" onClick={() => { setSel(r); setReply(r.adminReply ?? ''); setKind(r.decisionKind ?? 'supplement'); }}>מענה והחלטה</button>
+            {r.status === 'open' && <button className="btn small secondary" disabled={busy} onClick={() => run(() => api.adminSetRequestStatus(r.id, 'in_progress')).then(done)}>סימון "בטיפול"</button>}
+            {r.status !== 'closed' && <button className="btn small secondary" disabled={busy} onClick={() => run(() => api.adminSetRequestStatus(r.id, 'closed')).then(done)}>סגירה</button>}
             {r.kind === 'new_topic' && <button className="btn small" onClick={() => nav('/admin/topics/new')}>יצירת כרטיס נושא (טיוטה)</button>}
           </div>
         </div>
@@ -336,11 +360,11 @@ function RequestsAdmin() {
       {sel && (
         <div className="card stack" role="dialog" aria-label="מענה לבקשה">
           <h3 style={{ margin: 0 }}>מענה לבקשה</h3>
-          <Field label="סוג החלטה"><select value={kind} onChange={e => setKind(e.target.value as typeof kind)}><option value="supplement">בקשת השלמה כללית</option><option value="general_approval">אישור כללי (הפיכה לכרטיס או לעדכון מדיניות)</option><option value="case_specific">החלטה נקודתית, אינה מתפרסמת כהיתר כללי</option><option value="rejection">דחייה עם הסבר וכתובת לפנייה אישית</option></select></Field>
+          <Field label="החלטה"><select value={kind} onChange={e => setKind(e.target.value as typeof kind)}><option value="supplement">בקשת השלמה מהמורה</option><option value="general_approval">אושרה (אישור כללי: הפיכה לכרטיס או לעדכון מדיניות)</option><option value="case_specific">אושרה נקודתית (אינה מתפרסמת כהיתר כללי)</option><option value="rejection">לא אושרה (עם הסבר וכתובת לפנייה אישית)</option></select></Field>
           <Field label="מענה למורה (ללא פרטי מקרה רפואי)"><textarea value={reply} onChange={e => setReply(e.target.value)} /></Field>
           {kind === 'general_approval' && <Notice kind="info">אישור כללי מחייב כרטיס מלא (שם, מעמד, מערכת, תנאים, מקור ותחולה). צרו או ערכו את הכרטיס והעבירו לפרסום; מענה אישי וכללי הם פעולות נפרדות.</Notice>}
           {error && <p className="err">{error}</p>}
-          <div className="row"><button className="btn" disabled={busy || !reply.trim()} onClick={() => run(() => api.adminReply(sel.id, { decisionKind: kind, text: reply, status: kind === 'supplement' ? 'waiting_teacher' : 'answered' })).then(r => { if (r !== undefined) { setSel(null); rq.reload(); } })}>שליחת מענה</button><button className="btn secondary" onClick={() => setSel(null)}>ביטול</button></div>
+          <div className="row"><button className="btn" disabled={busy || !reply.trim()} onClick={() => run(() => api.adminReply(sel.id, { decisionKind: kind, text: reply, status: kind === 'supplement' ? 'waiting_teacher' : 'answered' })).then(r => { if (r !== undefined) { setSel(null); done(); } })}>שמירת המענה</button><button className="btn secondary" onClick={() => setSel(null)}>ביטול</button></div>
         </div>
       )}
     </div>
@@ -351,22 +375,32 @@ function RequestsAdmin() {
 function SourcesAdmin() {
   const { api } = useRT();
   const { catalog, reloadSources } = useCatalog();
-  const s = useAsync(() => api.adminListSources(), [api]);
-  const n = useAsync(() => api.listNotifications(), [api]);
+  const { refreshBadges } = useSession();
+  const [only, setOnly] = useState<'new' | 'all'>('new');
+  const s = useAsync(() => api.adminListSources(only === 'new'), [api, only]);
+  const reports = useAsync(() => api.adminListSourceReports(true), [api]);
   const { busy, run } = useBusy();
-  const reports = (id: string) => n.data?.filter(x => x.type === 'source_reported' && x.refId === id) ?? [];
+  const reportsOf = (id: string) => reports.data?.filter(x => x.sourceId === id) ?? [];
+  const reload = () => { s.reload(); reports.reload(); reloadSources(); refreshBadges(true); };
+  const list = (s.data ?? []).sort((a, b) => b.createdAt - a.createdAt);
+  const unreviewed = list.filter(x => x.reviewed === false);
   return (
     <div className="stack">
       <h2>מקורות איתור</h2>
-      <p className="muted small">מקור שמורה מוסיף מתפרסם מיד. רק מנהל יכול לערוך או להסיר. דיווח אינו מסתיר מקור אוטומטית.</p>
+      <p className="muted small">מקור שמורה מוסיף מתפרסם מיד, ומופיע כאן כ"חדש" עד שמסמנים "נבדק". רק מנהל יכול לערוך או להסיר. דיווח אינו מסתיר מקור אוטומטית. כל משתמש יכול להוסיף עד 5 מקורות ביום.</p>
+      <div className="tabs-lite" role="group" aria-label="סינון מקורות"><button className="chip" aria-pressed={only === 'new'} onClick={() => setOnly('new')}>חדשים שטרם נבדקו</button><button className="chip" aria-pressed={only === 'all'} onClick={() => setOnly('all')}>כל המקורות</button></div>
+      {unreviewed.length > 1 && <div><button className="btn small" disabled={busy} onClick={() => run(() => api.adminMarkSourcesReviewed(unreviewed.map(x => x.id))).then(reload)}>סימון כל החדשים כנבדקו ({unreviewed.length})</button></div>}
       {s.loading && <Loading />}
+      {s.data && list.length === 0 && <div className="card empty">{only === 'new' ? 'אין מקורות חדשים שטרם נבדקו.' : 'אין מקורות.'}</div>}
       <div className="tablewrap"><table><thead><tr><th>כותרת</th><th>נושא</th><th>מצב</th><th>דיווחים</th><th></th></tr></thead>
-        <tbody>{(s.data ?? []).sort((a, b) => b.createdAt - a.createdAt).map(x => (
-          <tr key={x.id}><td><b>{x.title}</b><div className="small muted">{x.text.slice(0, 100)}</div></td><td>{catalog?.topics.find(t => t.id === x.topicId)?.he ?? x.topicId}</td>
-            <td>{x.visible ? <span className="badge ok">גלוי</span> : <span className="badge neutral">הוסר</span>}</td><td>{reports(x.id).length > 0 ? <span className="badge warn">{reports(x.id).length}</span> : '—'}{reports(x.id).map(r => <div key={r.id} className="small">{r.summary}</div>)}</td>
+        <tbody>{list.map(x => (
+          <tr key={x.id}><td><b>{x.title}</b>{x.reviewed === false && <span className="badge warn">חדש</span>}<div className="small muted">{x.text.slice(0, 100)} · {fmtDate(x.createdAt)}</div></td><td>{catalog?.topics.find(t => t.id === x.topicId)?.he ?? x.topicId}</td>
+            <td>{x.visible ? <span className="badge ok">גלוי</span> : <span className="badge neutral">הוסר</span>}</td>
+            <td>{reportsOf(x.id).length > 0 ? <span className="badge warn">{reportsOf(x.id).length}</span> : '—'}{reportsOf(x.id).map(r => <div key={r.id} className="small">{r.reason} <button className="linkbtn small" onClick={() => run(() => api.adminHandleReport(r.id)).then(reload)}>טופל</button></div>)}</td>
             <td><div className="row">
-              <button className="btn small secondary" onClick={() => { const t = prompt('כותרת חדשה', x.title); if (t) run(() => api.adminEditSource(x.id, { title: t })).then(() => { s.reload(); reloadSources(); }); }}>עריכה</button>
-              {x.visible ? <button className="btn small danger" disabled={busy} onClick={() => run(() => api.adminRemoveSource(x.id)).then(() => { s.reload(); reloadSources(); })}>הסרה</button> : <button className="btn small" onClick={() => run(() => api.adminRestoreSource(x.id)).then(() => { s.reload(); reloadSources(); })}>שחזור</button>}</div></td></tr>))}</tbody></table></div>
+              {x.reviewed === false && <button className="btn small" disabled={busy} onClick={() => run(() => api.adminMarkSourcesReviewed([x.id])).then(reload)}>נבדק</button>}
+              <button className="btn small secondary" onClick={() => { const t = prompt('כותרת חדשה', x.title); if (t) run(() => api.adminEditSource(x.id, { title: t })).then(reload); }}>עריכה</button>
+              {x.visible ? <button className="btn small danger" disabled={busy} onClick={() => run(() => api.adminRemoveSource(x.id)).then(reload)}>הסרה</button> : <button className="btn small" onClick={() => run(() => api.adminRestoreSource(x.id)).then(reload)}>שחזור</button>}</div></td></tr>))}</tbody></table></div>
     </div>
   );
 }
@@ -435,29 +469,43 @@ function CyclesAdmin() {
   const { api } = useRT();
   const { catalog, reload } = useCatalog();
   const [yearId, setYearId] = useState(catalog!.settings.currentYearId);
-  const sum = useAsync(() => api.cycleCloseSummary(yearId), [api, yearId]);
+  const sum = useAsync(() => api.cycleClosePreview(yearId), [api, yearId]);
   const { busy, error, run } = useBusy();
   const [msg, setMsg] = useState<string | null>(null);
   const [confirmText, setConfirmText] = useState('');
+  const [force, setForce] = useState(false);
   const year = catalog!.years.find(y => y.id === yearId);
   const startYears = Array.from({ length: 12 }, (_, i) => startYearOf(catalog!.settings.currentYearId) - 5 + i).map(academicYear);
+  const p = sum.data;
+  const notEnded = p?.yearEnded === false;
+  const ready = confirmText === yearId && (!notEnded || force);
   return (
     <div className="stack">
       <h2>מחזורים וסיום שנה</h2>
-      <Field label="שנת לימודים"><select value={yearId} onChange={e => setYearId(e.target.value)}>{startYears.map(y => <option key={y.id} value={y.id}>{y.label} ({y.id}){catalog!.years.find(z => z.id === y.id)?.closed ? ' · נסגרה' : ''}</option>)}</select></Field>
+      <p className="muted small">הניקוי ידני: מנהל מפעיל אותו אחרי שהשנה הסתיימה. לפני המחיקה מוצג מה יושפע, ושום דבר אינו נמחק עד שמאשרים.</p>
+      <Field label="שנת לימודים"><select value={yearId} onChange={e => { setYearId(e.target.value); setConfirmText(''); setForce(false); }}>{startYears.map(y => <option key={y.id} value={y.id}>{y.label} ({y.id}){catalog!.years.find(z => z.id === y.id)?.closed ? ' · נסגרה' : ''}</option>)}</select></Field>
       <div className="card stack">
-        {sum.loading ? <Loading /> : sum.data && (<>
-          <p>קבוצות במחזור: <b>{sum.data.groups}</b> · עם שמות או כינויים: <b>{sum.data.withNames}</b></p>
-          <ul className="tight">{Object.entries(sum.data.byStatus).map(([k, v]) => <li key={k}>{k}: {v}</li>)}</ul>
+        {sum.loading ? <Loading /> : p && (<>
+          <h3 style={{ margin: 0 }}>מה יושפע אם סוגרים את {yearId}</h3>
+          <ul className="tight">
+            <li>קבוצות שיימחקו: <b>{p.groups}</b> ב־<b>{p.schools}</b> מוסדות</li>
+            <li>קבוצות עם שמות או כינויי תלמידים: <b>{p.withNames}</b> ({p.studentLabels} כינויים שיימחקו)</li>
+            <li>רשומות היסטוריה שיעודכנו: <b>{p.historyRecordsToWrite}</b> (מוסד, שנה, נושא ומצב בלבד)</li>
+            <li>בקשות שתנותק מהן ההפניה לקבוצה: <b>{p.linkedRequests}</b> (הבקשה עצמה נשארת)</li>
+            {Object.entries(p.byStatus).map(([k, v]) => <li key={k}>מצב "{GROUP_STATUS_LABEL[k] ?? k}": {v}</li>)}
+          </ul>
+          {p.activeGroups > 0 && <Notice kind="warn" title="שימו לב: ">{p.activeGroups} קבוצות עדיין לא סומנו כבוצעו או כבוטלו. הן יירשמו בהיסטוריה כ"אושר ולא בוצע". כדאי לוודא שהמורים והרכזים עדכנו.</Notice>}
+          {notEnded && <Notice kind="bad" title="המחזור טרם הסתיים: ">תאריך הסיום שהוגדר הוא {p.yearEnd}. סגירה כעת תמחק עבודות פעילות. כדי להמשיך יש לסמן אישור מפורש.<label className="row"><input type="checkbox" checked={force} onChange={e => setForce(e.target.checked)} /> אני מבין שהמחזור טרם הסתיים וברצוני לסגור אותו בכל זאת</label></Notice>}
         </>)}
-        {year?.closed && <Notice kind="ok">המחזור נסגר. נשארה היסטוריית נושאים בלבד.</Notice>}
-        <Notice kind="warn" title="סיום מחזור מוחק לצמיתות: "><ol className="tight"><li>עדכון היסטוריית נושאים לא מזהה (מוסד, שנה, נושא, מצב: בוצע, בוטל, אושר ולא בוצע).</li><li>מחיקת כל הקבוצות של המחזור, כולל שמות וכינויי התלמידים, והסרת הפניות מבקשות.</li><li>רישום ביומן מחיקות כדי שגיבוי ישן לא יחזיר אותם.</li></ol>יש לוודא שהמורים דיווחו מה בוצע ושהרכזים תיקנו. הפעולה אינה הפיכה, וחוזרת־בטוחה אם תופעל שוב.</Notice>
+        {(p?.alreadyClosed || year?.closed) && <Notice kind="ok">המחזור נסגר{p?.closedAt ? ` ב־${fmtDate(p.closedAt)}` : ''}. נשארה היסטוריית נושאים בלבד. הרצה חוזרת בטוחה ואינה מוחקת דבר נוסף אם אין קבוצות.</Notice>}
+        <Notice kind="info" title="מה נשאר אחרי הסגירה: ">היסטוריית נושאים (מוסד, שנה, נושא, מצב), כרטיסי הנושאים והכללים, המקורות, הבקשות (בלי הפניה לקבוצה), פרופילי המורים והשיוך למוסדות, ויומן המחיקות. <b>מה שנמחק:</b> הקבוצות, ובתוכן מספר התלמידים, הכינויים, סטטוס הקבוצה ומספר הבדיקות שדווחו. מחיקת היסטוריה ישנה אינה מופעלת אוטומטית, ומחייבת החלטה נפרדת.</Notice>
+        <Notice kind="warn" title="לפני שמוחקים: ">מומלץ להוריד גיבוי פרטי (לשונית "גיבוי ושחזור") רק אם צריך לשמור את הנתונים, ולשמור אותו במקום מוגן. שחזור גיבוי ישן לא יחזיר קבוצות של מחזור שנסגר.</Notice>
         <Field label={`להקלדת אישור, כתבו את מזהה השנה: ${yearId}`}><input type="text" dir="ltr" value={confirmText} onChange={e => setConfirmText(e.target.value)} /></Field>
-        <div className="row"><button className="btn danger" disabled={busy || confirmText !== yearId} onClick={() => run(() => api.closeCycle(yearId)).then(r => { if (r) { setMsg(`נמחקו ${r.deleted} קבוצות. ההיסטוריה עודכנה.`); setConfirmText(''); sum.reload(); reload(); } })}>סגירת המחזור ומחיקת פרטי התלמידים</button>
+        <div className="row"><button className="btn danger" disabled={busy || !ready} onClick={() => run(() => api.closeCycle(yearId, { force })).then(r => { if (r) { setMsg(`נמחקו ${r.deleted} קבוצות. ההיסטוריה עודכנה.`); setConfirmText(''); setForce(false); sum.reload(); reload(); } })}>סגירת המחזור ומחיקת פרטי התלמידים</button>
           <button className="btn secondary" disabled={busy} onClick={() => run(() => api.reapplyDeletions()).then(r => r && setMsg(`הופעלו מחדש מחיקות: ${r.deleted} קבוצות הוסרו.`))}>הפעלה מחדש של מחיקות (אחרי שחזור)</button></div>
-        {msg && <Notice kind="ok"><span role="status">{msg}</span></Notice>}{error && <p className="err">{error}</p>}
+        {msg && <Notice kind="ok"><span role="status">{msg}</span></Notice>}{error && <p className="err" role="alert">{error}</p>}
       </div>
-      <p className="small muted">תוכנית המחיקה אינה מוחקת גיבויים ישנים בעצמה: היומן מבטיח שבשחזור מופעלות המחיקות שהגיע מועדן. אין להעתיק נתוני תלמידים ל־GitHub או לקובצי seed.</p>
+      <p className="small muted">הפעולה אינה הפיכה. היא אינה מוחקת קובצי גיבוי שכבר הורדו: היומן מבטיח שבשחזור מהם לא יחזרו קבוצות של מחזור שנסגר. אין להעתיק נתוני תלמידים ל־GitHub או לקובצי seed.</p>
     </div>
   );
 }

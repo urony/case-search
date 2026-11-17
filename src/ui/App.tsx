@@ -1,4 +1,5 @@
-import { HashRouter, Link, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { HashRouter, Link, NavLink, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { DemoAuthService } from '../services/auth';
 import { DEMO_ACCOUNTS } from '../services/demoSeed';
 import { resetDemoData, setDemo } from '../services/runtime';
@@ -42,8 +43,10 @@ function Banners() {
 
 function Header() {
   const { auth, mode } = useRT();
-  const { ctx } = useSession();
+  const { ctx, badges, refreshBadges } = useSession();
   const nav = useNavigate();
+  const loc = useLocation();
+  useEffect(() => { refreshBadges(); }, [loc.pathname, refreshBadges]); // לכל היותר פעם בדקה
   return (
     <header className="site">
       <div className="wrap top">
@@ -54,9 +57,9 @@ function Header() {
           <NavLink to="/history">היסטוריית מוסד</NavLink>
           <NavLink to="/about">הסבר</NavLink>
           {ctx.verified && <NavLink to="/groups">הקבוצות שלי</NavLink>}
-          {ctx.verified && <NavLink to="/requests">הבקשות שלי</NavLink>}
+          {ctx.verified && <NavLink to="/requests">הבקשות שלי{badges.unseenReplies > 0 && <span className="count" aria-label={`${badges.unseenReplies} עדכונים חדשים`}>{badges.unseenReplies}</span>}</NavLink>}
           {ctx.role === 'coordinator' && <NavLink to="/coordinator">רכז</NavLink>}
-          {ctx.role === 'admin' && <NavLink to="/admin">ניהול</NavLink>}
+          {ctx.role === 'admin' && <NavLink to="/admin">ניהול{(badges.admin?.total ?? 0) > 0 && <span className="count" aria-label={`${badges.admin!.total} פריטים הממתינים לטיפול`}>{badges.admin!.total}</span>}</NavLink>}
         </nav>
         <div className="userbox">
           {ctx.user ? (<><Link to="/profile">{ctx.user.displayName || ctx.user.email}</Link><button className="linkbtn" onClick={async () => { await auth.signOut(); nav('/'); }}>יציאה</button></>)

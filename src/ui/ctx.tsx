@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import type { Catalog, Topic } from '../domain/types';
 import { buildIndex } from '../domain/search';
 import type { Ctx } from '../services/api';
@@ -24,20 +24,25 @@ export function CatalogProvider({ children }: { children: ReactNode }) {
     setLoading(true); setError(null);
     api.loadCatalog().then(setCatalog).catch(e => setError(String(e?.message ?? e))).finally(() => setLoading(false));
   }, [api]);
+  // בשירות אמיתי הספירות מגיעות מהקטלוג (קריאה אחת); בהדגמה ובבדיקות נטענים כל המקורות המקומיים.
   const loadSources = useCallback(() => {
+    if (catalog?.origin === 'service') { setCounts(catalog.sourceCounts ?? {}); return; }
+    if (api.mode === 'service') { setCounts({}); return; }
     api.listSources().then(ss => {
       const c: Record<string, number> = {};
       ss.forEach(s => { c[s.topicId] = (c[s.topicId] ?? 0) + 1; });
       setCounts(c);
     }).catch(() => setCounts({}));
-  }, [api]);
-  useEffect(() => { load(); loadSources(); }, [load, loadSources]);
+  }, [api, catalog]);
+  useEffect(() => { load(); }, [load]);
+  useEffect(() => { loadSources(); }, [loadSources]);
   const index = useMemo(() => buildIndex(catalog?.topics ?? []), [catalog]);
   const topicById = useMemo(() => new Map((catalog?.topics ?? []).map(t => [t.id, t])), [catalog]);
   return <CatalogCtx.Provider value={{ catalog, loading, error, reload: load, index, topicById, sourceCounts: counts, reloadSources: loadSources }}>{children}</CatalogCtx.Provider>;
 }
 
-interface SessionState { ctx: Ctx; refresh: () => Promise<void> }
+export interface Badges { admin: { openRequests: number; inProgress: number; unreviewedSources: number; openReports: number; openSuggestions: number; overdue: number; total: number } | null; unseenReplies: number }
+interface SessionState { ctx: Ctx; refresh: () => Promise<void>; badges: Badges; refreshBadges: (force?: boolean) => void }
 const SessionCtx = createContext<SessionState>(null as unknown as SessionState);
 export const useSession = () => useContext(SessionCtx);
 
@@ -50,5 +55,19 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     if (c.user) api.ensureProfile().catch(() => {});
   }, [api]);
   useEffect(() => auth.subscribe(() => { refresh(); }), [auth, refresh]);
-  return <SessionCtx.Provider value={{ ctx, refresh }}>{children}</SessionCtx.Provider>;
+
+  // חיווי "דורש טיפול" בתוך המערכת (במקום דוא"ל). נטען בכניסה ובכל מעבר דף, לכל היותר פעם בדקה, כדי לחסוך קריאות.
+  const [badges, setBadges] = useState<Badges>({ admin: null, unseenReplies: 0 });
+  const last = useRef(0);
+  const refreshBadges = useCallback((force = false) => {
+    if (!ctx.user || !ctx.verified) { setBadges({ admin: null, unseenReplies: 0 }); return; }
+    const t = Date.now();
+    if (!force && t - last.current < 60_000) return;
+    last.current = t;
+    Promise.all([ctx.role === 'admin' ? api.adminBadges() : Promise.resolve(null), api.myUnseenReplies()])
+      .then(([admin, unseenReplies]) => setBadges({ admin, unseenReplies }))
+      .catch(() => {});
+  }, [api, ctx.user, ctx.verified, ctx.role]);
+  useEffect(() => { last.current = 0; refreshBadges(true); }, [refreshBadges]);
+  return <SessionCtx.Provider value={{ ctx, refresh, badges, refreshBadges }}>{children}</SessionCtx.Provider>;
 }

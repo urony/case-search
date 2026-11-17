@@ -8,3 +8,6 @@ serviceAccount*.json
 backups/
 .firebase
 firebase-debug.log
+firestore-debug.log
+firestore-export/
+*.log

@@ -9,7 +9,7 @@ export function SourcesPanel({ topicId, topicHe }: { topicId: string; topicHe: s
   const { api } = useRT();
   const { ctx } = useSession();
   const { reloadSources } = useCatalog();
-  const { data, loading, error, reload } = useAsync(async () => (await api.listSources()).filter(s => s.topicId === topicId).sort((a, b) => b.createdAt - a.createdAt), [api, topicId]);
+  const { data, loading, error, reload } = useAsync(async () => (await api.listSources(topicId)).sort((a, b) => b.createdAt - a.createdAt), [api, topicId]);
   const [adding, setAdding] = useState(false);
   const [reported, setReported] = useState<string | null>(null);
   const rep = useBusy();
