@@ -1,6 +1,8 @@
 import { editDistance, normalize, tokens } from './normalize';
 import type { Difficulty, Policy, Topic } from './types';
 
+export const NO_SYSTEM = 'none';
+
 export interface SearchFilters {
   system?: string;
   tag?: string;
@@ -35,7 +37,8 @@ export function buildIndex(topics: Topic[]): IndexedTopic[] {
 }
 
 function passesFilters(t: Topic, f: SearchFilters, sourceCounts: Record<string, number>): boolean {
-  if (f.system && !t.systems.includes(f.system)) return false;
+  // 'none': נושאים שטרם שויכו למערכת (למשל קטגוריות רחבות), כדי שלא יהיו חבויים בעיון לפי מערכת
+  if (f.system === NO_SYSTEM ? t.systems.length > 0 : f.system && !t.systems.includes(f.system)) return false;
   if (f.tag && !t.tags.includes(f.tag)) return false;
   if (f.policy && t.policy !== f.policy) return false;
   if (f.difficulty !== undefined && f.difficulty !== '' && t.difficulty !== f.difficulty) return false;

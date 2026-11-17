@@ -13,6 +13,8 @@ import { ApprovalBanner, Groups, Login, MyRequests, Profile, RequestForm, Verify
 import { AddSourceForm } from './pages/Sources';
 import TopicPage from './pages/TopicPage';
 import { Notice } from './components';
+import { V1 } from '../features';
+import { PublicAbout, PublicHome, PublicTopic, WhatsNew } from './v1/PublicPages';
 
 function Banners() {
   const { mode, notice, demo, demoAvailable } = useRT();
@@ -22,9 +24,9 @@ function Banners() {
       <div className="banner demo" role="region" aria-label="מצב הדגמה">
         <div className="wrap">
           <b>מצב הדגמה.</b> נתונים מלאכותיים הנשמרים בדפדפן זה בלבד, ללא שיתוף וללא דוא״ל אמיתי. אינו נתוני מוסדות אמיתיים.
-          <label className="row">מעבר לתפקיד:
+          <label className="row">{V1 ? 'מצב:' : 'מעבר לתפקיד:'}
             <select aria-label="מעבר בין חשבונות הדגמה" style={{ inlineSize: 'auto' }} value={ctx.user?.uid ?? ''} onChange={async e => { const d = demo as DemoAuthService; if (e.target.value) await d.switchTo(e.target.value); else await d.signOut(); await refresh(); }}>
-              <option value="">אורח</option>{DEMO_ACCOUNTS.map(a => <option key={a.uid} value={a.uid}>{a.displayName}</option>)}</select></label>
+              <option value="">{V1 ? 'אורח (תלמיד או מורה)' : 'אורח'}</option>{DEMO_ACCOUNTS.filter(a => !V1 || a.uid === 'demo-admin').map(a => <option key={a.uid} value={a.uid}>{V1 ? 'מנהל (הדגמה)' : a.displayName}</option>)}</select></label>
           <button className="btn small secondary" onClick={() => { if (confirm('לאפס את נתוני ההדגמה?')) resetDemoData(); }}>איפוס נתוני הדגמה</button>
           <button className="btn small secondary" onClick={() => setDemo(false)}>יציאה ממצב הדגמה</button>
         </div>
@@ -53,17 +55,17 @@ function Header() {
         <h1><Link to="/">בדיקת התאמה לנושאי עבודות גמר במערכות רפואיות</Link></h1>
         <nav className="main" aria-label="ניווט ראשי">
           <NavLink to="/" end>חיפוש</NavLink>
-          <NavLink to="/new-this-year">חדשים השנה</NavLink>
-          <NavLink to="/history">היסטוריית מוסד</NavLink>
-          <NavLink to="/about">הסבר</NavLink>
-          {ctx.approved && <NavLink to="/groups">הקבוצות שלי</NavLink>}
-          {ctx.approved && <NavLink to="/requests">הבקשות שלי{badges.unseenReplies > 0 && <span className="count" aria-label={`${badges.unseenReplies} עדכונים חדשים`}>{badges.unseenReplies}</span>}</NavLink>}
-          {ctx.role === 'coordinator' && <NavLink to="/coordinator">רכז</NavLink>}
+          <NavLink to="/new-this-year">{V1 ? 'מה נוסף השנה' : 'חדשים השנה'}</NavLink>
+          {!V1 && <NavLink to="/history">היסטוריית מוסד</NavLink>}
+          <NavLink to="/about">{V1 ? 'על הכלי' : 'הסבר'}</NavLink>
+          {!V1 && ctx.approved && <NavLink to="/groups">הקבוצות שלי</NavLink>}
+          {!V1 && ctx.approved && <NavLink to="/requests">הבקשות שלי{badges.unseenReplies > 0 && <span className="count" aria-label={`${badges.unseenReplies} עדכונים חדשים`}>{badges.unseenReplies}</span>}</NavLink>}
+          {!V1 && ctx.role === 'coordinator' && <NavLink to="/coordinator">רכז</NavLink>}
           {ctx.role === 'admin' && <NavLink to="/admin">ניהול{(badges.admin?.total ?? 0) > 0 && <span className="count" aria-label={`${badges.admin!.total} פריטים הממתינים לטיפול`}>{badges.admin!.total}</span>}</NavLink>}
         </nav>
         <div className="userbox">
-          {ctx.user ? (<><Link to="/profile">{ctx.user.displayName || ctx.user.email}</Link><button className="linkbtn" onClick={async () => { await auth.signOut(); nav('/'); }}>יציאה</button></>)
-            : mode !== 'bundled' && <Link className="btn small" to="/login">כניסה או הרשמה</Link>}
+          {ctx.user ? (<>{V1 ? <span>{ctx.user.displayName || ctx.user.email}</span> : <Link to="/profile">{ctx.user.displayName || ctx.user.email}</Link>}<button className="linkbtn" onClick={async () => { await auth.signOut(); nav('/'); }}>יציאה</button></>)
+            : mode !== 'bundled' && !V1 && <Link className="btn small" to="/login">כניסה או הרשמה</Link>}
         </div>
       </div>
     </header>
@@ -80,21 +82,23 @@ function Shell() {
       <main id="main" tabIndex={-1}>
         <div className="wrap">
           <VerifyBanner />
-          <ApprovalBanner />
+          {!V1 && <ApprovalBanner />}
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/topic/:id" element={<TopicPage />} />
-            <Route path="/new-this-year" element={<NewThisYear />} />
-            <Route path="/history" element={<HistoryPage />} />
-            <Route path="/about" element={<About />} />
+            <Route path="/" element={V1 ? <PublicHome /> : <Home />} />
+            <Route path="/topic/:id" element={V1 ? <PublicTopic /> : <TopicPage />} />
+            <Route path="/new-this-year" element={V1 ? <WhatsNew /> : <NewThisYear />} />
+            <Route path="/about" element={V1 ? <PublicAbout /> : <About />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/groups" element={<Groups />} />
-            <Route path="/requests" element={<MyRequests />} />
-            <Route path="/requests/new-topic" element={<RequestForm kind="new_topic" />} />
-            <Route path="/requests/inquiry" element={<RequestForm kind="inquiry" />} />
-            <Route path="/sources/add" element={<AddSourcePage />} />
-            <Route path="/coordinator" element={<Coordinator />} />
+            {!V1 && <>
+              <Route path="/history" element={<HistoryPage />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/groups" element={<Groups />} />
+              <Route path="/requests" element={<MyRequests />} />
+              <Route path="/requests/new-topic" element={<RequestForm kind="new_topic" />} />
+              <Route path="/requests/inquiry" element={<RequestForm kind="inquiry" />} />
+              <Route path="/sources/add" element={<AddSourcePage />} />
+              <Route path="/coordinator" element={<Coordinator />} />
+            </>}
             <Route path="/admin/*" element={<Admin />} />
             <Route path="*" element={<div className="card empty"><p>הדף לא נמצא.</p><Link to="/">לדף הראשי</Link></div>} />
           </Routes>
@@ -102,7 +106,9 @@ function Shell() {
       </main>
       <footer className="site">
         <div className="wrap">
-          הכלי בודק התאמה לפי המאגר ואינו אישור פיקוח רשמי. התוכן הרפואי נקבע בידי הנהלת המאגר. בדיקת מקרה מתבצעת בדפדפן בלבד ואינה נשמרת.
+          {V1
+            ? <>המידע מתייחס להתאמת הנושא ואינו אישור פיקוח סופי או אישור של מטופל מסוים. בחירת מטופלים והגשת הנושא כפופות להנחיות ולאישור הפיקוח. · <Link to="/login?next=/admin">כניסת מנהלים</Link></>
+            : <>הכלי בודק התאמה לפי המאגר ואינו אישור פיקוח רשמי. התוכן הרפואי נקבע בידי הנהלת המאגר. בדיקת מקרה מתבצעת בדפדפן בלבד ואינה נשמרת.</>}
           {demoAvailable && mode !== 'demo' && <> · <button className="linkbtn small" onClick={() => setDemo(true)}>מצב הדגמה</button></>}
         </div>
       </footer>

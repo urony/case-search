@@ -5,15 +5,20 @@ import { checkSourceInput, dueAtFor, looksLikePersonalData, SourceInput } from '
 import { normEmail, EMAIL_RE, previewSchoolImport, previewTeacherImport } from '../domain/csv';
 import { planSeedImport, SeedRecord } from '../domain/seedImport';
 import type {
-  AcademicYear, AllowedTeacher, AuditEvent, Catalog, Group, GroupStatus, PolicyQuestion,
+  AcademicYear, AllowedTeacher, AuditEvent, Catalog, CatalogMeta, Group, NewItem, PublicSource, GroupStatus, PolicyQuestion,
   Profile, RecruitmentSource, RequestDoc, RequestKind, Role, RoleDoc, School, SchoolYearHistory, Settings, SourceReport, SystemDef, TagDef, Topic,
 } from '../domain/types';
 import type { AuthService, AuthUser } from './auth';
 import { buildBundledCatalog, DEFAULT_TAGS, defaultSettings, defaultYears, SEED, SEED_AUX } from './bundled';
 import { BatchOp, ConflictError, PermissionError, Store } from './store';
-import { buildCatalogOps } from './catalog';
+import { buildCatalogOps, diffAgainstLive, PublishDiff, readSnapshotDocs } from './catalog';
 
 export type Mode = 'service' | 'demo' | 'bundled';
+
+/** עותק מקומי של העותק הציבורי בדפדפן (מידע ציבורי בלבד). חוסך קריאות מסד: ביקור חוזר עולה קריאה אחת או אפס. */
+export interface SnapshotCache { read(): { checkedAt: number; catalog: Catalog } | null; write(v: { checkedAt: number; catalog: Catalog }): void; clear(): void }
+/** בתוך חלון זה לא פונים כלל למסד: עד חמש דקות עיכוב בהצגת עדכון חדש לאורח (המנהל רואה את שינויו מיד) */
+export const CATALOG_FRESH_MS = 5 * 60_000;
 
 /** approved: מאומת ו(ברשימת המורים המאושרים או בעל תפקיד). רק מאושר יכול לשמור או להזין תוכן. schoolIds: המוסדות שאושרו לו. */
 export interface Ctx { user: AuthUser | null; role: Role | null; roleDoc: RoleDoc | null; verified: boolean; approved: boolean; schoolIds: string[] }
@@ -80,33 +85,43 @@ export class Api {
   }
 
   // ───────── ציבורי ─────────
+  /** מוגדר בהפעלה בשירות אמיתי (localStorage). בבדיקות: מימוש בזיכרון. */
+  snapshotCache: SnapshotCache | null = null;
   async loadCatalog(): Promise<Catalog> {
     if (this.mode === 'bundled') return buildBundledCatalog(this.now());
+    const cache = this.snapshotCache;
+    const cached = cache?.read() ?? null;
+    const t = this.now();
+    if (cached && t >= cached.checkedAt && t - cached.checkedAt < CATALOG_FRESH_MS) return cached.catalog;
     try {
-      const meta = await this.store.get<{ chunks: number; generatedAt: number; sourceCounts?: Record<string, number> }>('public/catalogMeta');
+      const meta = await this.store.get<CatalogMeta>('public/catalogMeta');
       if (!meta) {
         if (this.mode === 'service') return { ...buildBundledCatalog(this.now()), origin: 'bundled' };
         throw new Error('catalog not published');
       }
-      const topics: Topic[] = [];
-      for (let i = 0; i < meta.chunks; i++) {
-        const c = await this.store.get<{ topics: Topic[] }>(`public/catalog_${i}`);
-        if (c) topics.push(...c.topics);
-      }
-      const [general, vocab, settings, years] = await Promise.all([
-        this.store.get<{ rules: RuleSet }>('config/general'),
-        this.store.get<{ systems: SystemDef[]; tags: TagDef[] }>('config/vocab'),
-        this.store.get<Settings>('config/settings'),
-        this.store.get<{ years: AcademicYear[] }>('config/years'),
+      // העותק המקומי עדכני: קריאה אחת בלבד
+      if (cached && cached.catalog.generatedAt === meta.generatedAt) { cache!.write({ checkedAt: t, catalog: cached.catalog }); return cached.catalog; }
+      const { topics, sources } = await readSnapshotDocs(this.store, meta);
+      // עותק ישן (לפני הוספת ההגדרות למסמך הראשי): משלימים מההגדרות
+      const [general, vocab, settings, years] = meta.general ? [null, null, null, null] : await Promise.all([
+        this.store.get<{ rules: RuleSet }>('config/general'), this.store.get<{ systems: SystemDef[]; tags: TagDef[] }>('config/vocab'),
+        this.store.get<Settings>('config/settings'), this.store.get<{ years: AcademicYear[] }>('config/years'),
       ]);
-      return {
-        topics, generalRules: general?.rules ?? DEFAULT_GENERAL_RULES,
-        systems: vocab?.systems ?? SEED_AUX.systems, tags: vocab?.tags ?? DEFAULT_TAGS,
-        settings: { ...defaultSettings(new Date(this.now())), ...(settings ?? {}) },
-        years: years?.years ?? defaultYears(new Date(this.now())),
-        generatedAt: meta.generatedAt, sourceCounts: meta.sourceCounts ?? {}, origin: this.mode === 'demo' ? 'demo' : 'service',
+      const bySource: Record<string, PublicSource[]> = {};
+      for (const x of sources) (bySource[x.topicId] ??= []).push(x);
+      const catalog: Catalog = {
+        topics, generalRules: meta.general ?? general?.rules ?? DEFAULT_GENERAL_RULES,
+        systems: meta.vocab?.systems ?? vocab?.systems ?? SEED_AUX.systems, tags: meta.vocab?.tags ?? vocab?.tags ?? DEFAULT_TAGS,
+        settings: { ...defaultSettings(new Date(this.now())), ...(meta.settings ?? settings ?? {}) },
+        years: meta.years ?? years?.years ?? defaultYears(new Date(this.now())),
+        generatedAt: meta.generatedAt, sourceCounts: meta.sourceCounts ?? {}, sources: bySource, newItems: meta.newItems ?? [],
+        origin: this.mode === 'demo' ? 'demo' : 'service',
       };
+      cache?.write({ checkedAt: t, catalog });
+      return catalog;
     } catch (e) {
+      // כשל בקריאה: עותק שמור מוצג כשמור (stale) ולא כעדכני
+      if (cached) return { ...cached.catalog, stale: true };
       if (this.mode === 'service') return { ...buildBundledCatalog(this.now()), origin: 'bundled' };
       throw e;
     }
@@ -424,12 +439,58 @@ export class Api {
     if (!t) throw new Error('הנושא לא נמצא.');
     return this.saveTopic({ ...t, publish, addedYear: addedYear === undefined ? t.addedYear : addedYear }, t.version);
   }
-  /** בונה מחדש את קטלוג הציבור (מסמכים מקובצים) כדי לחסוך קריאות. טיוטות ונושאים שהוסרו אינם נכללים. */
-  async publishCatalog(): Promise<{ topics: number; chunks: number }> {
+  /**
+   * מפרסם את העותק הציבורי (נושאים, מקורות, "מה נוסף השנה", הגדרות ציבוריות) בפעולה אטומית אחת, ואז קורא אותו בחזרה כדי לוודא שנשמר.
+   * אם משהו נכשל, השגיאה מוצגת למנהל והעותק הציבורי נשאר כפי שהיה (לא חצי־מעודכן). טיוטות ונושאים שהוסרו אינם נכללים.
+   */
+  async publishCatalog(): Promise<{ topics: number; chunks: number; sources: number; newItems: number; generatedAt: number }> {
     const c = await this.need('admin');
-    const built = await buildCatalogOps(this.store, this.now());
-    await this.store.batch([...built.ops, this.audit('publish_catalog', `${built.topics} topics`, c.user!.uid)]);
-    return { topics: built.topics, chunks: built.chunks };
+    const at = this.now();
+    const built = await buildCatalogOps(this.store, at);
+    await this.store.batch([...built.ops, this.audit('publish_catalog', `${built.topics} topics, ${built.sources} sources, ${built.newItems} new`, c.user!.uid)]);
+    this.snapshotCache?.clear();
+    const back = await this.store.get<CatalogMeta>('public/catalogMeta');
+    if (!back || back.generatedAt !== at) throw new Error('הפרסום לא אומת: העותק הציבורי לא נקרא בחזרה כפי שנכתב. יש לנסות שוב לפני שמסתמכים על השינוי.');
+    return { topics: built.topics, chunks: built.chunks, sources: built.sources, newItems: built.newItems, generatedAt: at };
+  }
+  /** מה ישתנה בפרסום הבא לעומת מה שהציבור רואה עכשיו (תצוגה מקדימה לפני פרסום) */
+  async adminPublishDiff(): Promise<PublishDiff> { await this.need('admin'); return diffAgainstLive(this.store, this.now()); }
+
+  // ───────── "מה נוסף השנה" ─────────
+  async adminListNewItems(): Promise<NewItem[]> {
+    await this.need('admin');
+    return (await this.store.list<NewItem>('newItems')).sort((a, b) => b.publishedAt - a.publishedAt);
+  }
+  async adminSaveNewItem(input: { id?: string; yearId: string; topicId?: string | null; title: string; text: string; publishedAt?: number; visible: boolean }): Promise<NewItem> {
+    const c = await this.need('admin');
+    const title = input.title.trim(), text = input.text.trim();
+    if (title.length < 3 || title.length > 120) throw new Error('כותרת: 3 עד 120 תווים.');
+    if (text.length < 3 || text.length > 600) throw new Error('נדרש תיאור קצר של מה נוסף או השתנה (עד 600 תווים).');
+    if (!input.yearId.trim()) throw new Error('נדרשת שנת לימודים.');
+    if (looksLikePersonalData(`${title} ${text}`)) throw new Error('נראה שהטקסט כולל מספר זיהוי או כתובת מייל. הרשימה ציבורית ואינה מיועדת לפרטי אדם.');
+    const id = input.id ?? `n-${uuid().slice(0, 8)}`;
+    const cur = input.id ? await this.store.get<NewItem>(`newItems/${id}`) : null;
+    const item: NewItem = stripUndefined({
+      id, yearId: input.yearId.trim(), topicId: input.topicId || null, title, text,
+      publishedAt: input.publishedAt ?? cur?.publishedAt ?? this.now(), visible: input.visible,
+      createdBy: cur?.createdBy ?? c.user!.uid, updatedAt: this.now(),
+    });
+    await this.store.batch([{ op: 'set', path: `newItems/${id}`, data: item }, this.audit(cur ? 'update_new_item' : 'add_new_item', id, c.user!.uid)]);
+    return item;
+  }
+  async adminDeleteNewItem(id: string) {
+    const c = await this.need('admin');
+    await this.store.batch([{ op: 'delete', path: `newItems/${id}` }, this.audit('delete_new_item', id, c.user!.uid)]);
+  }
+  /** מנהל מוסיף מקור איתור: בלי מכסה יומית, מסומן כנבדק. מתפרסם לציבור בפרסום הבא. */
+  async adminAddSource(input: SourceInput): Promise<RecruitmentSource> {
+    const c = await this.need('admin');
+    const chk = checkSourceInput(input);
+    if (!chk.ok || !chk.clean) throw new Error(chk.errors.join(' '));
+    const id = `s-${uuid().slice(0, 10)}`;
+    const s: RecruitmentSource = stripUndefined({ id, ...chk.clean, createdBy: c.user!.uid, createdAt: this.now(), visible: true, reviewed: true, reviewedBy: c.user!.uid, reviewedAt: this.now() });
+    await this.store.batch([{ op: 'set', path: `sources/${id}`, data: s }, this.audit('admin_add_source', id, c.user!.uid)]);
+    return s;
   }
   async saveGeneralRules(rules: RuleSet) {
     const c = await this.need('admin');

@@ -138,3 +138,11 @@ export function requestStateLabel(r: Pick<RequestDoc, 'status' | 'decisionKind'>
   }
   return REQUEST_STATUS_LABEL[r.status] ?? r.status;
 }
+
+/** שורת תנאי גיל לתצוגה, לפי הטווח שקודד בנושא. null כשלא קודד תנאי גיל (לא ממציאים). */
+export function ageLine(t: { ageMin: number | null; ageMax: number | null }): string | null {
+  if (t.ageMin !== null && t.ageMax !== null) return `גיל ${t.ageMin}–${t.ageMax} כולל`;
+  if (t.ageMax !== null) return `עד גיל ${t.ageMax} כולל`;
+  if (t.ageMin !== null) return `מגיל ${t.ageMin} ומעלה`;
+  return null;
+}

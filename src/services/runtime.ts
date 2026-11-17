@@ -1,10 +1,12 @@
 import { initializeApp } from 'firebase/app';
 import { initializeFirestore, memoryLocalCache } from 'firebase/firestore';
+import { V1 } from '../features';
 import { Api, Mode } from './api';
 import { AuthService, DemoAuthService, FirebaseAuthService, NoAuthService } from './auth';
 import { DEMO_ACCOUNTS, seedStore } from './demoSeed';
 import { FirestoreStore } from './firestoreStore';
 import { LocalStore } from './localStore';
+import { localStorageSnapshotCache } from './snapshotCache';
 
 export interface Runtime { api: Api; auth: AuthService; mode: Mode; demoAvailable: boolean; demo?: DemoAuthService; notice?: string }
 
@@ -49,7 +51,9 @@ export async function createRuntime(): Promise<Runtime> {
     const app = initializeApp(cfg);
     const db = initializeFirestore(app, { localCache: memoryLocalCache() }); // בלי IndexedDB: אין מטמון מתמשך
     const auth = new FirebaseAuthService(app);
-    return { api: new Api(new FirestoreStore(db), auth, 'service'), auth, mode: 'service', demoAvailable: DEMO_ENABLED };
+    const api = new Api(new FirestoreStore(db), auth, 'service');
+    api.snapshotCache = localStorageSnapshotCache; // מידע ציבורי בלבד, לחיסכון בקריאות
+    return { api, auth, mode: 'service', demoAvailable: DEMO_ENABLED };
   }
   if (wantsDemo()) {
     const store = new LocalStore(DEMO_DB);
@@ -61,6 +65,8 @@ export async function createRuntime(): Promise<Runtime> {
   const auth = new NoAuthService();
   return {
     api: new Api(new LocalStore(null, true), auth, 'bundled'), auth, mode: 'bundled', demoAvailable: DEMO_ENABLED,
-    notice: 'שירות הנתונים אינו מוגדר. התוכן מוצג מקובץ מובנה, בקריאה בלבד. כניסה, שמירת קבוצות, הוספת מקורות והגשת בקשות אינם זמינים.',
+    notice: V1
+      ? 'שירות הנתונים אינו מוגדר. התוכן מוצג מקובץ מובנה (מיפוי ראשוני), בקריאה בלבד. ממשק הניהול אינו זמין בעותק זה.'
+      : 'שירות הנתונים אינו מוגדר. התוכן מוצג מקובץ מובנה, בקריאה בלבד. כניסה, שמירת קבוצות, הוספת מקורות והגשת בקשות אינם זמינים.',
   };
 }

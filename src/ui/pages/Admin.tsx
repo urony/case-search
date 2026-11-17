@@ -14,22 +14,29 @@ import CaseCheck from './CaseCheck';
 import { TopicCard } from './Home';
 import RuleSetEditor from './RuleEditor';
 import { BackupAdmin } from './AdminOps';
+import { V1 } from '../../features';
+import { AdminAddSource, DashboardV1, PublishAdmin, WhatsNewAdmin } from './AdminV1';
+import { TopicBody } from '../v1/TopicBody';
 
 export default function Admin() {
   const { ctx } = useSession();
   const { mode } = useRT();
-  if (!ctx.user) return <Notice kind="warn">אזור הניהול דורש <Link to="/login?next=/admin">כניסה</Link>.</Notice>;
+  if (!ctx.user) return <Notice kind="warn">אזור הניהול דורש <Link to="/login?next=/admin">כניסת מנהל</Link>.</Notice>;
   if (ctx.role !== 'admin') return <Notice kind="bad" title="אין הרשאה. ">אזור זה מיועד למנהלי האתר. ההרשאה נאכפת גם בצד השירות.</Notice>;
   const { badges } = useSession();
   const cnt = (to: string): number => ({ '/admin/requests': badges.admin?.openRequests ?? 0, '/admin/sources': (badges.admin?.unreviewedSources ?? 0) + (badges.admin?.openReports ?? 0), '/admin/suggestions': badges.admin?.openSuggestions ?? 0 } as Record<string, number>)[to] ?? 0;
-  const links: [string, string][] = [['/admin', 'תמונת מצב'], ['/admin/topics', 'מחלות וכללים'], ['/admin/requests', 'בקשות והחלטות'], ['/admin/sources', 'מקורות איתור'], ['/admin/suggestions', 'הצעות'], ['/admin/schools', 'מוסדות'], ['/admin/cycles', 'מחזורים'], ['/admin/teachers', 'מורים מאושרים'], ['/admin/users', 'תפקידים (רכז, מנהל)'], ['/admin/questions', 'בירורים מקצועיים'], ['/admin/rules', 'כללי סף כלליים'], ['/admin/settings', 'הגדרות'], ['/admin/backup', 'גיבוי ושחזור']];
+  const linksV1: [string, string][] = [['/admin', 'תמונת מצב'], ['/admin/topics', 'מחלות וכללים'], ['/admin/sources', 'מקורות איתור'], ['/admin/whats-new', 'מה נוסף השנה'], ['/admin/publish', 'פרסום לציבור'], ['/admin/questions', 'בירורים מקצועיים'], ['/admin/rules', 'כללי סף כלליים'], ['/admin/settings', 'הגדרות'], ['/admin/users', 'מנהלים ותפקידים'], ['/admin/backup', 'גיבוי ושחזור']];
+  const linksFull: [string, string][] = [['/admin', 'תמונת מצב'], ['/admin/topics', 'מחלות וכללים'], ['/admin/requests', 'בקשות והחלטות'], ['/admin/sources', 'מקורות איתור'], ['/admin/suggestions', 'הצעות'], ['/admin/schools', 'מוסדות'], ['/admin/cycles', 'מחזורים'], ['/admin/teachers', 'מורים מאושרים'], ['/admin/users', 'תפקידים (רכז, מנהל)'], ['/admin/questions', 'בירורים מקצועיים'], ['/admin/rules', 'כללי סף כלליים'], ['/admin/settings', 'הגדרות'], ['/admin/backup', 'גיבוי ושחזור'], ['/admin/whats-new', 'מה נוסף השנה'], ['/admin/publish', 'פרסום לציבור']];
+  const links = V1 ? linksV1 : linksFull;
   return (
     <div className="admin">
       <nav aria-label="ניווט ניהול">{links.map(([to, l]) => <NavLink key={to} to={to} end={to === '/admin'} className={({ isActive }) => (isActive ? 'active' : '')}>{l}{cnt(to) > 0 && <span className="count">{cnt(to)}</span>}</NavLink>)}</nav>
       <div className="stack" style={{ minInlineSize: 0 }}>
         {mode === 'demo' && <Notice kind="warn">מצב הדגמה: כל הנתונים מלאכותיים ושמורים בדפדפן זה בלבד.</Notice>}
         <Routes>
-          <Route index element={<Dashboard />} />
+          <Route index element={V1 ? <DashboardV1 /> : <Dashboard />} />
+          <Route path="whats-new" element={<WhatsNewAdmin />} />
+          <Route path="publish" element={<PublishAdmin />} />
           <Route path="topics" element={<TopicsAdmin />} />
           <Route path="topics/:id" element={<TopicEditor />} />
           <Route path="requests" element={<RequestsAdmin />} />
@@ -104,7 +111,7 @@ function TopicsAdmin() {
   const [plan, setPlan] = useState<Awaited<ReturnType<typeof api.previewSeedImport>> | null>(null);
   const { busy, error, run } = useBusy();
   const [msg, setMsg] = useState<string | null>(null);
-  const list = (topics.data ?? []).filter(t => (!q || t.he.includes(q) || t.en.toLowerCase().includes(q.toLowerCase())) && (!flt || (flt === 'review' ? t.coverage.level !== 'full' : flt === 'unclassified' ? t.kind === 'unclassified' : flt === 'sys' ? t.systemsNeedReview : flt === 'draft' ? t.publish !== 'published' : true))).sort((a, b) => a.he.localeCompare(b.he, 'he'));
+  const list = (topics.data ?? []).filter(t => (!q || t.he.includes(q) || t.en.toLowerCase().includes(q.toLowerCase())) && (!flt || (flt === 'review' ? t.coverage.level !== 'full' : flt === 'unclassified' ? t.kind === 'unclassified' : flt === 'sys' ? t.systemsNeedReview : flt === 'draft' ? t.publish !== 'published' : flt === 'unchecked' ? t.sourceMapped : true))).sort((a, b) => a.he.localeCompare(b.he, 'he'));
   return (
     <div className="stack">
       <div className="row between"><h2>מחלות וכללים</h2><Link className="btn" to="/admin/topics/new">נושא חדש</Link></div>
@@ -121,7 +128,7 @@ function TopicsAdmin() {
       </div>
       <div className="row">
         <input type="search" placeholder="סינון לפי שם" aria-label="סינון לפי שם" value={q} onChange={e => setQ(e.target.value)} style={{ maxInlineSize: 280 }} />
-        <select aria-label="תצוגה" value={flt} onChange={e => setFlt(e.target.value)} style={{ inlineSize: 'auto' }}><option value="">הכול</option><option value="review">כיסוי כללים אינו מלא</option><option value="unclassified">טרם סווגו (סוג רשומה)</option><option value="sys">שיוך מערכת לבדיקה</option><option value="draft">טיוטה או לא מפורסם</option></select>
+        <select aria-label="תצוגה" value={flt} onChange={e => setFlt(e.target.value)} style={{ inlineSize: 'auto' }}><option value="">הכול</option><option value="review">כיסוי כללים אינו מלא</option><option value="unclassified">טרם סווגו (סוג רשומה)</option><option value="sys">שיוך מערכת לבדיקה</option><option value="draft">טיוטה או לא מפורסם</option><option value="unchecked">מיפוי ראשוני שטרם נבדק</option></select>
         <span className="muted small">{list.length} נושאים</span>
       </div>
       {topics.loading && <Loading />}
@@ -182,10 +189,10 @@ function TopicEditor() {
     if (publishNow && !confirm(`סיכום השפעה:\n· הכרטיס יפורסם בקטלוג הציבורי כפי שנראה בלשונית "תצוגה מקדימה".\n· השינוי חל קדימה בלבד: בדיקות חדשות ישתמשו בכללים החדשים; החלטות קודמות אינן נפתחות מחדש.\n· קבוצות פעילות בנושא: ${groups}.\nלפרסם?`)) return;
     const saved = await run(async () => {
       const s = await api.saveTopic(next, baseVersion);
-      if (s.publish === 'published' || t!.publish === 'published' || publishNow) { await api.publishCatalog(); reload(); }
+      if (V1 ? publishNow : (s.publish === 'published' || t!.publish === 'published' || publishNow)) { await api.publishCatalog(); reload(); }
       return s;
     });
-    if (saved) { setT(saved); setBase(saved.version); setMsg(`נשמר כגרסה ${saved.version}${saved.publish === 'published' ? ' ופורסם בקטלוג' : ''}.`); if (id === 'new') nav(`/admin/topics/${saved.id}`, { replace: true }); }
+    if (saved) { setT(saved); setBase(saved.version); setMsg(V1 ? (publishNow ? `נשמר כגרסה ${saved.version} ופורסם לציבור.` : `נשמר כגרסה ${saved.version}. טרם פורסם לציבור: יש לפרסם בכפתור "שמירה ופרסום" או במסך "פרסום לציבור".`) : `נשמר כגרסה ${saved.version}${saved.publish === 'published' ? ' ופורסם בקטלוג' : ''}.`); if (id === 'new') nav(`/admin/topics/${saved.id}`, { replace: true }); }
   }
   const conflict = error?.includes('שונתה בידי משתמש אחר');
   return (
@@ -263,9 +270,11 @@ function TopicEditor() {
 
       {tab === 'preview' && (
         <div className="stack">
-          <Notice kind="info">כך המורה יראה את הכרטיס ואת הבדיקה. נתוני הדמיה מלאכותיים בלבד.</Notice>
-          <TopicCard topic={t} sources={0} />
-          <CaseCheck topic={t} general={catalog.generalRules} policyLabel={POLICY_LABEL[t.policy]} officialFormUrl={catalog.settings.officialFormUrl} simulate />
+          <Notice kind="info">{V1 ? 'כך הכרטיס ייראה לציבור אחרי הפרסום. מקורות האיתור המוצגים הם המפורסמים כרגע.' : 'כך המורה יראה את הכרטיס ואת הבדיקה. נתוני הדמיה מלאכותיים בלבד.'}</Notice>
+          {V1
+            ? <TopicBody topic={t} systems={catalog.systems} generalText={catalog.generalRules.rules.find(r => r.status === 'published')?.teacherText} sources={catalog.sources?.[t.id] ?? []} />
+            : <><TopicCard topic={t} sources={0} />
+          <CaseCheck topic={t} general={catalog.generalRules} policyLabel={POLICY_LABEL[t.policy]} officialFormUrl={catalog.settings.officialFormUrl} simulate /></>}
         </div>
       )}
 
@@ -273,7 +282,7 @@ function TopicEditor() {
 
       <div className="card row" style={{ position: 'sticky', insetBlockEnd: 8 }}>
         <button className="btn secondary" disabled={busy} onClick={() => save(false)}>שמירה</button>
-        <button className="btn" disabled={busy || errors.length > 0 || !t.he.trim()} onClick={() => save(true)}>שמירה ופרסום בקטלוג</button>
+        <button className="btn" disabled={busy || errors.length > 0 || !t.he.trim()} onClick={() => save(true)}>{V1 ? 'שמירה ופרסום לציבור' : 'שמירה ופרסום בקטלוג'}</button>
         {errors.length > 0 && <span className="err small">לא ניתן לפרסם עד תיקון השגיאות בלשונית "תנאים".</span>}
         {msg && <span role="status">{msg}</span>}
         {error && <span className="err" role="alert">{error}{conflict && <> <button className="btn small" onClick={() => { setT(null); loaded.reload(); setError(null); }}>טעינה מחדש</button></>}</span>}
@@ -378,7 +387,8 @@ function SourcesAdmin() {
   const { api } = useRT();
   const { catalog, reloadSources } = useCatalog();
   const { refreshBadges } = useSession();
-  const [only, setOnly] = useState<'new' | 'all'>('new');
+  const [only, setOnly] = useState<'new' | 'all'>(V1 ? 'all' : 'new');
+  const [adding, setAdding] = useState(false);
   const s = useAsync(() => api.adminListSources(only === 'new'), [api, only]);
   const reports = useAsync(() => api.adminListSourceReports(true), [api]);
   const names = useAsync(() => api.adminProfileNames(), [api]);
@@ -390,6 +400,9 @@ function SourcesAdmin() {
   return (
     <div className="stack">
       <h2>מקורות איתור</h2>
+      {V1 && <Notice kind="info">מקורות האיתור מוזנים כאן בידי מנהל. הוספה, עריכה או הסרה מופיעות לציבור אחרי <Link to="/admin/publish">פרסום</Link>.</Notice>}
+      <div><button className="btn" onClick={() => setAdding(a => !a)}>{adding ? 'סגירה' : 'הוספת מקור'}</button></div>
+      {adding && <AdminAddSource onDone={() => { setAdding(false); reload(); }} />}
       <p className="muted small">מקור שמורה מוסיף מתפרסם מיד, ומופיע כאן כ"חדש" עד שמסמנים "נבדק". רק מנהל יכול לערוך או להסיר. דיווח אינו מסתיר מקור אוטומטית. כל משתמש יכול להוסיף עד 5 מקורות ביום.</p>
       <div className="tabs-lite" role="group" aria-label="סינון מקורות"><button className="chip" aria-pressed={only === 'new'} onClick={() => setOnly('new')}>חדשים שטרם נבדקו</button><button className="chip" aria-pressed={only === 'all'} onClick={() => setOnly('all')}>כל המקורות</button></div>
       {unreviewed.length > 1 && <div><button className="btn small" disabled={busy} onClick={() => run(() => api.adminMarkSourcesReviewed(unreviewed.map(x => x.id))).then(reload)}>סימון כל החדשים כנבדקו ({unreviewed.length})</button></div>}

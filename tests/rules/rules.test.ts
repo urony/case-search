@@ -376,3 +376,48 @@ describe('גישה ישירה למסד (עוקפת את כפתורי האתר)',
     await assertFails(ctx('t2').doc('schoolHistory/s2_2027-28').set({ schoolId: 's2', yearId: '2027-28', items: [], updatedAt: NOW }));
   });
 });
+
+describe('גרסה ראשונה: ניהול התוכן הציבורי (מנהל בלבד)', () => {
+  const adminSrc = { topicId: 't', title: 'מקור שהוזן בידי מנהל', kind: 'association', text: 'טקסט', url: 'https://example.org', phone: '', region: '', population: '', createdBy: 'admin1', createdAt: NOW, visible: true, reviewed: true };
+  const newItem = { yearId: '2027-28', topicId: null, title: 'כותרת', text: 'טקסט', publishedAt: NOW, visible: true, createdBy: 'admin1', updatedAt: NOW };
+
+  it('הציבור קורא את העותק הציבורי כולו (מסמך ראשי, נושאים, מקורות, מה נוסף)', async () => {
+    await env.withSecurityRulesDisabled(async c => { await c.firestore().doc('public/sources_0').set({ sources: [] }); });
+    const db = ctx(null);
+    await assertSucceeds(db.doc('public/catalogMeta').get());
+    await assertSucceeds(db.doc('public/sources_0').get());
+  });
+  for (const who of [null, 't1', 't3', 't4', 'coord1'] as const) {
+    it(`${who ?? 'אורח'} אינו כותב לעותק הציבורי ואינו מוחק אותו`, async () => {
+      const db = ctx(who);
+      await assertFails(db.doc('public/catalogMeta').set({ chunks: 1, generatedAt: 1 }));
+      await assertFails(db.doc('public/catalog_0').set({ topics: [] }));
+      await assertFails(db.doc('public/sources_0').set({ sources: [] }));
+      await assertFails(db.doc('public/catalogMeta').delete());
+    });
+    it(`${who ?? 'אורח'} אינו קורא או כותב את "מה נוסף השנה" במאגר הראשי`, async () => {
+      const db = ctx(who);
+      await assertFails(db.doc('newItems/n1').get());
+      await assertFails(db.collection('newItems').get());
+      await assertFails(db.doc('newItems/n1').set(newItem));
+    });
+    it(`${who ?? 'אורח'} אינו מוסיף מקור בדרך של מנהל (מזהה חופשי)`, async () => {
+      await assertFails(ctx(who).doc('sources/s-free').set(adminSrc));
+    });
+  }
+  it('מנהל מאומת כותב ומוחק פריטים ומפרסם עותק ציבורי', async () => {
+    const db = ctx('admin1');
+    await assertSucceeds(db.doc('newItems/n1').set(newItem));
+    await assertSucceeds(db.collection('newItems').get());
+    await assertSucceeds(db.doc('public/catalogMeta').set({ chunks: 1, generatedAt: 2 }));
+    await assertSucceeds(db.doc('public/sources_0').set({ sources: [] }));
+    await assertSucceeds(db.doc('sources/s-free').set(adminSrc));
+    await assertSucceeds(db.doc('newItems/n1').delete());
+  });
+  it('מנהל שהמייל שלו לא אומת אינו כותב דבר', async () => {
+    const db = ctx('admin1', false);
+    await assertFails(db.doc('public/catalogMeta').set({ chunks: 1 }));
+    await assertFails(db.doc('newItems/n1').set(newItem));
+    await assertFails(db.doc('sources/s-free').set(adminSrc));
+  });
+});

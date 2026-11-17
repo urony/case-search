@@ -144,3 +144,13 @@ pre { background: #f0f2f6; padding: 10px; border-radius: 8px; overflow: auto; fo
 .chip { border: 1px solid var(--line); background: transparent; padding: 4px 12px; border-radius: 999px; cursor: pointer; font: inherit; }
 .chip[aria-pressed=true] { background: var(--brand); color: #fff; border-color: transparent; }
 .isnew { border-inline-start: 4px solid #b42318; }
+
+/* גרסה ראשונה: מסך פתיחה ציבורי */
+.bigactions { justify-content: center; margin-block-start: 16px; }
+.bigactions .btn { font-size: 1.05rem; padding: 10px 20px; }
+.btn.newbtn { background: var(--warn-bg); color: var(--warn); border: 2px solid #ecd391; text-decoration: none; font-weight: 700; }
+.btn.newbtn:hover { background: #ffe9ae; color: var(--warn); }
+.syspanel { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-block: 12px; }
+.topic-full h3 { font-size: 1.1rem; }
+.topic-full section + section { border-block-start: 1px solid var(--line); padding-block-start: 10px; }
+@media (max-width: 600px) { .hero h2 { font-size: 1.5rem; } .searchbox { flex-direction: column; } .bigactions .btn { inline-size: 100%; text-align: center; } }

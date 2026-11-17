@@ -55,6 +55,8 @@ service cloud.firestore {
       allow read: if isAdmin();
       allow create: if isAdmin();   // גרסה מפורסמת אינה נדרסת: אין עדכון או מחיקה
     }
+    // "מה נוסף השנה": המנהל עורך כאן; הציבור קורא רק את העותק שב-public
+    match /newItems/{id} { allow read, write: if isAdmin(); }
     match /seedEntries/{id} { allow read, write: if isAdmin(); }
     match /suggestions/{id} { allow read, write: if isAdmin(); }
     match /policyQuestions/{id} { allow read, write: if isAdmin(); }
@@ -75,7 +77,8 @@ service cloud.firestore {
     match /sources/{id} {
       allow read: if resource == null || resource.data.visible == true || isAdmin();   // resource==null: בדיקת קיום לצורך חוזר־בטוח
         // מקור מתפרסם מיד. מכסה: עד 5 ביום למשתמש (מבנה המזהה). reviewed=false עד שמנהל מסמן. נרשם מי הוסיף (מזהה משתמש בלבד, כי המקורות ציבוריים) ומתי.
-      allow create: if approved() && slotId(id, 5)
+      // מנהל מוסיף מקור בלי מכסה (גרסה ראשונה: רק מנהל מזין מקורות)
+      allow create: if isAdmin() || (approved() && slotId(id, 5)
         && request.resource.data.keys().hasOnly(['topicId', 'title', 'kind', 'text', 'url', 'phone', 'region', 'population', 'createdBy', 'createdAt', 'visible', 'reviewed', 'clientId'])
         && request.resource.data.createdBy == uid()
         && request.resource.data.visible == true
@@ -87,7 +90,7 @@ service cloud.firestore {
         && request.resource.data.phone is string && request.resource.data.phone.size() <= 20
         && request.resource.data.region is string && request.resource.data.region.size() <= 80
         && request.resource.data.population is string && request.resource.data.population.size() <= 120
-        && isNum(request.resource.data.createdAt);
+        && isNum(request.resource.data.createdAt));
       // גם מי שהוסיף מקור אינו יכול לערוך, להסתיר או למחוק אותו (R03, סעיף 13.2)
       allow update, delete: if isAdmin();
     }

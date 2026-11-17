@@ -1,7 +1,13 @@
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import type { Difficulty, Policy, Topic } from '../domain/types';
+import { V1 } from '../features';
 
-export const POLICY_LABEL: Record<Policy, string> = {
+export const POLICY_LABEL: Record<Policy, string> = V1 ? {
+  suitable: 'מאושר כנושא',
+  conditional: 'מאושר בתנאים',
+  not_suitable: 'אינו מאושר כנושא',
+  needs_review: 'דורש בירור',
+} : {
   suitable: 'מתאים כנושא',
   conditional: 'מתאים בתנאים',
   not_suitable: 'לא מתאים לפי הכלל הנוכחי',

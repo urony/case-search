@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { V1 } from '../../features';
 import { academicYear } from '../../domain/years';
 import type { Group, GroupStatus, RequestDoc } from '../../domain/types';
 import { authErrorHe, DemoAuthService } from '../../services/auth';
@@ -46,8 +47,10 @@ export function Login() {
   }
   return (
     <div className="stack" style={{ maxInlineSize: 520, marginInline: 'auto' }}>
-      <h2>כניסה או הרשמה</h2>
-      <p className="muted">כניסה נדרשת לשמירת קבוצות, הוספת מקורות והגשת בקשות. אפשר להירשם עם כתובת מייל מכל ספק; הכתובת תאומת.</p>
+      <h2>{V1 ? 'כניסת מנהלים' : 'כניסה או הרשמה'}</h2>
+      {V1
+        ? <p className="muted">הכניסה מיועדת למנהלי האתר בלבד. החיפוש והעיון באתר פתוחים לכולם ללא כניסה. יצירת חשבון אינה מעניקה הרשאה: הרשאת מנהל ניתנת רק בידי בעל האתר, והיא נבדקת בצד השירות.</p>
+        : <p className="muted">כניסה נדרשת לשמירת קבוצות, הוספת מקורות והגשת בקשות. אפשר להירשם עם כתובת מייל מכל ספק; הכתובת תאומת.</p>}
       <Tabs tabs={[{ id: 'in', label: 'כניסה' }, { id: 'up', label: 'הרשמה' }, { id: 'reset', label: 'איפוס סיסמה' }]} value={tab} onChange={t => { setTab(t); setError(null); setInfo(null); }} />
       <form className="card stack" onSubmit={submit}>
         {tab === 'up' && <Field label="שם לתצוגה"><input type="text" value={name} onChange={e => setName(e.target.value)} autoComplete="name" /></Field>}

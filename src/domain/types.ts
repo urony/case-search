@@ -186,6 +186,29 @@ export interface Settings {
   currentYearId: string;
 }
 
+/** פריט ב"מה נוסף השנה": תוספת או עדכון מהותי שמנהל בחר לפרסם. אינו נוצר אוטומטית מייבוא או משינוי קטן. */
+export interface NewItem {
+  id: string;
+  yearId: string;
+  topicId: string | null;
+  title: string;
+  text: string;
+  publishedAt: number;
+  visible: boolean;
+  /** מזהה המנהל שיצר. אינו נכלל בעותק הציבורי */
+  createdBy?: string;
+  updatedAt: number;
+}
+/** מקור איתור כפי שהוא מופיע בעותק הציבורי: בלי מזהי משתמש, בלי מצב בדיקה פנימי */
+export interface PublicSource {
+  id: string; topicId: string; title: string; kind: SourceKind; text: string; url: string; phone: string; region: string; population: string; createdAt: number;
+}
+/** המסמך הראשי של העותק הציבורי: קריאה אחת בכל ביקור מספיקה כדי לדעת אם העותק המקומי עדכני */
+export interface CatalogMeta {
+  chunks: number; sourceChunks?: number; generatedAt: number; sourceCounts?: Record<string, number>;
+  general?: RuleSet; vocab?: { systems: SystemDef[]; tags: TagDef[] }; settings?: Settings; years?: AcademicYear[]; newItems?: NewItem[];
+}
+
 export interface AuditEvent { id: string; at: number; actor: string; action: string; ref: string; scope: string }
 
 export interface Catalog {
@@ -198,5 +221,10 @@ export interface Catalog {
   generatedAt: number;
   /** מספר מקורות לכל נושא נכון לפרסום הקטלוג האחרון (חוסך קריאה לכל מקור בכל ביקור) */
   sourceCounts?: Record<string, number>;
+  /** מקורות האיתור הגלויים לפי נושא, מהעותק הציבורי (ללא קריאה נפרדת לכל נושא) */
+  sources?: Record<string, PublicSource[]>;
+  newItems?: NewItem[];
+  /** true: לא ניתן היה לרענן, מוצג עותק שמור מביקור קודם (generatedAt הוא מועד העדכון של אותו עותק) */
+  stale?: boolean;
   origin: 'bundled' | 'service' | 'demo';
 }
