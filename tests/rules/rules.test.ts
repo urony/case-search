@@ -37,7 +37,9 @@ beforeEach(async () => {
   });
 });
 
-const src = (uid: string) => ({ topicId: 't', title: 'עמותה מלאכותית', kind: 'association', text: 'טקסט', url: 'https://example.org', phone: '', region: '', population: '', createdBy: uid, createdAt: NOW, visible: true });
+const src = (uid: string) => ({ topicId: 't', title: 'עמותה מלאכותית', kind: 'association', text: 'טקסט', url: 'https://example.org', phone: '', region: '', population: '', createdBy: uid, createdAt: NOW, visible: true, reviewed: false });
+const DAY = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+const slot = (uid: string, n: number, day = DAY) => `${uid}_${day}_${n}`;
 
 describe('T01/T02 אורח', () => {
   it('קורא קטלוג ציבורי ומקורות גלויים בלבד', async () => {
@@ -62,20 +64,47 @@ describe('T01/T02 אורח', () => {
 });
 
 describe('T07/T08/T30 מקורות', () => {
-  it('מורה מאומת מוסיף; לא מאומת לא', async () => {
-    await assertSucceeds(ctx('t1').doc('sources/new').set(src('t1')));
-    await assertFails(ctx('t1', false).doc('sources/new2').set(src('t1')));
+  it('מורה מאומת מוסיף במזהה יומי תקין; לא מאומת לא', async () => {
+    await assertSucceeds(ctx('t1').doc(`sources/${slot('t1', 1)}`).set(src('t1')));
+    await assertFails(ctx('t1', false).doc(`sources/${slot('t1', 2)}`).set(src('t1')));
   });
-  it('דוחה javascript: ושדה visible=false או createdBy של אחר', async () => {
-    await assertFails(ctx('t1').doc('sources/a').set({ ...src('t1'), url: 'javascript:alert(1)' }));
-    await assertFails(ctx('t1').doc('sources/b').set({ ...src('t1'), visible: false }));
-    await assertFails(ctx('t1').doc('sources/c').set(src('t2')));
+  it('מכסה יומית נאכפת בשירות: עד 5, מזהה של אחר או תאריך אחר נדחים, ומזהה חופשי נדחה', async () => {
+    for (let n = 1; n <= 5; n++) await assertSucceeds(ctx('t1').doc(`sources/${slot('t1', n)}`).set(src('t1')));
+    await assertFails(ctx('t1').doc(`sources/${slot('t1', 6)}`).set(src('t1')));            // מעל המכסה
+    await assertFails(ctx('t1').doc(`sources/${slot('t1', 0)}`).set(src('t1')));            // n=0
+    await assertFails(ctx('t1').doc(`sources/${slot('t1', 1, '20200101')}`).set(src('t1'))); // תאריך מומצא: עוקף מכסה
+    await assertFails(ctx('t1').doc(`sources/${slot('t2', 1)}`).set(src('t1')));            // מזהה של משתמש אחר
+    await assertFails(ctx('t1').doc('sources/new').set(src('t1')));                            // מזהה חופשי
+    // עדכון המסמך הקיים (דריסה) אסור למוסיף
+    await assertFails(ctx('t1').doc(`sources/${slot('t1', 1)}`).set({ ...src('t1'), title: 'דריסה של מקור קיים' }));
   });
-  it('גם המוסיף אינו עורך, מסתיר או מוחק; מנהל כן', async () => {
+  it('דוחה javascript:, visible=false, reviewed=true, createdBy של אחר ושדות לא מוכרים', async () => {
+    await assertFails(ctx('t1').doc(`sources/${slot('t1', 1)}`).set({ ...src('t1'), url: 'javascript:alert(1)' }));
+    await assertFails(ctx('t1').doc(`sources/${slot('t1', 1)}`).set({ ...src('t1'), visible: false }));
+    await assertFails(ctx('t1').doc(`sources/${slot('t1', 1)}`).set({ ...src('t1'), reviewed: true }));
+    await assertFails(ctx('t1').doc(`sources/${slot('t1', 1)}`).set(src('t2')));
+    await assertFails(ctx('t1').doc(`sources/${slot('t1', 1)}`).set({ ...src('t1'), isAdmin: true }));
+  });
+  it('גם המוסיף אינו עורך, מסתיר או מוחק; מנהל כן, כולל סימון נבדק', async () => {
     await assertFails(ctx('t1').doc('sources/s-vis').update({ title: 'חדש' }));
-    await assertFails(ctx('t1').doc('sources/s-vis').update({ visible: false }));
+    await assertFails(ctx('t1').doc('sources/s-vis').update({ reviewed: true }));
     await assertFails(ctx('t1').doc('sources/s-vis').delete());
+    await assertSucceeds(ctx('admin1').doc('sources/s-vis').update({ reviewed: true }));
     await assertSucceeds(ctx('admin1').doc('sources/s-vis').update({ visible: false }));
+  });
+});
+
+describe('דיווחי מקורות (במקום התראות)', () => {
+  const rep1 = (uid: string, sid = 's-vis') => ({ sourceId: sid, reason: 'לא מעודכן', createdBy: uid, createdAt: NOW, handled: false });
+  it('דיווח אחד לכל משתמש ומקור; לא בשם אחר; לא עדכון; מנהל רואה ומטפל', async () => {
+    await assertSucceeds(ctx('t2').doc('sourceReports/t2_s-vis').set(rep1('t2')));
+    await assertFails(ctx('t2').doc('sourceReports/t1_s-vis').set(rep1('t2')));               // מזהה של אחר
+    await assertFails(ctx('t2').doc('sourceReports/t2_s-hid').set({ ...rep1('t2'), handled: true }));
+    await assertFails(ctx('t1').doc('sourceReports/t2_s-vis').get());                          // מורה אחר אינו קורא
+    await assertFails(ctx('t2').doc('sourceReports/t2_s-vis').update({ handled: true }));      // המדווח אינו מטפל
+    await assertSucceeds(ctx('admin1').doc('sourceReports/t2_s-vis').update({ handled: true }));
+    await assertFails(ctx('t1').collection('sourceReports').get());
+    await assertSucceeds(ctx('admin1').collection('sourceReports').get());
   });
 });
 
@@ -86,7 +115,8 @@ describe('T09 מורה אינו משנה תוכן', () => {
     await assertFails(db.doc('config/general').set({ rules: {} }));
     await assertFails(db.doc('public/catalog_0').set({ topics: [] }));
     await assertFails(db.doc('roles/t1').set({ role: 'admin', grantedBy: 't1', grantedAt: 1 }));
-    await assertFails(db.collection('notifications').get());
+    await assertFails(db.doc('notifications/n1').set({ type: 'new_request', refId: 'x', createdAt: NOW, readBy: [], summary: 'x' })); // אין עוד התראות או תור דוא"ל
+    await assertFails(db.doc('outbox/o1').set({ to: 'admins', status: 'queued', subject: 'x', body: 'x', attempts: 0, createdAt: NOW }));
   });
   it('מנהל כן', async () => {
     const db = ctx('admin1');
@@ -133,27 +163,108 @@ describe('T19/T20/T31 קבוצות והרשאות מוסדיות', () => {
 });
 
 describe('בקשות ופרופילים', () => {
-  it('בקשה: בעלים וקריאה למנהל בלבד; מורה משלים רק שדות מותרים', async () => {
-    const r = { createdBy: 't1', status: 'open', description: 'כללי', kind: 'inquiry', createdAt: NOW };
-    await assertSucceeds(ctx('t1').doc('requests/r1').set(r));
-    await assertFails(ctx('t2').doc('requests/r1').get());
-    await assertSucceeds(ctx('admin1').doc('requests/r1').get());
-    await assertSucceeds(ctx('t1').doc('requests/r1').update({ supplement: 'עוד', status: 'open', updatedAt: NOW }));
-    await assertFails(ctx('t1').doc('requests/r1').update({ adminReply: 'אישור' }));
-    await assertFails(ctx('t1').doc('requests/r2').set({ ...r, adminReply: 'אישור עצמי' }));
+  const rq = { createdBy: 't1', status: 'open', description: 'כללי', kind: 'inquiry', createdAt: NOW };
+  it('בקשה: מזהה יומי, בעלים וקריאה למנהל בלבד; מורה משלים רק שדות מותרים', async () => {
+    await assertSucceeds(ctx('t1').doc(`requests/${slot('t1', 1)}`).set(rq));
+    await assertFails(ctx('t1').doc('requests/free-id').set(rq));
+    await assertFails(ctx('t2').doc(`requests/${slot('t1', 1)}`).get());
+    await assertSucceeds(ctx('admin1').doc(`requests/${slot('t1', 1)}`).get());
+    await assertSucceeds(ctx('t1').doc(`requests/${slot('t1', 1)}`).update({ supplement: 'עוד', status: 'open', updatedAt: NOW }));
+    await assertFails(ctx('t1').doc(`requests/${slot('t1', 1)}`).update({ adminReply: 'אישור' }));
+    await assertFails(ctx('t1').doc(`requests/${slot('t1', 1)}`).update({ status: 'answered', decisionKind: 'general_approval' }));
+    await assertFails(ctx('t1').doc(`requests/${slot('t1', 2)}`).set({ ...rq, adminReply: 'אישור עצמי' }));
+    await assertFails(ctx('t1').doc(`requests/${slot('t1', 3)}`).set({ ...rq, repliedAt: NOW }));
+  });
+  it('מכסת בקשות: עד 10 ביום', async () => {
+    for (let n = 1; n <= 10; n++) await assertSucceeds(ctx('t1').doc(`requests/${slot('t1', n)}`).set(rq));
+    await assertFails(ctx('t1').doc(`requests/${slot('t1', 11)}`).set(rq));
+  });
+  it('חיווי "חדש": הבעלים מסמן ראיתי; אחר לא; ולא ביחד עם שינוי אחר', async () => {
+    const id = slot('t1', 1);
+    await env.withSecurityRulesDisabled(async c => { await c.firestore().doc(`requests/${id}`).set({ ...rq, status: 'answered', adminReply: 'מענה', repliedAt: NOW, teacherSeenAt: 0 }); });
+    await assertSucceeds(ctx('t1').doc(`requests/${id}`).update({ teacherSeenAt: NOW }));
+    await assertFails(ctx('t2').doc(`requests/${id}`).update({ teacherSeenAt: NOW }));
+    await assertFails(ctx('t1').doc(`requests/${id}`).update({ teacherSeenAt: NOW, adminReply: 'ניסיון לשנות מענה' }));
+    await assertSucceeds(ctx('admin1').doc(`requests/${id}`).update({ adminReply: 'מענה מעודכן', repliedAt: NOW + 1, teacherSeenAt: 0 }));
   });
   it('פרופיל: רק עצמי, עם מייל מהטוקן', async () => {
     await assertSucceeds(ctx('t1').doc('profiles/t1').set({ uid: 't1', email: 't1@x.test', emailVerified: true, displayName: 'א' }));
     await assertFails(ctx('t1').doc('profiles/t1').set({ uid: 't1', email: 'other@x.test', emailVerified: true, displayName: 'א' }));
     await assertFails(ctx('t1').doc('profiles/t2').get());
   });
-  it('התראה מורה: סוג מוכר בלבד', async () => {
-    await assertSucceeds(ctx('t1').doc('notifications/n1').set({ type: 'source_added', refId: 'x', createdAt: NOW, readBy: [], summary: 'נוסף מקור' }));
-    await assertFails(ctx('t1').doc('notifications/n2').set({ type: 'evil', refId: 'x', createdAt: NOW, readBy: [], summary: 'x' }));
-  });
   it('גרסת נושא מפורסמת אינה נדרסת', async () => {
     await assertSucceeds(ctx('admin1').doc('topicVersions/t-1__v1').set({ he: 'x' }));
     await assertFails(ctx('admin1').doc('topicVersions/t-1__v1').update({ he: 'y' }));
     await assertFails(ctx('admin1').doc('topicVersions/t-1__v1').delete());
+  });
+});
+
+describe('גישה ישירה למסד (עוקפת את כפתורי האתר)', () => {
+  it('מורה אינו קורא נתוני מורה אחר: פרופיל, בקשות, שיוך, תפקיד, קבוצות', async () => {
+    await env.withSecurityRulesDisabled(async c => {
+      const db = c.firestore();
+      await db.doc('profiles/t1').set({ uid: 't1', email: 't1@x.test', emailVerified: true, displayName: 'מורה אחד' });
+      await db.doc(`requests/${slot('t1', 1)}`).set({ createdBy: 't1', status: 'open', description: 'כללי', kind: 'inquiry', createdAt: NOW });
+    });
+    const t2 = ctx('t2');
+    await assertFails(t2.doc('profiles/t1').get());
+    await assertFails(t2.doc(`requests/${slot('t1', 1)}`).get());
+    await assertFails(t2.doc('memberships/t1_s1').get());
+  });
+  it('שאילתות רחבות נדחות: אי אפשר לרשום את כל הקבוצות, הבקשות, הפרופילים או השיוכים', async () => {
+    const t1 = ctx('t1');
+    for (const c of ['groups', 'requests', 'profiles', 'memberships', 'roles', 'sources', 'schools', 'schoolHistory', 'topics', 'audit', 'suggestions', 'seedEntries', 'deletionLedger', 'policyQuestions', 'sourceReports']) {
+      await assertFails(t1.collection(c).get());
+    }
+    // שאילתה מצומצמת לשלי מותרת
+    await assertSucceeds(t1.collection('groups').where('ownerUid', '==', 't1').get());
+    await assertSucceeds(t1.collection('requests').where('createdBy', '==', 't1').get());
+    await assertSucceeds(t1.collection('memberships').where('uid', '==', 't1').get());
+    // שאילתה של מקורות גלויים בלבד מותרת לכולם (זה מה שהאתר עושה)
+    await assertSucceeds(ctx(null).collection('sources').where('visible', '==', true).get());
+  });
+  it('אוספי ניהול סגורים בפני מורה, רכז ואורח', async () => {
+    for (const who of ['t1', 'coord1', null]) {
+      const db = ctx(who as string | null);
+      for (const p of ['audit/a', 'seedEntries/s', 'suggestions/s', 'policyQuestions/q', 'deletionLedger/y', 'topicVersions/t__v1', 'config/backupMeta', 'topics/t-1']) await assertFails(db.doc(p).get());
+      await assertFails(db.doc('suggestions/x').set({ state: 'accepted' }));
+      await assertFails(db.doc('deletionLedger/x').set({ yearId: 'x' }));
+      await assertFails(db.doc('audit/x').set({ at: 1 }));
+      await assertFails(db.doc('config/settings').set({ responseDueDays: 1 }));
+      await assertFails(db.doc('schools/s9').set({ name: 'מוסד מומצא', city: 'x', active: true }));
+    }
+    await assertSucceeds(ctx('admin1').doc('config/backupMeta').set({ lastBackupAt: NOW }));
+    await assertSucceeds(ctx('admin1').doc('config/backupMeta').get());
+  });
+  it('העלאת הרשאות: מורה לא נותן לעצמו תפקיד, לא משנה שיוך של אחר, לא מוחק תפקיד', async () => {
+    await assertFails(ctx('t1').doc('roles/t1').set({ role: 'admin', grantedBy: 't1', grantedAt: 1 }));
+    await assertFails(ctx('t1').doc('roles/admin1').delete());
+    await assertFails(ctx('t1').doc('memberships/t2_s1').update({ endedAt: NOW }));
+    await assertFails(ctx('t1').doc('memberships/t1_s1').update({ schoolId: 's2' }));
+    await assertFails(ctx('coord1').doc('roles/coord1').set({ role: 'admin', grantedBy: 'x', grantedAt: 1 }));
+  });
+  it('רכז: קבוצות מוסדו בלבד, ואינו כותב תוכן', async () => {
+    await assertSucceeds(ctx('coord1').collection('groups').where('schoolId', '==', 's1').get());
+    await assertFails(ctx('coord1').collection('groups').where('schoolId', '==', 's2').get());
+    await assertFails(ctx('coord1').doc('topics/t-1').set({ he: 'x' }));
+    await assertFails(ctx('coord1').doc('sources/s-vis').update({ visible: false }));
+    await assertSucceeds(ctx('coord1').collection('schools').get());
+  });
+  it('משתמש לא מאומת אינו כותב דבר, גם אם יש לו תפקיד', async () => {
+    const u = ctx('admin1', false);
+    await assertFails(u.doc('topics/t-9').set({ he: 'x' }));
+    await assertFails(u.doc('config/settings').set({ x: 1 }));
+    const t = ctx('t1', false);
+    await assertFails(t.doc(`requests/${slot('t1', 1)}`).set({ createdBy: 't1', status: 'open', description: 'כללי', kind: 'inquiry', createdAt: NOW }));
+    await assertFails(t.doc('groups/n9').set({ ownerUid: 't1', schoolId: 's1', yearId: '2027-28', studentCount: 1, students: [] }));
+  });
+  it('מוגבלות ידועה (מתועדת, לא שונתה): חבר במוסד יכול לכתוב להיסטוריית המוסד שלו, כולל פריטים של מורים אחרים', async () => {
+    await assertSucceeds(ctx('t2').doc('schoolHistory/s1_2027-28').set({ schoolId: 's1', yearId: '2027-28', items: [], updatedAt: NOW }));
+    await assertFails(ctx('t2').doc('schoolHistory/s2_2027-28').set({ schoolId: 's2', yearId: '2027-28', items: [], updatedAt: NOW }));
+  });
+  it('היסטוריה: הקריאה פתוחה לפי קוד מוסד ושנה (כפי שהוחלט), ללא רשימה, וללא שמות תלמידים בשדות', async () => {
+    const d = await ctx(null).doc('schoolHistory/s1_2026-27').get();
+    await assertSucceeds(Promise.resolve(d));
+    await assertFails(ctx(null).collection('schoolHistory').get());
   });
 });

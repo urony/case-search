@@ -44,6 +44,7 @@ export class LocalStore implements Store {
   async list<T>(collection: string, where?: Filter[]): Promise<T[]> {
     return Object.entries(this.db[collection] ?? {}).filter(([, d]) => matches(d, where)).map(([id, d]) => ({ ...clone(d), id }) as T);
   }
+  async count(collection: string, where?: Filter[]): Promise<number> { return (await this.list(collection, where)).length; }
   private put(path: string, data: object) {
     const [c, id] = splitPath(path);
     const { id: _ignored, ...rest } = data as any;

@@ -41,7 +41,6 @@ export function defaultSettings(now: Date = new Date()): Settings {
     responsibleName: '',
     responseDueDays: 7,
     submissionNote: 'הגשת נושאים נעשית לפני העבודה המעשית ועד סוף אוקטובר של כיתה י״ב. בקשה מאוחרת מופנית לאחראי אישית; האתר אינו מעניק פטור אוטומטי מהמועד.',
-    emailProviderConfigured: false,
     currentYearId: academicYear(currentStartYear(now)).id,
   };
 }

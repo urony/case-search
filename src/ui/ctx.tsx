@@ -41,7 +41,7 @@ export function CatalogProvider({ children }: { children: ReactNode }) {
   return <CatalogCtx.Provider value={{ catalog, loading, error, reload: load, index, topicById, sourceCounts: counts, reloadSources: loadSources }}>{children}</CatalogCtx.Provider>;
 }
 
-export interface Badges { admin: { openRequests: number; inProgress: number; unreviewedSources: number; openReports: number; openSuggestions: number; overdue: number; total: number } | null; unseenReplies: number }
+export interface Badges { admin: { openRequests: number; inProgress: number; unreviewedSources: number; openReports: number; openSuggestions: number; total: number } | null; unseenReplies: number }
 interface SessionState { ctx: Ctx; refresh: () => Promise<void>; badges: Badges; refreshBadges: (force?: boolean) => void }
 const SessionCtx = createContext<SessionState>(null as unknown as SessionState);
 export const useSession = () => useContext(SessionCtx);

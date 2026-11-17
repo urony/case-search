@@ -1,5 +1,5 @@
 import {
-  collection, deleteDoc, doc, Firestore, getDoc, getDocs, query, runTransaction, setDoc, updateDoc, where, writeBatch,
+  collection, deleteDoc, doc, Firestore, getCountFromServer, getDoc, getDocs, query, runTransaction, setDoc, updateDoc, where, writeBatch,
   QueryConstraint,
 } from 'firebase/firestore';
 import { BatchOp, Filter, splitPath, Store, Tx } from './store';
@@ -18,6 +18,11 @@ export class FirestoreStore implements Store {
     const cs: QueryConstraint[] = filters.map(([f, op, v]) => where(f, op === 'in' ? 'in' : op, v as any));
     const s = await getDocs(cs.length ? query(collection(this.db, coll), ...cs) : collection(this.db, coll));
     return s.docs.map(d => ({ ...d.data(), id: d.id }) as T);
+  }
+  async count(coll: string, filters: Filter[] = []): Promise<number> {
+    const cs: QueryConstraint[] = filters.map(([f, op, v]) => where(f, op === 'in' ? 'in' : op, v as any));
+    const s = await getCountFromServer(cs.length ? query(collection(this.db, coll), ...cs) : collection(this.db, coll));
+    return s.data().count;
   }
   async set(path: string, data: object) { const { id: _i, ...rest } = data as any; await setDoc(this.ref(path), rest); }
   async update(path: string, patch: object) { const { id: _i, ...rest } = patch as any; await updateDoc(this.ref(path), rest); }

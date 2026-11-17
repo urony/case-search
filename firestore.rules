@@ -37,7 +37,7 @@ service cloud.firestore {
     }
     match /config/{doc} {
       // כתובת האחראי נראית רק למשתמשים מחוברים ומאומתים
-      allow read: if doc != 'contact' || verified();
+      allow read: if isAdmin() || (doc != 'contact' && doc != 'backupMeta') || (doc == 'contact' && verified());
       allow write: if isAdmin();
     }
 

@@ -16,6 +16,8 @@ export interface Store {
   readonly kind: 'firestore' | 'local' | 'readonly';
   get<T>(path: string): Promise<T | null>;
   list<T>(collection: string, where?: Filter[]): Promise<T[]>;
+  /** ספירה בלי קריאת המסמכים (ב-Firestore: קריאה אחת לכל 1,000 רשומות באינדקס, לא קריאה לכל מסמך). */
+  count(collection: string, where?: Filter[]): Promise<number>;
   set(path: string, data: object): Promise<void>;
   update(path: string, patch: object): Promise<void>;
   delete(path: string): Promise<void>;

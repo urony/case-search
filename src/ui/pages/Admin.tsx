@@ -63,6 +63,7 @@ function Dashboard() {
   if (d.error || !d.data) return <ErrorBox error={d.error ?? ''} retry={d.reload} />;
   const { b, open, prog, src, rep, bk } = d.data;
   const now = Date.now();
+  const overdue = [...open, ...prog].filter(x => isOverdue(x, now)).length;
   const topicsNotFull = (catalog?.topics ?? []).filter(x => x.coverage.level !== 'full' && x.publish === 'published').length;
   const backupAgeDays = bk ? Math.floor((now - bk.lastBackupAt) / 86_400_000) : null;
   void badges; void refreshBadges;
@@ -71,7 +72,7 @@ function Dashboard() {
       <h2>תמונת מצב</h2>
       <p className="muted small">המערכת אינה שולחת דוא״ל. עדכונים מופיעים כאן וליד "ניהול" בתפריט כשנכנסים לאתר. הספירות נטענות בכניסה ובמעבר בין דפים, לכל היותר פעם בדקה.</p>
       <div className="kpi">
-        <Link className="card" to="/admin/requests"><b>{b.openRequests}</b>בקשות חדשות הממתינות לטיפול{b.overdue > 0 && <span className="badge warn"> {b.overdue} חרגו מהיעד</span>}</Link>
+        <Link className="card" to="/admin/requests"><b>{b.openRequests}</b>בקשות חדשות הממתינות לטיפול{overdue > 0 && <span className="badge warn"> {overdue} חרגו מהיעד</span>}</Link>
         <Link className="card" to="/admin/requests"><b>{b.inProgress}</b>בקשות בטיפול</Link>
         <Link className="card" to="/admin/sources"><b>{b.unreviewedSources}</b>מקורות חדשים שטרם נבדקו</Link>
         <Link className="card" to="/admin/sources"><b>{b.openReports}</b>דיווחים על מקורות</Link>
@@ -628,7 +629,6 @@ function SettingsAdmin() {
           <Field label="יעד טיפול בבקשה (ימים קלנדריים)"><input type="number" min={1} value={s.responseDueDays} onChange={e => setS({ ...s, responseDueDays: Number(e.target.value) })} /></Field>
           <Field label="שנת הלימודים הנוכחית"><select value={s.currentYearId} onChange={e => setS({ ...s, currentYearId: e.target.value })}>{Array.from({ length: 6 }, (_, i) => academicYear(startYearOf(s.currentYearId) - 2 + i)).map(y => <option key={y.id} value={y.id}>{y.label} ({y.id})</option>)}</select></Field>
         </div>
-        <label className="row"><input type="checkbox" checked={s.emailProviderConfigured} onChange={e => setS({ ...s, emailProviderConfigured: e.target.checked })} /> חיבור שליחת דוא״ל אמיתי הוגדר (סמנו רק לאחר חיבור בפועל)</label>
         {error && <p className="err">{error}</p>}
         <div className="row"><button className="btn" disabled={busy} onClick={() => run(() => api.saveSettings(s)).then(r => { if (r !== undefined) { setMsg('נשמר.'); reload(); } })}>שמירת הגדרות</button>{msg && <span role="status">{msg}</span>}</div>
       </div>

@@ -177,7 +177,6 @@ export interface Settings {
   responsibleName: string;
   responseDueDays: number;
   submissionNote: string;
-  emailProviderConfigured: boolean;
   currentYearId: string;
 }
 

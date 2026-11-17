@@ -304,18 +304,17 @@ export class Api {
    * כל ספירה היא שאילתה שקוראת רק את הפריטים הממתינים (לא את כל האוסף),
    * ולכן העלות בקריאות פרופורציונלית למה שמחכה לטיפול.
    */
-  async adminBadges(): Promise<{ openRequests: number; inProgress: number; unreviewedSources: number; openReports: number; openSuggestions: number; overdue: number; total: number }> {
+  async adminBadges(): Promise<{ openRequests: number; inProgress: number; unreviewedSources: number; openReports: number; openSuggestions: number; total: number }> {
     await this.need('admin');
+    // ספירה בלבד (count): עלות של כקריאה אחת לכל 1,000 פריטים ממתינים, ולא קריאה לכל פריט.
     const [open, prog, src, rep, sug] = await Promise.all([
-      this.store.list<RequestDoc>('requests', [['status', '==', 'open']]),
-      this.store.list<RequestDoc>('requests', [['status', '==', 'in_progress']]),
-      this.store.list<RecruitmentSource>('sources', [['reviewed', '==', false]]),
-      this.store.list<SourceReport>('sourceReports', [['handled', '==', false]]),
-      this.store.list<any>('suggestions', [['state', '==', 'open']]),
+      this.store.count('requests', [['status', '==', 'open']]),
+      this.store.count('requests', [['status', '==', 'in_progress']]),
+      this.store.count('sources', [['reviewed', '==', false]]),
+      this.store.count('sourceReports', [['handled', '==', false]]),
+      this.store.count('suggestions', [['state', '==', 'open']]),
     ]);
-    const now = this.now();
-    const overdue = [...open, ...prog].filter(r => r.dueAt < now).length;
-    return { openRequests: open.length, inProgress: prog.length, unreviewedSources: src.length, openReports: rep.length, openSuggestions: sug.length, overdue, total: open.length + src.length + rep.length + sug.length };
+    return { openRequests: open, inProgress: prog, unreviewedSources: src, openReports: rep, openSuggestions: sug, total: open + src + rep + sug };
   }
 
   // ───────── בקשות (סעיף 15) ─────────

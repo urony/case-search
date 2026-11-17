@@ -1,6 +1,7 @@
+# טיוטה להצעת גיבוי אוטומטי (docs/AUTO-BACKUP-PROPOSAL-he.md): כבוי, ואינו מחליף את הגיבוי הידני. שחזור נעשה באתר.
 # גיבוי תוכן שבועי אוטומטי. אינו מופעל עד שמגדירים סוד FIREBASE_SERVICE_ACCOUNT_JSON ומשתנה ENABLE_BACKUP=true
 # ב-Settings > Secrets and variables של המאגר. המאגר חייב להיות פרטי. הגיבוי הוא תוכן בלבד (ללא תלמידים).
-# הקובץ נשמר כ-artifact למשך 90 יום. שחזור: node scripts/restore.mjs <קובץ>.
+# הקובץ נשמר כ-artifact למשך 90 יום. שחזור: באתר, ניהול > גיבוי ושחזור.
 name: backup-content
 on:
   schedule: [{ cron: '0 3 * * 0' }]
