@@ -80,33 +80,38 @@ export function VerifyBanner() {
   );
 }
 
+/** מאומת אך אינו ברשימת המורים המאושרים: עיון בלבד. */
+export function ApprovalBanner() {
+  const { ctx } = useSession();
+  const { catalog } = useCatalog();
+  if (!ctx.user || !ctx.verified || ctx.approved) return null;
+  return (
+    <Notice kind="warn" title="הכתובת שלך עדיין לא אושרה. ">
+      אפשר לחפש נושאים, לקרוא את התנאים ולבדוק התאמת מקרה. שמירת קבוצות, בקשות והוספת מקורות זמינות רק למורים שהפיקוח אישר מראש לפי כתובת המייל. אם אתם מורים בתוכנית, פנו לפיקוח וביקשו להוסיף את הכתובת <bdi className="ltr">{ctx.user.email}</bdi>. {catalog?.settings.responsibleName ? `(איש קשר: ${catalog.settings.responsibleName})` : ''}
+    </Notice>
+  );
+}
+
 // ───────── פרופיל ושיוך מוסדי ─────────
 export function Profile() {
   const { api } = useRT();
   const { ctx } = useSession();
-  const mem = useAsync(async () => (ctx.verified ? api.myMemberships() : []), [api, ctx.verified]);
-  const [code, setCode] = useState('');
-  const { busy, error, run } = useBusy();
+  const mem = useAsync(async () => (ctx.approved ? api.mySchools() : []), [api, ctx.approved]);
   if (!ctx.user) return <Notice kind="warn">יש <Link to="/login?next=/profile">להיכנס</Link>.</Notice>;
   return (
     <div className="stack">
       <h2>פרופיל והקשר מוסדי</h2>
       <div className="card">
         <p>שם: {ctx.user.displayName || '—'}</p><p>מייל: <bdi className="ltr">{ctx.user.email}</bdi> {ctx.verified ? <span className="badge ok">מאומת</span> : <span className="badge warn">לא מאומת</span>}</p>
-        <p>תפקיד: {ctx.role === 'admin' ? 'מנהל אתר' : ctx.role === 'coordinator' ? 'רכז מגמה' : 'מורה'}</p>
+        <p>תפקיד: {ctx.role === 'admin' ? 'מנהל אתר' : ctx.role === 'coordinator' ? 'רכז מגמה' : ctx.approved ? 'מורה מאושר' : 'משתמש שטרם אושר'}</p>
+        {!ctx.approved && ctx.verified && <p className="small muted">הכתובת אינה ברשימת המורים המאושרים, ולכן אפשר רק לעיין.</p>}
       </div>
       <div className="card stack">
         <h3 style={{ margin: 0 }}>המוסדות שלי</h3>
         {mem.loading && <Loading />}
-        {mem.data?.length === 0 && <p className="muted">לא משויכים למוסד. הזינו קוד מוסד כדי להצטרף.</p>}
-        {mem.data?.map(m => <div key={m.id} className="row between"><span>{m.school?.name ?? m.schoolId} <span className="muted small">(קוד <bdi className="ltr">{m.schoolId}</bdi>)</span></span>
-          <button className="btn small secondary" onClick={() => run(() => api.leaveSchool(m.id)).then(mem.reload)}>עזיבת מוסד</button></div>)}
-        <form className="row" onSubmit={e => { e.preventDefault(); run(() => api.joinSchool(code)).then(r => { if (r) { setCode(''); mem.reload(); } }); }}>
-          <input type="text" dir="ltr" value={code} onChange={e => setCode(e.target.value)} placeholder="קוד מוסד" aria-label="קוד מוסד" style={{ maxInlineSize: 200 }} autoComplete="off" />
-          <button className="btn" disabled={busy || !ctx.verified}>הצטרפות בקוד</button>
-        </form>
-        <p className="small muted">הצטרפות בקוד מאפשרת ליצור קבוצות במוסד ולעיין בהיסטוריה. היא אינה מקנה גישה לקבוצות של מורים אחרים; הרשאת רכז ניתנת רק בידי הנהלת האתר.</p>
-        {error && <p className="err" role="alert">{error}</p>}
+        {mem.data?.length === 0 && <p className="muted">לא שויך מוסד. השיוך נקבע בידי הפיקוח.</p>}
+        {mem.data?.map(m => <div key={m.id}>{m.school?.name ?? m.schoolId} <span className="muted small">(קוד <bdi className="ltr">{m.schoolId}</bdi>)</span></div>)}
+        <p className="small muted">יצירת קבוצות והיסטוריית הנושאים זמינות רק למוסדות שאושרו לכם. הקלדת קוד מוסד אינה מקנה גישה. הרשאת רכז ניתנת רק בידי הנהלת האתר.</p>
       </div>
     </div>
   );
@@ -122,10 +127,11 @@ export function Groups() {
   const { api } = useRT();
   const { ctx } = useSession();
   const { catalog, topicById } = useCatalog();
-  const groups = useAsync(async () => (ctx.verified ? api.listMyGroups() : []), [api, ctx.verified]);
-  const mem = useAsync(async () => (ctx.verified ? api.myMemberships() : []), [api, ctx.verified]);
+  const groups = useAsync(async () => (ctx.approved ? api.listMyGroups() : []), [api, ctx.approved]);
+  const mem = useAsync(async () => (ctx.approved ? api.mySchools() : []), [api, ctx.approved]);
   if (!ctx.user) return <Notice kind="warn">יש <Link to="/login?next=/groups">להיכנס</Link> כדי לנהל קבוצות.</Notice>;
   if (!ctx.verified) return <Notice kind="warn">יש לאמת את כתובת המייל.</Notice>;
+  if (!ctx.approved) return <Notice kind="warn">ניהול קבוצות זמין רק למורים שהפיקוח אישר מראש. הכתובת שלכם טרם אושרה.</Notice>;
   const year = catalog!.settings.currentYearId;
   const yearLabel = catalog!.years.find(y => y.id === year)?.label ?? academicYear(startYearOf(year)).label;
   return (
@@ -215,6 +221,8 @@ export function RequestForm({ kind }: { kind: 'new_topic' | 'inquiry' }) {
   const { busy, error, run } = useBusy();
   if (!ctx.user) return <Notice kind="warn">יש <Link to={`/login?next=/requests/${kind === 'new_topic' ? 'new-topic' : 'inquiry'}`}>להיכנס</Link> כדי להגיש בקשה. תוכן כללי בלבד יישמר כשתחזרו.</Notice>;
   if (!ctx.verified) return <Notice kind="warn">יש לאמת את כתובת המייל.</Notice>;
+  if (!ctx.approved) return <Notice kind="warn">הגשת בקשות זמינה למורים שהפיקוח אישר מראש. הכתובת שלכם טרם אושרה.</Notice>;
+  if (!ctx.approved) return <Notice kind="warn">ניהול קבוצות זמין רק למורים שהפיקוח אישר מראש. הכתובת שלכם טרם אושרה.</Notice>;
   if (done) return <Notice kind="ok" title="הבקשה נשלחה. "><span role="status">היעד לטיפול: עד {fmtDate(done.dueAt)} (יעד בלבד, חלוף הזמן אינו אישור). מעקב: <Link to="/requests">הבקשות שלי</Link>.</span></Notice>;
   return (
     <form className="stack card" onSubmit={e => { e.preventDefault(); run(() => api.createRequest({ kind, topicId, proposedHe: f.he, proposedEn: f.en, proposedKind: f.kind, proposedSystem: f.system, description: f.description, rationale: f.rationale, clientId })).then(r => r && setDone(r)); }}>
@@ -241,7 +249,7 @@ export function MyRequests() {
   const { api } = useRT();
   const { ctx, refreshBadges } = useSession();
   const { catalog } = useCatalog();
-  const rq = useAsync(async () => (ctx.verified ? api.listMyRequests() : []), [api, ctx.verified]);
+  const rq = useAsync(async () => (ctx.approved ? api.listMyRequests() : []), [api, ctx.approved]);
   // מה שהיה "חדש" בעת הכניסה נשאר מסומן במסך הזה; אחרי הטעינה המענים מסומנים כנראו והחיווי בתפריט יורד.
   const [newIds, setNewIds] = useState<Set<string>>(new Set());
   useEffect(() => {

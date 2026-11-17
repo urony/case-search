@@ -48,7 +48,7 @@ export const useSession = () => useContext(SessionCtx);
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const { api, auth } = useRT();
-  const [ctx, setCtx] = useState<Ctx>({ user: null, role: null, roleDoc: null, verified: false });
+  const [ctx, setCtx] = useState<Ctx>({ user: null, role: null, roleDoc: null, verified: false, approved: false, schoolIds: [] });
   const refresh = useCallback(async () => {
     const c = await api.ctx();
     setCtx(c);
@@ -60,14 +60,14 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [badges, setBadges] = useState<Badges>({ admin: null, unseenReplies: 0 });
   const last = useRef(0);
   const refreshBadges = useCallback((force = false) => {
-    if (!ctx.user || !ctx.verified) { setBadges({ admin: null, unseenReplies: 0 }); return; }
+    if (!ctx.user || !ctx.approved) { setBadges({ admin: null, unseenReplies: 0 }); return; }
     const t = Date.now();
     if (!force && t - last.current < 60_000) return;
     last.current = t;
     Promise.all([ctx.role === 'admin' ? api.adminBadges() : Promise.resolve(null), api.myUnseenReplies()])
       .then(([admin, unseenReplies]) => setBadges({ admin, unseenReplies }))
       .catch(() => {});
-  }, [api, ctx.user, ctx.verified, ctx.role]);
+  }, [api, ctx.user, ctx.approved, ctx.role]);
   useEffect(() => { last.current = 0; refreshBadges(true); }, [refreshBadges]);
   return <SessionCtx.Provider value={{ ctx, refresh, badges, refreshBadges }}>{children}</SessionCtx.Provider>;
 }

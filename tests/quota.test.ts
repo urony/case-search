@@ -47,7 +47,7 @@ async function bigStore() {
   for (let t = 0; t < 200; t++) {
     const uid = `bt${t}`; const school = `${900001 + (t % 12)}`;
     ops.push({ op: 'set', path: `profiles/${uid}`, data: { uid, displayName: `מורה ${t}`, email: `${uid}@x.test`, emailVerified: true, createdAt: NOW } });
-    ops.push({ op: 'set', path: `memberships/${uid}_${school}`, data: { uid, schoolId: school, startedAt: NOW, endedAt: null } });
+    ops.push({ op: 'set', path: `allowedTeachers/${uid}@x.test`, data: { id: `${uid}@x.test`, email: `${uid}@x.test`, name: `מורה ${t}`, schoolIds: [school], active: true, addedBy: 'seed', addedAt: NOW } });
     for (let g = 0; g < 7; g++) ops.push({ op: 'set', path: `groups/bg${t}_${g}`, data: { ownerUid: uid, schoolId: school, yearId: YEAR, topicId: 't-S054', studentCount: g % 3 === 0 ? 3 : 2, students: [{ label: 'כ1' }, { label: 'כ2' }], status: g % 4 === 0 ? 'done' : 'self_check', casesDeclared: 0, ruleVersionAtCheck: null, createdAt: NOW, updatedAt: NOW } });
     if (t < 100) for (let r = 0; r < 4; r++) ops.push({ op: 'set', path: `requests/${uid}_20271110_${r + 1}`, data: { kind: 'inquiry', createdBy: uid, createdAt: NOW, updatedAt: NOW, status: r === 0 ? 'open' : 'answered', description: 'שאלה כללית', rationale: '', dueAt: NOW + 7 * 86400000, repliedAt: r === 0 ? undefined : NOW, teacherSeenAt: r === 0 ? undefined : NOW } });
     if (t < 150) for (let k = 0; k < 2; k++) ops.push({ op: 'set', path: `sources/${uid}_20271110_${k + 1}`, data: { topicId: `t-S${String(1 + ((t + k) % 100)).padStart(3, '0')}`, title: `מקור ${t}-${k}`, kind: 'association', text: 'מקור מלאכותי', url: 'https://example.org', phone: '', region: '', population: '', createdBy: uid, createdAt: NOW, visible: true, reviewed: t < 140 } });
@@ -66,11 +66,11 @@ describe('מדידת פעולות מסד בהיקף המתוכנן (נתוני �
   it('תרחישים עיקריים, וגבולות תקציב שאינם נחצים', async () => {
     const { store, auth, api } = await bigStore();
     const rows: [string, ReturnType<Counting['snap']>][] = [];
-    const m = async (name: string, who: string | null, fn: () => Promise<unknown>) => { auth.as(who); store.reset(); await fn(); rows.push([name, store.snap()]); };
+    const m = async (name: string, who: string | null, fn: () => Promise<unknown>) => { auth.as(who); api.clearCtxCache(); store.reset(); await fn(); rows.push([name, store.snap()]); };
 
     await m('אורח: טעינת דף הבית (קטלוג וחיפוש)', null, () => api.loadCatalog());
     await m('אורח: פתיחת כרטיס נושא ולשונית איתור מטופלים', null, () => api.listSources('t-S050'));
-    await m('מורה: כניסה (תפקיד, פרופיל, חיווי "חדש" בבקשות, שיוך למוסד)', 'bt5', async () => { await api.ctx(); await api.ensureProfile(); await api.myUnseenReplies(); await api.myMemberships(); });
+    await m('מורה: כניסה (תפקיד, פרופיל, חיווי "חדש" בבקשות, שיוך למוסד)', 'bt5', async () => { await api.ctx(); await api.ensureProfile(); await api.myUnseenReplies(); await api.mySchools(); });
     await m('מורה: טעינת "הקבוצות שלי"', 'bt5', () => api.listMyGroups());
     await m('מורה: יצירת קבוצה חדשה', 'bt5', () => api.createGroup({ schoolId: '900006', yearId: YEAR, studentCount: 2, students: ['א', 'ב'], topicId: 't-S054' }));
     await m('מורה: הוספת מקור איתור', 'bt5', () => api.addSource({ topicId: 't-S054', title: 'עמותה מלאכותית', kind: 'association', text: 'מלאכותי', url: 'https://example.org', phone: '', region: '', population: '', confirmNoPatientData: true }));
@@ -96,7 +96,7 @@ describe('מדידת פעולות מסד בהיקף המתוכנן (נתוני �
     // תקציב: אורח ומורה בשימוש רגיל נשארים קטנים; אין קריאה לכל המקורות בכל ביקור
     expect(get('אורח: טעינת דף הבית').reads).toBeLessThanOrEqual(8);
     expect(get('אורח: פתיחת כרטיס נושא').reads).toBeLessThanOrEqual(5);
-    expect(get('מורה: כניסה').reads).toBeLessThanOrEqual(15);
+    expect(get('מורה: כניסה').reads).toBeLessThanOrEqual(20);
     expect(get('מורה: הוספת מקור').reads).toBeLessThanOrEqual(8);
     expect(get('מנהל: כניסה').reads).toBeLessThanOrEqual(10); // ספירות בלבד, לא תלוי בגודל הצבר
   });

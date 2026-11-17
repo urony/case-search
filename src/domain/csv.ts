@@ -1,4 +1,4 @@
-import type { School } from './types';
+import type { AllowedTeacher, School } from './types';
 
 /** מנתח CSV פשוט עם מירכאות. מזהה מפריד פסיק או נקודה־פסיק. */
 export function parseCsv(text: string): string[][] {
@@ -53,6 +53,51 @@ export function previewSchoolImport(text: string, existing: Map<string, School>)
     if (seen.has(id)) { out.push({ line, school, status: 'duplicate_in_file', message: 'קוד כפול בקובץ' }); continue; }
     seen.add(id);
     out.push({ line, school, status: existing.has(id) ? 'update' : 'new' });
+  }
+  return out;
+}
+
+export const EMAIL_RE = /^[^\s@<>()[\]\\,;:"]+@[^\s@<>()[\]\\,;:"]+\.[^\s@<>()[\]\\,;:"]{2,}$/;
+export const normEmail = (e: string) => e.trim().toLowerCase();
+
+export interface TeacherImportRow {
+  line: number; email: string; name: string; schoolIds: string[];
+  status: 'new' | 'update' | 'unchanged' | 'skip_revoked' | 'error' | 'duplicate_in_file'; message?: string;
+}
+const EMAIL_H = ['מייל', 'כתובת מייל', 'דוא"ל', 'דואל', 'email', 'e-mail', 'mail'];
+const TNAME_H = ['שם', 'שם מורה', 'name', 'full_name'];
+const TSCHOOL_H = ['מוסד', 'קוד מוסד', 'קודי מוסד', 'סמל מוסד', 'school', 'school_id', 'schools'];
+
+/**
+ * תצוגה מקדימה לייבוא מורים מאושרים: מייל (חובה), שם (רשות), קודי מוסד מופרדים ב־| או רווח (רשות, חייבים להיות קיימים).
+ * מורה שהגישה שלו בוטלה אינו משוחזר בייבוא: שחזור הוא פעולה מפורשת.
+ */
+export function previewTeacherImport(text: string, existing: Map<string, AllowedTeacher>, schools: Set<string>): TeacherImportRow[] {
+  const rows = parseCsv(text);
+  if (rows.length === 0) return [];
+  const header = rows[0].map(h => h.trim().toLowerCase());
+  const col = (names: string[]) => header.findIndex(h => names.includes(h));
+  let ei = col(EMAIL_H), ni = col(TNAME_H), si = col(TSCHOOL_H);
+  let start = 1;
+  if (ei < 0) { ei = 0; ni = 1; si = 2; start = 0; } // ללא כותרות: מייל, שם, מוסדות
+  const seen = new Set<string>();
+  const out: TeacherImportRow[] = [];
+  for (let r = start; r < rows.length; r++) {
+    const c = rows[r];
+    const email = normEmail(c[ei] ?? ''), name = (ni >= 0 ? (c[ni] ?? '') : '').trim().slice(0, 80);
+    const schoolIds = (si >= 0 ? (c[si] ?? '') : '').split(/[|\s]+/).map(x => x.trim()).filter(Boolean);
+    const line = r + 1;
+    const base = { line, email, name, schoolIds };
+    if (!EMAIL_RE.test(email)) { out.push({ ...base, status: 'error', message: 'כתובת מייל לא תקינה' }); continue; }
+    const bad = schoolIds.filter(s => !schools.has(s));
+    if (bad.length) { out.push({ ...base, status: 'error', message: `קוד מוסד לא קיים: ${bad.join(', ')}` }); continue; }
+    if (seen.has(email)) { out.push({ ...base, status: 'duplicate_in_file', message: 'כתובת כפולה בקובץ' }); continue; }
+    seen.add(email);
+    const ex = existing.get(email);
+    if (!ex) { out.push({ ...base, status: 'new' }); continue; }
+    if (!ex.active) { out.push({ ...base, status: 'skip_revoked', message: 'הגישה בוטלה. לשחזור יש לפעול ידנית' }); continue; }
+    const same = ex.name === (name || ex.name) && [...ex.schoolIds].sort().join() === [...schoolIds].sort().join();
+    out.push({ ...base, status: same ? 'unchanged' : 'update' });
   }
   return out;
 }

@@ -20,14 +20,14 @@ export function SourcesPanel({ topicId, topicHe }: { topicId: string; topicHe: s
       {loading && <Loading />}
       {error && <ErrorBox error={error} retry={reload} />}
       {data && data.length === 0 && <div className="card empty">עדיין אין מקורות איתור לנושא זה.</div>}
-      {data?.map(s => <SourceItem key={s.id} s={s} canReport={ctx.verified} onReport={async () => { const r = prompt('מה הבעיה במקור? (לדוגמה: לא מעודכן, לא רלוונטי)'); if (r) { await rep.run(() => api.reportSource(s.id, r)); setReported(s.id); } }} reported={reported === s.id} />)}
+      {data?.map(s => <SourceItem key={s.id} s={s} canReport={ctx.approved} onReport={async () => { const r = prompt('מה הבעיה במקור? (לדוגמה: לא מעודכן, לא רלוונטי)'); if (r) { await rep.run(() => api.reportSource(s.id, r)); setReported(s.id); } }} reported={reported === s.id} />)}
       {rep.error && <p className="err">{rep.error}</p>}
-      {ctx.verified ? (
+      {ctx.approved ? (
         adding
           ? <AddSourceForm topicId={topicId} topicHe={topicHe} onDone={() => { setAdding(false); reload(); reloadSources(); }} />
           : <button className="btn" onClick={() => setAdding(true)}>הוספת מקור איתור</button>
       ) : (
-        <p>להוספת מקור או לדיווח על מקור יש <Link to={`/login?next=/topic/${topicId}`}>להיכנס</Link>. הוספת מקור מתפרסמת מיד.</p>
+        <p>הוספת מקור ודיווח עליו זמינים למורים שהפיקוח אישר מראש. {ctx.user ? 'הכתובת שלכם טרם אושרה.' : <>יש <Link to={`/login?next=/topic/${topicId}`}>להיכנס</Link>.</>} מקור שמתווסף מתפרסם מיד.</p>
       )}
     </div>
   );

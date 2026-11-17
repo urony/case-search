@@ -2,10 +2,10 @@ import { validateRuleSet } from '../engine/validate';
 import { DEFAULT_GENERAL_RULES } from '../engine/general';
 import type { RuleSet } from '../engine/types';
 import { checkSourceInput, dueAtFor, looksLikePersonalData, SourceInput } from '../domain/helpers';
-import { previewSchoolImport } from '../domain/csv';
+import { normEmail, EMAIL_RE, previewSchoolImport, previewTeacherImport } from '../domain/csv';
 import { planSeedImport, SeedRecord } from '../domain/seedImport';
 import type {
-  AcademicYear, AuditEvent, Catalog, Group, GroupStatus, Membership, PolicyQuestion,
+  AcademicYear, AllowedTeacher, AuditEvent, Catalog, Group, GroupStatus, PolicyQuestion,
   Profile, RecruitmentSource, RequestDoc, RequestKind, Role, RoleDoc, School, SchoolYearHistory, Settings, SourceReport, SystemDef, TagDef, Topic,
 } from '../domain/types';
 import type { AuthService, AuthUser } from './auth';
@@ -15,7 +15,8 @@ import { buildCatalogOps } from './catalog';
 
 export type Mode = 'service' | 'demo' | 'bundled';
 
-export interface Ctx { user: AuthUser | null; role: Role | null; roleDoc: RoleDoc | null; verified: boolean }
+/** approved: מאומת ו(ברשימת המורים המאושרים או בעל תפקיד). רק מאושר יכול לשמור או להזין תוכן. schoolIds: המוסדות שאושרו לו. */
+export interface Ctx { user: AuthUser | null; role: Role | null; roleDoc: RoleDoc | null; verified: boolean; approved: boolean; schoolIds: string[] }
 
 /** מכסות יומיות להוספה (מונעות הצפה בלי לבטל פרסום מיידי). נאכפות גם בכללי השירות דרך מבנה המזהה. */
 export const DAILY_SOURCE_CAP = 5;
@@ -37,17 +38,36 @@ export class Api {
   now() { return this.clock(); }
 
   // ───────── הקשר והרשאות (בצד הלקוח: הגנה נוספת בלבד; האכיפה האמיתית ב-firestore.rules) ─────────
+  // מטמון קצר (30 שניות, שעון אמיתי) להקשר המשתמש: חוסך 2 קריאות מסד בכל פעולה. כללי השירות ממשיכים לבדוק בכל בקשה,
+  // ולכן ביטול גישה חל מיד בשירות גם אם הממשק עדיין מציג אחרת עד 30 שניות. מנוקה בכל שינוי הרשאות דרך אותו מופע.
+  private ctxCache: { key: string; at: number; v: Ctx } | null = null;
+  clearCtxCache() { this.ctxCache = null; }
   async ctx(): Promise<Ctx> {
-    const user = this.auth.current();
-    if (!user) return { user: null, role: null, roleDoc: null, verified: false };
-    let roleDoc: RoleDoc | null = null;
-    try { roleDoc = await this.store.get<RoleDoc>(`roles/${user.uid}`); } catch { /* אין הרשאה/שירות */ }
-    return { user, role: roleDoc?.role ?? (user.emailVerified ? 'teacher' : null), roleDoc, verified: user.emailVerified };
+    const u = this.auth.current();
+    const key = u ? `${u.uid}|${u.email}|${u.emailVerified}` : 'guest';
+    if (this.ctxCache && this.ctxCache.key === key && Date.now() - this.ctxCache.at < 30_000) return this.ctxCache.v;
+    const v = await this.ctxFresh();
+    this.ctxCache = { key, at: Date.now(), v };
+    return v;
   }
-  private async need(min: 'verified' | 'coordinator' | 'admin'): Promise<Ctx> {
+  private async ctxFresh(): Promise<Ctx> {
+    const user = this.auth.current();
+    if (!user) return { user: null, role: null, roleDoc: null, verified: false, approved: false, schoolIds: [] };
+    let roleDoc: RoleDoc | null = null;
+    let allow: AllowedTeacher | null = null;
+    try { roleDoc = await this.store.get<RoleDoc>(`roles/${user.uid}`); } catch { /* אין הרשאה/שירות */ }
+    // אישור מראש לפי כתובת מייל מאומתת: ההקלדה בלבד אינה מספיקה, נדרש גם אימות שליטה בכתובת (token.email_verified)
+    if (user.emailVerified && !roleDoc) { try { allow = await this.store.get<AllowedTeacher>(`allowedTeachers/${normEmail(user.email)}`); } catch { /* ללא הרשאה */ } }
+    const allowed = !!allow && allow.active === true;
+    const approved = user.emailVerified && (allowed || !!roleDoc);
+    const schoolIds = [...new Set([...(allowed ? allow!.schoolIds : []), ...(roleDoc?.schoolId ? [roleDoc.schoolId] : [])])];
+    return { user, role: roleDoc?.role ?? (approved ? 'teacher' : null), roleDoc, verified: user.emailVerified, approved, schoolIds };
+  }
+  private async need(min: 'verified' | 'approved' | 'coordinator' | 'admin'): Promise<Ctx> {
     const c = await this.ctx();
     if (!c.user) throw new PermissionError('יש להתחבר.');
     if (!c.verified) throw new PermissionError('יש לאמת את כתובת המייל לפני ביצוע הפעולה.');
+    if (min !== 'verified' && !c.approved) throw new PermissionError('כתובת המייל שלך אינה ברשימת המורים שאושרו על ידי הפיקוח. יש לפנות לפיקוח.');
     if (min === 'admin' && c.role !== 'admin') throw new PermissionError();
     if (min === 'coordinator' && c.role !== 'admin' && c.role !== 'coordinator') throw new PermissionError();
     return c;
@@ -91,13 +111,16 @@ export class Api {
       throw e;
     }
   }
+  /** היסטוריית מוסד: רק למורה מאושר המשויך למוסד, לרכז של המוסד או למנהל. אורח ומורה אחר אינם רואים (נאכף גם בכללי השירות). */
   async getSchoolHistory(schoolId: string, yearId: string): Promise<SchoolYearHistory | null> {
+    const c = await this.need('approved');
+    if (c.role !== 'admin' && !c.schoolIds.includes(schoolId)) throw new PermissionError('ההיסטוריה זמינה רק למורים המשויכים למוסד.');
     return this.store.get<SchoolYearHistory>(`schoolHistory/${schoolId}_${yearId}`);
   }
-  async getSchool(code: string): Promise<School | null> { return this.store.get<School>(`schools/${code.trim()}`); }
+  async getSchool(code: string): Promise<School | null> { await this.need('approved'); return this.store.get<School>(`schools/${code.trim()}`); }
   async getContact(): Promise<{ email: string; name: string } | null> {
     const c = await this.ctx();
-    if (!c.user || !c.verified) return null;
+    if (!c.user || !c.approved) return null;
     const d = await this.store.get<{ email: string; name: string }>('config/contact');
     return d ?? null;
   }
@@ -111,33 +134,18 @@ export class Api {
     if (!existing || existing.emailVerified !== p.emailVerified || existing.displayName !== p.displayName) await this.store.set(`profiles/${c.user.uid}`, p);
     return p;
   }
-  async myMemberships(): Promise<(Membership & { school: School | null })[]> {
+  /** המוסדות שהפיקוח אישר למורה (לפי הרשימה המאושרת), ולרכז: מוסדו. אין הצטרפות עצמית בקוד. */
+  async mySchools(): Promise<{ id: string; schoolId: string; school: School | null }[]> {
     const c = await this.ctx();
-    if (!c.user) return [];
-    const ms = await this.store.list<Membership>('memberships', [['uid', '==', c.user.uid]]);
+    if (!c.user || !c.approved) return [];
     const out = [];
-    for (const m of ms.filter(x => x.endedAt === null)) out.push({ ...m, school: await this.store.get<School>(`schools/${m.schoolId}`) });
+    for (const id of c.schoolIds) out.push({ id, schoolId: id, school: await this.store.get<School>(`schools/${id}`).catch(() => null) });
     return out;
-  }
-  /** הצטרפות למוסד בקוד: מקנה עיון בהיסטוריה ויצירת קבוצות במוסד, לא הרשאת רכז (T31). */
-  async joinSchool(code: string): Promise<Membership> {
-    const c = await this.need('verified');
-    const school = await this.store.get<School>(`schools/${code.trim()}`);
-    if (!school || !school.active) throw new Error('קוד מוסד לא נמצא. אפשר לבקש מהאחראי להוסיף את המוסד.');
-    const m: Membership = { id: `${c.user!.uid}_${school.id}`, uid: c.user!.uid, schoolId: school.id, startedAt: this.now(), endedAt: null };
-    await this.store.set(`memberships/${m.id}`, m);
-    return m;
-  }
-  async leaveSchool(membershipId: string) {
-    const c = await this.need('verified');
-    const m = await this.store.get<Membership>(`memberships/${membershipId}`);
-    if (!m || (m.uid !== c.user!.uid && c.role !== 'admin' && !(c.role === 'coordinator' && c.roleDoc?.schoolId === m.schoolId))) throw new PermissionError();
-    await this.store.update(`memberships/${membershipId}`, { endedAt: this.now() });
   }
 
   // ───────── קבוצות ─────────
   async listMyGroups(): Promise<Group[]> {
-    const c = await this.need('verified');
+    const c = await this.need('approved');
     return (await this.store.list<Group>('groups', [['ownerUid', '==', c.user!.uid]])).sort((a, b) => b.createdAt - a.createdAt);
   }
   async listSchoolGroups(schoolId: string): Promise<Group[]> {
@@ -146,13 +154,12 @@ export class Api {
     return this.store.list<Group>('groups', [['schoolId', '==', schoolId]]);
   }
   async createGroup(input: { schoolId: string; yearId: string; studentCount: number; students?: string[]; topicId?: string | null; clientId?: string }): Promise<Group> {
-    const c = await this.need('verified');
+    const c = await this.need('approved');
     if (![1, 2, 3].includes(input.studentCount)) throw new Error('מספר התלמידים חייב להיות 1, 2 או 3.');
     const labels = (input.students ?? []).map(s => s.trim()).filter(Boolean);
     if (labels.length > input.studentCount) throw new Error('מספר השמות גדול ממספר התלמידים.');
     for (const l of labels) { const e = checkStudentLabel(l); if (e) throw new Error(e); }
-    const members = await this.myMemberships();
-    if (!members.some(m => m.schoolId === input.schoolId)) throw new PermissionError('יש להצטרף למוסד בקוד לפני יצירת קבוצה.');
+    if (!c.schoolIds.includes(input.schoolId)) throw new PermissionError('אין אישור ליצור קבוצה במוסד זה. המוסד נקבע על ידי הפיקוח.');
     const year = await this.getYear(input.yearId);
     if (year?.closed) throw new Error('המחזור נסגר. לא ניתן ליצור קבוצות חדשות.');
     const id = input.clientId ?? uuid();
@@ -168,7 +175,7 @@ export class Api {
     return g;
   }
   private async ownGroup(id: string): Promise<{ g: Group; c: Ctx }> {
-    const c = await this.need('verified');
+    const c = await this.need('approved');
     const g = await this.store.get<Group>(`groups/${id}`);
     if (!g) throw new Error('הקבוצה לא נמצאה.');
     const isCoord = c.role === 'coordinator' && c.roleDoc?.schoolId === g.schoolId;
@@ -245,7 +252,7 @@ export class Api {
   // ───────── מקורות איתור (סעיף 13) ─────────
   /** פרסום מיידי; המקור מסומן "טרם נבדק" עד שמנהל מאשר שראה אותו. מכסה יומית למשתמש. חוזר־בטוח לפי clientId. */
   async addSource(input: SourceInput & { clientId?: string }): Promise<RecruitmentSource> {
-    const c = await this.need('verified');
+    const c = await this.need('approved');
     const chk = checkSourceInput(input);
     if (!chk.ok || !chk.clean) throw new Error(chk.errors.join(' '));
     const { id, existing } = await this.dailySlot<RecruitmentSource>('sources', c.user!.uid, DAILY_SOURCE_CAP, input.clientId);
@@ -262,7 +269,7 @@ export class Api {
   }
   /** דיווח אחד לכל משתמש ומקור: אין הצפה של אותו דיווח. */
   async reportSource(sourceId: string, reason: string) {
-    const c = await this.need('verified');
+    const c = await this.need('approved');
     const r: SourceReport = { id: `${c.user!.uid}_${sourceId}`, sourceId, reason: reason.trim().slice(0, 300), createdBy: c.user!.uid, createdAt: this.now(), handled: false };
     if (!r.reason) throw new Error('נדרש תיאור קצר של הבעיה.');
     if (await this.store.get(`sourceReports/${r.id}`)) return;
@@ -322,7 +329,7 @@ export class Api {
     kind: RequestKind; groupId?: string; topicId?: string; proposedHe?: string; proposedEn?: string; proposedKind?: string; proposedSystem?: string;
     description: string; rationale?: string; clientId?: string;
   }): Promise<RequestDoc> {
-    const c = await this.need('verified');
+    const c = await this.need('approved');
     const { id, existing } = await this.dailySlot<RequestDoc>('requests', c.user!.uid, DAILY_REQUEST_CAP, input.clientId);
     if (existing) return existing; // חוזר־בטוח: אין שתי בקשות מלחיצה כפולה (T24)
     if (input.kind === 'new_topic' && !(input.proposedHe ?? '').trim() && !(input.proposedEn ?? '').trim()) throw new Error('נדרש שם הנושא בעברית או באנגלית.');
@@ -330,7 +337,7 @@ export class Api {
     if (looksLikePersonalData(`${input.description} ${input.rationale ?? ''}`)) throw new Error('נראה שהטקסט כולל מספר זיהוי או כתובת מייל. הבקשה אינה מיועדת לפרטי אדם.');
     const settings = (await this.store.get<Settings>('config/settings')) ?? defaultSettings(new Date(this.now()));
     const r: RequestDoc = stripUndefined({
-      id, kind: input.kind, createdBy: c.user!.uid, createdAt: this.now(), updatedAt: this.now(), status: 'open',
+      id, kind: input.kind, createdBy: c.user!.uid, createdByEmail: normEmail(c.user!.email), createdByName: (c.user!.displayName || '').slice(0, 80), createdAt: this.now(), updatedAt: this.now(), status: 'open',
       groupId: input.groupId, topicId: input.topicId, proposedHe: input.proposedHe?.trim(), proposedEn: input.proposedEn?.trim(),
       proposedKind: input.proposedKind, proposedSystem: input.proposedSystem,
       description: input.description.trim().slice(0, 2000), rationale: (input.rationale ?? '').trim().slice(0, 2000),
@@ -340,11 +347,11 @@ export class Api {
     return r;
   }
   async listMyRequests(): Promise<RequestDoc[]> {
-    const c = await this.need('verified');
+    const c = await this.need('approved');
     return (await this.store.list<RequestDoc>('requests', [['createdBy', '==', c.user!.uid]])).sort((a, b) => b.createdAt - a.createdAt);
   }
   async supplementRequest(id: string, text: string) {
-    const c = await this.need('verified');
+    const c = await this.need('approved');
     const r = await this.store.get<RequestDoc>(`requests/${id}`);
     if (!r || r.createdBy !== c.user!.uid) throw new PermissionError();
     if (looksLikePersonalData(text)) throw new Error('נראה שהטקסט כולל מספר זיהוי או כתובת מייל.');
@@ -374,7 +381,7 @@ export class Api {
   }
   /** המורה פתח את "הבקשות שלי": המענים שנראו מסומנים (כתיבה רק לבקשות שיש בהן חדש). */
   async markMyRepliesSeen(reqs: RequestDoc[]) {
-    const c = await this.need('verified');
+    const c = await this.need('approved');
     const at = this.now();
     for (const r of reqs) if (r.createdBy === c.user!.uid && r.repliedAt && !r.teacherSeenAt) await this.store.update(`requests/${r.id}`, { teacherSeenAt: at });
   }
@@ -514,6 +521,95 @@ export class Api {
     await this.store.batch([{ op: 'set', path: `schoolHistory/${schoolId}_${yearId}`, data: { schoolId, yearId, items, updatedAt: this.now() } }, this.audit('correct_history', `${schoolId}_${yearId}`, c.user!.uid, 'coordinator')]);
   }
 
+  // ───────── מורים מאושרים מראש (רשימת הפיקוח) ─────────
+  /**
+   * רשימת כתובות שהפיקוח אישר. הגישה נקבעת כך: משתמש שנרשם במייל כלשהו ואימת שהוא שולט בכתובת, וכתובתו ברשימה פעילה.
+   * הקלדת כתובת בלבד אינה מקנה דבר. ביטול גישה חל מיד, גם על מי שמחובר כרגע (הכללים בודקים בכל בקשה).
+   */
+  async adminListTeachers(): Promise<(AllowedTeacher & { status: 'pending' | 'active' | 'revoked' })[]> {
+    await this.need('admin');
+    const [list, profiles] = await Promise.all([this.store.list<AllowedTeacher>('allowedTeachers'), this.store.list<Profile>('profiles')]);
+    const registered = new Set(profiles.filter(p => p.emailVerified).map(p => normEmail(p.email)));
+    return list.map(t => ({ ...t, status: !t.active ? 'revoked' as const : registered.has(t.id) ? 'active' as const : 'pending' as const })).sort((a, b) => a.email.localeCompare(b.email));
+  }
+  private async checkSchools(ids: string[]) {
+    for (const id of ids) {
+      const s = await this.store.get<School>(`schools/${id}`);
+      if (!s || !s.active) throw new Error(`קוד מוסד לא קיים או לא פעיל: ${id}`);
+    }
+  }
+  async adminSaveTeacher(input: { email: string; name?: string; schoolIds?: string[]; note?: string }): Promise<AllowedTeacher> {
+    this.clearCtxCache();
+    const c = await this.need('admin');
+    const email = normEmail(input.email);
+    if (!EMAIL_RE.test(email)) throw new Error('כתובת מייל לא תקינה.');
+    const schoolIds = [...new Set((input.schoolIds ?? []).map(s => s.trim()).filter(Boolean))];
+    await this.checkSchools(schoolIds);
+    const cur = await this.store.get<AllowedTeacher>(`allowedTeachers/${email}`);
+    const t: AllowedTeacher = stripUndefined({
+      id: email, email, name: (input.name ?? cur?.name ?? '').trim().slice(0, 80), schoolIds, active: cur ? cur.active : true,
+      note: (input.note ?? cur?.note ?? '').trim().slice(0, 200) || undefined,
+      addedBy: cur?.addedBy ?? c.user!.uid, addedAt: cur?.addedAt ?? this.now(),
+      revokedAt: cur?.revokedAt, revokedBy: cur?.revokedBy, revokedReason: cur?.revokedReason,
+    });
+    await this.store.batch([{ op: 'set', path: `allowedTeachers/${email}`, data: t }, this.audit(cur ? 'teacher_update' : 'teacher_add', email, c.user!.uid)]);
+    return t;
+  }
+  async adminPreviewTeacherImport(csv: string) {
+    await this.need('admin');
+    const [ex, schools] = await Promise.all([this.store.list<AllowedTeacher>('allowedTeachers'), this.store.list<School>('schools')]);
+    return previewTeacherImport(csv, new Map(ex.map(t => [t.id, t])), new Set(schools.filter(s => s.active).map(s => s.id)));
+  }
+  async adminApplyTeacherImport(csv: string): Promise<{ added: number; updated: number; skipped: number }> {
+    this.clearCtxCache();
+    const c = await this.need('admin');
+    const rows = await this.adminPreviewTeacherImport(csv);
+    const ex = new Map((await this.store.list<AllowedTeacher>('allowedTeachers')).map(t => [t.id, t]));
+    const ops: BatchOp[] = [];
+    let added = 0, updated = 0;
+    for (const r of rows) {
+      if (r.status !== 'new' && r.status !== 'update') continue;
+      const cur = ex.get(r.email);
+      const t: AllowedTeacher = stripUndefined({ id: r.email, email: r.email, name: r.name || cur?.name || '', schoolIds: r.schoolIds, active: true, note: cur?.note, addedBy: cur?.addedBy ?? c.user!.uid, addedAt: cur?.addedAt ?? this.now() });
+      ops.push({ op: 'set', path: `allowedTeachers/${r.email}`, data: t });
+      if (r.status === 'new') added++; else updated++;
+    }
+    ops.push(this.audit('teacher_import', `${added} new, ${updated} updated`, c.user!.uid));
+    await this.store.batch(ops);
+    return { added, updated, skipped: rows.length - added - updated };
+  }
+  /** ביטול גישה (למשל מורה שעזב): חל מיד. הקבוצות והתוכן שהוסיף נשארים ונראים למנהל ולרכז. */
+  async adminRevokeTeacher(email: string, reason = '') {
+    this.clearCtxCache();
+    const c = await this.need('admin');
+    const id = normEmail(email);
+    if (!(await this.store.get(`allowedTeachers/${id}`))) throw new Error('הכתובת אינה ברשימה.');
+    await this.store.batch([{ op: 'update', path: `allowedTeachers/${id}`, data: { active: false, revokedAt: this.now(), revokedBy: c.user!.uid, revokedReason: reason.trim().slice(0, 200) } }, this.audit('teacher_revoke', id, c.user!.uid)]);
+  }
+  async adminRestoreTeacher(email: string) {
+    this.clearCtxCache();
+    const c = await this.need('admin');
+    const id = normEmail(email);
+    const cur = await this.store.get<AllowedTeacher>(`allowedTeachers/${id}`);
+    if (!cur) throw new Error('הכתובת אינה ברשימה.');
+    const { revokedAt, revokedBy, revokedReason, ...rest } = cur as AllowedTeacher & { id: string };
+    void revokedAt; void revokedBy; void revokedReason;
+    const { id: _i, ...data } = rest;
+    await this.store.batch([{ op: 'set', path: `allowedTeachers/${id}`, data: { ...data, active: true } }, this.audit('teacher_restore', id, c.user!.uid)]);
+  }
+  async adminDeleteTeacher(email: string) {
+    this.clearCtxCache();
+    const c = await this.need('admin');
+    const id = normEmail(email);
+    await this.store.batch([{ op: 'delete', path: `allowedTeachers/${id}` }, this.audit('teacher_delete', id, c.user!.uid)]);
+  }
+
+  /** מי הגיש: פענוח מזהה משתמש (שמור במקור ובבקשה) לשם ולמייל. המקורות ציבוריים ולכן אינם מכילים שם או מייל. מנהל בלבד. */
+  async adminProfileNames(): Promise<Map<string, { name: string; email: string }>> {
+    await this.need('admin');
+    return new Map((await this.store.list<Profile>('profiles')).map(p => [p.uid, { name: p.displayName, email: p.email }]));
+  }
+
   // ───────── משתמשים והרשאות ─────────
   async adminListProfiles(): Promise<(Profile & { roleDoc: RoleDoc | null })[]> {
     await this.need('admin');
@@ -523,6 +619,7 @@ export class Api {
   }
   /** קידום רק מתוך משתמשים רשומים ומאומתים, לא לפי כתובת שהוקלדה. מונע טעות הקלדה שמעניקה ניהול לזר. */
   async adminGrantRole(uid: string, role: Role, schoolId?: string) {
+    this.clearCtxCache();
     const c = await this.need('admin');
     const p = await this.store.get<Profile>(`profiles/${uid}`);
     if (!p) throw new Error('המשתמש לא נמצא. הוא צריך להירשם ולאמת את כתובתו תחילה.');
@@ -532,6 +629,7 @@ export class Api {
     await this.store.batch([{ op: 'set', path: `roles/${uid}`, data: d }, this.audit(`grant_${role}`, uid, c.user!.uid)]);
   }
   async adminRevokeRole(uid: string) {
+    this.clearCtxCache();
     const c = await this.need('admin');
     const cur = await this.store.get<RoleDoc>(`roles/${uid}`);
     if (cur?.role === 'admin') {
@@ -694,6 +792,7 @@ export class Api {
   }
   /** שחזור. כתיבה בקבוצות של 400; אם נקטע באמצע, הרצה חוזרת (באותו מצב) משלימה בלי לדרוס. */
   async restoreBackup(b: BackupFile | { format: string; data: Record<string, any[]> }, opts: { mode?: RestoreMode } = {}): Promise<{ restored: number; reDeleted: number; mode: RestoreMode }> {
+    this.clearCtxCache();
     const c = await this.need('admin');
     this.checkBackupFormat(b);
     const mode = opts.mode ?? 'add_missing';
@@ -708,7 +807,7 @@ export type RestoreMode = 'add_missing' | 'overwrite';
 export const BACKUP_FORMAT = 'mat-backup-2';
 export interface BackupFile { format: 'mat-backup-1' | 'mat-backup-2'; createdAt: number; includesPrivate: boolean; counts?: Record<string, number>; data: Record<string, any[]> }
 const BACKUP_CONTENT = ['topics', 'topicVersions', 'config', 'public', 'schools', 'schoolHistory', 'policyQuestions', 'sources', 'seedEntries', 'deletionLedger', 'suggestions'];
-const BACKUP_PRIVATE = ['groups', 'requests', 'sourceReports', 'memberships', 'roles', 'profiles'];
+const BACKUP_PRIVATE = ['groups', 'requests', 'sourceReports', 'allowedTeachers', 'roles', 'profiles'];
 const BACKUP_ALLOWED = new Set([...BACKUP_CONTENT, ...BACKUP_PRIVATE]);
 /** השוואה יציבה בין מסמכים (סדר מפתחות לא משנה) */
 function stable(v: unknown): string {

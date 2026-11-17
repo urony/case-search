@@ -112,7 +112,7 @@ function CaseCheckTab({ topic }: { topic: Topic }) {
   const { api } = useRT();
   const { ctx } = useSession();
   const { catalog } = useCatalog();
-  const groups = useAsync(async () => (ctx.verified ? (await api.listMyGroups()).filter(g => g.topicId === topic.id && g.status !== 'cancelled') : []), [api, ctx.verified, topic.id]);
+  const groups = useAsync(async () => (ctx.approved ? (await api.listMyGroups()).filter(g => g.topicId === topic.id && g.status !== 'cancelled') : []), [api, ctx.verified, topic.id]);
   const [gid, setGid] = useState('');
   const g = groups.data?.find(x => x.id === gid) ?? groups.data?.[0];
   return (
@@ -134,7 +134,7 @@ function ActionsCard({ topic, onPick }: { topic: Topic; onPick: (t: Tab) => void
   const { api } = useRT();
   const { ctx } = useSession();
   const { catalog } = useCatalog();
-  const contact = useAsync(async () => api.getContact(), [api, ctx.verified]);
+  const contact = useAsync(async () => api.getContact(), [api, ctx.approved]);
   const mailto = contact.data ? buildExceptionMailto({ responsibleEmail: contact.data.email }, topic.he) : null;
   return (
     <div className="card stack">
@@ -150,7 +150,7 @@ function ActionsCard({ topic, onPick }: { topic: Topic; onPick: (t: Tab) => void
         <div className="row">
           <Link className="btn secondary small" to={`/requests/inquiry?topic=${topic.id}`}>בירור כללי על הנושא</Link>
           {mailto ? <a className="btn secondary small" href={mailto}>פנייה אישית לאחראי בדוא״ל (כותרת כללית בלבד)</a>
-            : <span className="small muted">{ctx.verified ? 'כתובת האחראי טרם הוגדרה.' : 'פרטי הקשר של האחראי מוצגים למשתמשים מחוברים.'}</span>}
+            : <span className="small muted">{ctx.approved ? 'כתובת האחראי טרם הוגדרה.' : 'פרטי הקשר של האחראי מוצגים למשתמשים מחוברים.'}</span>}
           <a className="btn secondary small" href={catalog!.settings.officialFormUrl} target="_blank" rel="noopener noreferrer">הטופס הרשמי</a>
         </div>
         <p className="small muted">{catalog!.settings.submissionNote}</p>
@@ -169,10 +169,10 @@ function SaveToGroup({ topic }: { topic: Topic }) {
   const [msg, setMsg] = useState<string | null>(null);
   const [warn, setWarn] = useState<DuplicateWarning[] | null>(null);
   const { busy, error, run } = useBusy();
-  const groups = useAsync(async () => (ctx.verified ? (await api.listMyGroups()).filter(g => g.yearId === catalog!.settings.currentYearId && g.status !== 'cancelled') : []), [api, ctx.verified]);
+  const groups = useAsync(async () => (ctx.approved ? (await api.listMyGroups()).filter(g => g.yearId === catalog!.settings.currentYearId && g.status !== 'cancelled') : []), [api, ctx.approved]);
 
   if (!ctx.user) return <p className="small"><Link to={`/login?next=/topic/${topic.id}`}>היכנסו</Link> כדי לשמור את הנושא לקבוצה.</p>;
-  if (!ctx.verified) return <Notice kind="warn">יש לאמת את כתובת המייל כדי לשמור לקבוצה.</Notice>;
+  if (!ctx.approved) return <Notice kind="warn">שמירת נושא לקבוצה זמינה למורים שהפיקוח אישר מראש.</Notice>;
 
   async function check(g: Group) {
     const { histories, prevYearId, currentYearId } = await loadSchoolHistories(api, g.schoolId, catalog!.settings.currentYearId);

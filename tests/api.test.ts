@@ -260,13 +260,14 @@ describe('קבוצות (T15, T21, T29, T31)', () => {
     expect((await api.listSchoolGroups(DEMO_SCHOOL_ID)).some(g => g.id === 'demo-group-1')).toBe(true);
     await expect(api.listSchoolGroups('other-school')).rejects.toThrow(PermissionError);
   });
-  it('הצטרפות בקוד מוסד אינה מקנה הרשאת רכז (T31)', async () => {
-    auth.as('demo-teacher2');
-    await api.joinSchool(DEMO_SCHOOL_ID);
-    expect((await api.ctx()).role).toBe('teacher');
-    await expect(api.joinSchool('000000')).rejects.toThrow(/לא נמצא/);
+  it('אין הצטרפות עצמית בקוד: מוסד נקבע בידי הפיקוח, והקוד אינו מקנה גישה (T31)', async () => {
+    auth.as('demo-pending');
+    expect((api as any).joinSchool).toBeUndefined();
+    await expect(api.createGroup({ schoolId: DEMO_SCHOOL_ID, yearId: YEAR, studentCount: 1 })).rejects.toThrow(PermissionError);
+    await expect(api.getSchoolHistory(DEMO_SCHOOL_ID, '2026-27')).rejects.toThrow(PermissionError);
+    expect((await api.ctx()).role).toBeNull();
   });
-  it('אין יצירת קבוצה במוסד שלא הצטרפו אליו', async () => {
+  it('אין יצירת קבוצה במוסד שלא אושר למורה', async () => {
     auth.as('demo-admin');
     await expect(api.createGroup({ schoolId: DEMO_SCHOOL_ID, yearId: YEAR, studentCount: 1 })).rejects.toThrow(PermissionError);
   });
@@ -358,7 +359,7 @@ describe('T23/T34/T38 סיום מחזור, מחיקה וגיבוי', () => {
     const dump = everythingText();
     expect(dump).not.toContain('שם־סודי');
     expect(dump).not.toContain('כינוי א');
-    auth.as(null);
+    auth.as('demo-admin');
     const h = await api.getSchoolHistory(DEMO_SCHOOL_ID, YEAR);
     const states = Object.fromEntries(h!.items.map(i => [i.topicHe, i.state]));
     expect(Object.values(states)).toContain('done');
@@ -444,5 +445,120 @@ describe('T27/T36 מצבי חיבור אמיתיים', () => {
     const empty = new Api(new LocalStore(null), auth, 'service', () => NOW);
     auth.as(null);
     expect((await empty.loadCatalog()).origin).toBe('bundled');
+  });
+});
+
+describe('מורים מאושרים מראש (גישה והרשאות)', () => {
+  const read = ['loadCatalog'];
+  it('אורח: קטלוג ציבורי כן; היסטוריית מוסד, קבוצות, שמירה ופרטי קשר לא', async () => {
+    auth.as(null);
+    expect((await api.loadCatalog()).topics.length).toBeGreaterThan(100);
+    await expect(api.getSchoolHistory(DEMO_SCHOOL_ID, '2026-27')).rejects.toThrow(PermissionError);
+    await expect(api.listMyGroups()).rejects.toThrow(PermissionError);
+    await expect(api.addSource(goodSource)).rejects.toThrow(PermissionError);
+    await expect(api.getSchool(DEMO_SCHOOL_ID)).rejects.toThrow(PermissionError);
+    expect(await api.getContact()).toBeNull();
+    void read;
+  });
+  it('משתמש מאומת שאינו ברשימה: עיון בלבד, כל שמירה והזנה נדחות', async () => {
+    auth.as('demo-pending');
+    const c = await api.ctx();
+    expect(c.verified).toBe(true);
+    expect(c.approved).toBe(false);
+    expect(await api.loadCatalog()).toBeTruthy();
+    expect(await api.getContact()).toBeNull();
+    await expect(api.addSource(goodSource)).rejects.toThrow(/ברשימת המורים/);
+    await expect(api.createRequest({ kind: 'inquiry', description: 'שאלה כללית' })).rejects.toThrow(PermissionError);
+    await expect(api.reportSource('x', 'בעיה')).rejects.toThrow(PermissionError);
+    await expect(api.listMyGroups()).rejects.toThrow(PermissionError);
+    expect(await api.mySchools()).toEqual([]);
+  });
+  it('אישור לפי כתובת מאומתת: הכתובת ברשימה מקנה גישה רק אחרי אימות מייל, בלי תלות באותיות גדולות', async () => {
+    auth.as('demo-admin');
+    await api.adminSaveTeacher({ email: '  PENDING@Demo.Test ', name: 'מורה חדש', schoolIds: [DEMO_SCHOOL_ID] });
+    auth.as('demo-pending', false); // לא אימת שהוא שולט בכתובת
+    expect((await api.ctx()).approved).toBe(false);
+    await expect(api.addSource(goodSource)).rejects.toThrow();
+    auth.as('demo-pending', true);
+    const c = await api.ctx();
+    expect(c.approved).toBe(true);
+    expect(c.schoolIds).toEqual([DEMO_SCHOOL_ID]);
+    await expect(api.addSource(goodSource)).resolves.toBeTruthy();
+    expect((await api.mySchools()).map(m => m.schoolId)).toEqual([DEMO_SCHOOL_ID]);
+  });
+  it('היסטוריית מוסד: רק למוסד שאושר, לא למוסד אחר', async () => {
+    auth.as('demo-admin');
+    await api.adminSaveSchool({ id: '555555', name: 'מוסד אחר מלאכותי', city: 'עיר', active: true });
+    auth.as('demo-teacher');
+    await expect(api.getSchoolHistory(DEMO_SCHOOL_ID, '2026-27')).resolves.toBeTruthy();
+    await expect(api.getSchoolHistory('555555', '2026-27')).rejects.toThrow(PermissionError);
+    await expect(api.createGroup({ schoolId: '555555', yearId: YEAR, studentCount: 1 })).rejects.toThrow(PermissionError);
+  });
+  it('ביטול גישה חל מיד, והשחזור מחזיר; התוכן שנוסף נשאר וניתן לזיהוי מי הגיש', async () => {
+    auth.as('demo-teacher');
+    const src = await api.addSource(goodSource);
+    const rq = await api.createRequest({ kind: 'inquiry', description: 'שאלה כללית' });
+    auth.as('demo-admin');
+    await api.adminRevokeTeacher('teacher@demo.test', 'עזב');
+    auth.as('demo-teacher');
+    expect((await api.ctx()).approved).toBe(false);
+    await expect(api.addSource({ ...goodSource, title: 'מקור אחרי ביטול' })).rejects.toThrow(PermissionError);
+    await expect(api.listMyGroups()).rejects.toThrow(PermissionError);
+    await expect(api.getSchoolHistory(DEMO_SCHOOL_ID, '2026-27')).rejects.toThrow(PermissionError);
+    auth.as('demo-admin');
+    const names = await api.adminProfileNames();
+    expect(names.get(src.createdBy)).toMatchObject({ email: 'teacher@demo.test' });
+    expect((await api.adminListRequests()).find(r => r.id === rq.id)).toMatchObject({ createdBy: 'demo-teacher', createdByEmail: 'teacher@demo.test' });
+    expect((await api.adminListSources()).some(x => x.id === src.id && x.createdBy === 'demo-teacher')).toBe(true);
+    const t = (await api.adminListTeachers()).find(x => x.email === 'teacher@demo.test')!;
+    expect(t.status).toBe('revoked');
+    await api.adminRestoreTeacher('teacher@demo.test');
+    auth.as('demo-teacher');
+    expect((await api.ctx()).approved).toBe(true);
+    await expect(api.listMyGroups()).resolves.toBeTruthy();
+  });
+  it('רק מנהל מנהל את הרשימה', async () => {
+    for (const who of ['demo-teacher', 'demo-coord', 'demo-pending', null]) {
+      auth.as(who);
+      await expect(api.adminListTeachers()).rejects.toThrow();
+      await expect(api.adminSaveTeacher({ email: 'x@example.com' })).rejects.toThrow();
+      await expect(api.adminRevokeTeacher('teacher@demo.test')).rejects.toThrow();
+    }
+  });
+  it('ייבוא רשימה: תקין, שגוי, כפול, מוסד לא קיים; מורה שבוטל אינו משוחזר; ללא כתיבה בתצוגה מקדימה', async () => {
+    auth.as('demo-admin');
+    await api.adminRevokeTeacher('teacher2@demo.test');
+    const csv = ['email,name,school', 'new1@example.com,אחת,' + DEMO_SCHOOL_ID, 'NEW1@example.com,כפולה,', 'not-an-email,שגויה,', 'new2@example.com,בלי מוסד קיים,424242', 'teacher2@demo.test,בוטלה,', 'new3@example.com,שלישית,'].join('\n');
+    const before = JSON.stringify(store.dump());
+    const prev = await api.adminPreviewTeacherImport(csv);
+    expect(JSON.stringify(store.dump())).toBe(before);
+    const st = Object.fromEntries(prev.map(r => [r.email, r.status]));
+    expect(st['new1@example.com']).toBe('duplicate_in_file'); // המופע האחרון של אותה כתובת (באותיות שונות) נתפס ככפול
+    expect(prev.find(r => r.line === 2)!.status).toBe('new');
+    expect(prev.find(r => r.email === 'not-an-email')!.status).toBe('error');
+    expect(prev.find(r => r.email === 'new2@example.com')!.status).toBe('error');
+    expect(st['teacher2@demo.test']).toBe('skip_revoked');
+    const res = await api.adminApplyTeacherImport(csv);
+    expect(res).toMatchObject({ added: 2, updated: 0 });
+    const all = await api.adminListTeachers();
+    expect(all.find(x => x.email === 'new1@example.com')).toMatchObject({ status: 'pending', active: true, schoolIds: [DEMO_SCHOOL_ID] });
+    expect(all.find(x => x.email === 'teacher2@demo.test')!.status).toBe('revoked'); // לא שוחזר בייבוא
+  });
+  it('מוסד שאינו קיים נדחה בהוספה ידנית; מייל לא תקין נדחה', async () => {
+    auth.as('demo-admin');
+    await expect(api.adminSaveTeacher({ email: 'a@example.com', schoolIds: ['nope'] })).rejects.toThrow(/מוסד/);
+    await expect(api.adminSaveTeacher({ email: 'not-an-email' })).rejects.toThrow(/מייל/);
+  });
+  it('מקורות ציבוריים אינם מכילים מייל או שם של המורה; גיבוי תוכן אינו כולל את רשימת המורים', async () => {
+    auth.as('demo-teacher');
+    await api.addSource(goodSource);
+    auth.as(null);
+    const pub = JSON.stringify(await api.listSources());
+    expect(pub).not.toContain('@');
+    auth.as('demo-admin');
+    const content = JSON.stringify(await api.exportBackup(false));
+    expect(content).not.toContain('@demo.test');
+    const priv = await api.exportBackup(true);
+    expect(priv.data.allowedTeachers.length).toBeGreaterThan(0);
   });
 });

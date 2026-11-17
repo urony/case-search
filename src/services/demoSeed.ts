@@ -1,7 +1,7 @@
 import { planSeedImport } from '../domain/seedImport';
 import { academicYear, currentStartYear } from '../domain/years';
 import { DEFAULT_GENERAL_RULES } from '../engine/general';
-import type { Group, Membership, Profile, RecruitmentSource, RoleDoc, School, SchoolYearHistory, Topic } from '../domain/types';
+import type { AllowedTeacher, Group, Profile, RecruitmentSource, RoleDoc, School, SchoolYearHistory, Topic } from '../domain/types';
 import type { DemoAccount } from './auth';
 import { buildCatalogOps } from './catalog';
 import { DEFAULT_TAGS, defaultSettings, defaultYears, SEED, SEED_AUX } from './bundled';
@@ -16,6 +16,8 @@ export const DEMO_ACCOUNTS: DemoAccount[] = [
   { uid: 'demo-coord', email: 'coordinator@demo.test', password: DEMO_PASSWORD, displayName: 'רכז הדגמה', emailVerified: true },
   { uid: 'demo-teacher', email: 'teacher@demo.test', password: DEMO_PASSWORD, displayName: 'מורה הדגמה', emailVerified: true },
   { uid: 'demo-teacher2', email: 'teacher2@demo.test', password: DEMO_PASSWORD, displayName: 'מורה הדגמה ב׳', emailVerified: true },
+  /** נרשם ואימת מייל, אך אינו ברשימת המורים המאושרים: להדגמת מצב "ממתין לאישור" */
+  { uid: 'demo-pending', email: 'pending@demo.test', password: DEMO_PASSWORD, displayName: 'מורה שטרם אושר (הדגמה)', emailVerified: true },
 ];
 
 /** נושא מלאכותי בלבד, עם כיסוי מלא, כדי להדגים תוצאה חיובית. אינו מחלה אמיתית ואינו קיים בנתוני הייצור. */
@@ -61,14 +63,16 @@ export async function seedStore(store: Store, now: number, withDemoData: boolean
     for (const a of DEMO_ACCOUNTS) {
       const p: Profile = { uid: a.uid, displayName: a.displayName, email: a.email, emailVerified: true, createdAt: now };
       ops.push({ op: 'set', path: `profiles/${a.uid}`, data: p });
-      const m: Membership = { id: `${a.uid}_${school.id}`, uid: a.uid, schoolId: school.id, startedAt: now, endedAt: null };
-      if (a.uid !== 'demo-admin') ops.push({ op: 'set', path: `memberships/${m.id}`, data: m });
+      if (a.uid === 'demo-teacher' || a.uid === 'demo-teacher2') {
+        const t: AllowedTeacher = { id: a.email, email: a.email, name: a.displayName, schoolIds: [school.id], active: true, addedBy: 'seed', addedAt: now };
+        ops.push({ op: 'set', path: `allowedTeachers/${t.id}`, data: t });
+      }
     }
     const role = (r: RoleDoc['role'], schoolId?: string): RoleDoc => ({ role: r, ...(schoolId ? { schoolId } : {}), grantedBy: 'seed', grantedAt: now });
     ops.push({ op: 'set', path: 'roles/demo-admin', data: role('admin') });
     ops.push({ op: 'set', path: 'roles/demo-coord', data: role('coordinator', school.id) });
     const src = (id: string, topicId: string, title: string, kind: RecruitmentSource['kind'], text: string): RecruitmentSource =>
-      ({ id, topicId, title, kind, text, url: '', phone: '', region: 'ארצי', population: '', createdBy: 'demo-teacher', createdAt: now, visible: true });
+      ({ id, topicId, title, kind, text, url: '', phone: '', region: 'ארצי', population: '', createdBy: 'demo-teacher', createdAt: now, visible: true, reviewed: true });
     ops.push({ op: 'set', path: 'sources/demo-src-1', data: src('demo-src-1', 't-DEMO1', 'עמותת הדגמה (מלאכותית)', 'association', 'מקור לדוגמה בלבד. אינו קיים במציאות.') });
     ops.push({ op: 'set', path: 'sources/demo-src-2', data: src('demo-src-2', 't-S054', 'קבוצת הדגמה לנושא COPD (מלאכותית)', 'facebook', 'מקור לדוגמה בלבד, להדגמת הצגת מקורות בכרטיס.') });
     const hist = (y: string, items: SchoolYearHistory['items']): SchoolYearHistory => ({ id: `${DEMO_SCHOOL_ID}_${y}`, schoolId: DEMO_SCHOOL_ID, yearId: y, items, updatedAt: now });

@@ -1,9 +1,12 @@
 rules_version = '2';
 
-// כללי הרשאות: האכיפה האמיתית של כל קריאה וכתיבה, בלי תלות בממשק (סעיפים 20.2 ו־21 במפרט).
-// תפקידים נשמרים במסמכי roles/{uid} שרק מנהל יכול לכתוב. מנהל ראשון נקבע ידנית בקונסולה או בסקריפט
-// scripts/bootstrap-admin.mjs (ראו docs/SETUP-he.md). אין סיסמת ניהול בקוד ואין קוד מוסד שמקנה הרשאה.
-// הבדיקות לכללים: tests/rules/rules.test.ts (דורשות אמולטור Firestore ו-Java).
+// כללי הרשאות: האכיפה האמיתית של כל קריאה וכתיבה, בלי תלות בממשק.
+// מודל גישה (עודכן 17.11.2026):
+//  - אורח: קורא קטלוג ציבורי ומקורות איתור גלויים. אינו כותב, ואינו רואה קבוצות, תלמידים או היסטוריית מוסד.
+//  - מורה: רק מי שכתובת המייל שלו ברשימת allowedTeachers (פעילה) ומאומתת (email_verified) בטוקן. ביטול חל בכל בקשה.
+//    ההיסטוריה והקבוצות: רק מוסדות שאושרו לו ברשימה, וקבוצות שלו. קוד מוסד אינו מקנה דבר.
+//  - רכז: לפי roles/{uid} (מנהל קובע), מוסד אחד. מנהל: roles/{uid}.
+// בדיקות: tests/rules/rules.test.ts (אמולטור Firestore, כולל גישה ישירה).
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -11,16 +14,19 @@ service cloud.firestore {
     function signedIn() { return request.auth != null; }
     function verified() { return signedIn() && request.auth.token.email_verified == true; }
     function uid() { return request.auth.uid; }
+    function email() { return request.auth.token.email.lower(); }
     function roleExists() { return exists(/databases/$(database)/documents/roles/$(uid())); }
     function roleData() { return get(/databases/$(database)/documents/roles/$(uid())).data; }
     function isAdmin() { return verified() && roleExists() && roleData().role == 'admin'; }
-    function isCoordOf(schoolId) {
-      return verified() && roleExists() && roleData().role == 'coordinator' && roleData().schoolId == schoolId;
-    }
-    function membershipPath(schoolId) { return /databases/$(database)/documents/memberships/$(uid() + '_' + schoolId); }
-    function isMember(schoolId) {
-      return verified() && exists(membershipPath(schoolId)) && get(membershipPath(schoolId)).data.endedAt == null;
-    }
+    function isCoord() { return verified() && roleExists() && roleData().role == 'coordinator'; }
+    function isCoordOf(schoolId) { return isCoord() && roleData().schoolId == schoolId; }
+    function allowPath() { return /databases/$(database)/documents/allowedTeachers/$(email()); }
+    // מורה מאושר מראש וגישתו לא בוטלה
+    function allowed() { return verified() && exists(allowPath()) && get(allowPath()).data.active == true; }
+    // מורה מאושר, או בעל תפקיד שהמנהל הקצה
+    function approved() { return allowed() || isAdmin() || isCoord(); }
+    // מוסד שאושר למורה ברשימה
+    function schoolAllowed(schoolId) { return allowed() && schoolId in get(allowPath()).data.schoolIds; }
     function isNum(v) { return v is number; }
     // מזהה יומי למשתמש: uid_YYYYMMDD_n. אוכף מכסה יומית בצד השירות: אי אפשר ליצור יותר מ-n מסמכים ביום, ולא להמציא תאריך.
     function two(n) { return (n < 10 ? '0' : '') + string(n); }
@@ -36,8 +42,8 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     match /config/{doc} {
-      // כתובת האחראי נראית רק למשתמשים מחוברים ומאומתים
-      allow read: if isAdmin() || (doc != 'contact' && doc != 'backupMeta') || (doc == 'contact' && verified());
+      // כתובת האחראי: למורה מאושר בלבד. מועד גיבוי: למנהל בלבד.
+      allow read: if (doc != 'contact' && doc != 'backupMeta') || (doc == 'contact' && approved()) || isAdmin();
       allow write: if isAdmin();
     }
 
@@ -58,11 +64,18 @@ service cloud.firestore {
       allow create: if isAdmin();
     }
 
-    // ── מקורות איתור ──
+    // ── רשימת המורים המאושרים: המנהל כותב. המורה קורא רק את המסמך של כתובתו (לדעת אם אושר) ──
+    match /allowedTeachers/{key} {
+      allow get: if (verified() && key == email()) || isAdmin();
+      allow list: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // ── מקורות איתור: הקריאה פתוחה (גלויים בלבד); הוספה רק למורה מאושר ──
     match /sources/{id} {
       allow read: if resource == null || resource.data.visible == true || isAdmin();   // resource==null: בדיקת קיום לצורך חוזר־בטוח
-      // מקור מתפרסם מיד. מכסה: עד 5 ביום למשתמש (מבנה המזהה). reviewed=false עד שמנהל מסמן.
-      allow create: if verified() && slotId(id, 5)
+        // מקור מתפרסם מיד. מכסה: עד 5 ביום למשתמש (מבנה המזהה). reviewed=false עד שמנהל מסמן. נרשם מי הוסיף (מזהה משתמש בלבד, כי המקורות ציבוריים) ומתי.
+      allow create: if approved() && slotId(id, 5)
         && request.resource.data.keys().hasOnly(['topicId', 'title', 'kind', 'text', 'url', 'phone', 'region', 'population', 'createdBy', 'createdAt', 'visible', 'reviewed', 'clientId'])
         && request.resource.data.createdBy == uid()
         && request.resource.data.visible == true
@@ -78,10 +91,10 @@ service cloud.firestore {
       // גם מי שהוסיף מקור אינו יכול לערוך, להסתיר או למחוק אותו (R03, סעיף 13.2)
       allow update, delete: if isAdmin();
     }
-    // דיווח על מקור: מסמך אחד לכל משתמש ומקור (המזהה uid_sourceId), בלי התראות או דוא"ל. מנהל רואה ומסמן כטופל.
+    // דיווח על מקור: מסמך אחד לכל משתמש ומקור (המזהה uid_sourceId). מנהל רואה ומסמן כטופל.
     match /sourceReports/{id} {
-      allow read: if isAdmin() || (signedIn() && (resource == null || resource.data.createdBy == uid()));
-      allow create: if verified() && id == uid() + '_' + request.resource.data.sourceId
+      allow read: if (approved() && (resource == null || resource.data.createdBy == uid())) || isAdmin();
+      allow create: if approved() && id == uid() + '_' + request.resource.data.sourceId
         && request.resource.data.keys().hasOnly(['sourceId', 'reason', 'createdBy', 'createdAt', 'handled'])
         && request.resource.data.createdBy == uid()
         && request.resource.data.handled == false
@@ -89,27 +102,29 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
-    // ── בקשות ──
+    // ── בקשות: רק מורה מאושר; נרשם מי הגיש ומתי ──
     match /requests/{id} {
-      allow read: if isAdmin() || (signedIn() && (resource == null || resource.data.createdBy == uid()));
+      allow read: if (approved() && (resource == null || resource.data.createdBy == uid())) || isAdmin();
       // מכסה: עד 10 בקשות ביום למשתמש
-      allow create: if verified() && slotId(id, 10)
+      allow create: if approved() && slotId(id, 10)
         && request.resource.data.createdBy == uid()
+        && request.resource.data.createdByEmail == email()
         && request.resource.data.status == 'open'
         && request.resource.data.description is string && request.resource.data.description.size() <= 2000
         && !('adminReply' in request.resource.data) && !('decisionKind' in request.resource.data)
         && !('repliedAt' in request.resource.data) && !('teacherSeenAt' in request.resource.data);
-      allow update: if isAdmin() || (verified() && resource.data.createdBy == uid() && (
-        // השלמת מידע
-        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['supplement', 'status', 'updatedAt']) && request.resource.data.status == 'open')
-        // סימון "ראיתי את המענה" (חיווי "חדש" בתוך המערכת)
-        || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['teacherSeenAt'])));
+      allow update: if (approved() && resource.data.createdBy == uid() && (
+          // השלמת מידע
+          (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['supplement', 'status', 'updatedAt']) && request.resource.data.status == 'open')
+          // סימון "ראיתי את המענה" (חיווי "חדש" בתוך המערכת)
+          || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['teacherSeenAt'])))
+        || isAdmin();
       allow delete: if isAdmin();
     }
 
-    // ── חשבון, שיוך ותפקידים ──
+    // ── חשבון ותפקידים ──
     match /profiles/{id} {
-      allow read: if isAdmin() || (signedIn() && id == uid());
+      allow read: if (signedIn() && id == uid()) || isAdmin();
       allow create, update: if signedIn() && id == uid()
         && request.resource.data.uid == uid()
         && request.resource.data.email == request.auth.token.email
@@ -117,49 +132,40 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
     match /roles/{id} {
-      allow read: if isAdmin() || (signedIn() && id == uid());
+      allow read: if (signedIn() && id == uid()) || isAdmin();
       allow write: if isAdmin();
     }
     match /schools/{id} {
-      allow get: if true;                       // קוד מוסד מאפשר לברר שם ולהצטרף; אין רשימה ציבורית
-      allow list: if isAdmin() || (verified() && roleExists() && roleData().role == 'coordinator');
+      // שם מוסד: למורה מאושר, לרכז ולמנהל. אין קריאה ציבורית, ואין רשימה פתוחה.
+      allow get: if approved();
+      allow list: if isAdmin() || isCoord();
       allow write: if isAdmin();
     }
-    match /memberships/{id} {
-      allow read: if isAdmin() || (signedIn() && (resource == null || resource.data.uid == uid())) || (resource != null && isCoordOf(resource.data.schoolId));
-      allow create: if verified()
-        && request.resource.data.uid == uid()
-        && id == uid() + '_' + request.resource.data.schoolId
-        && exists(/databases/$(database)/documents/schools/$(request.resource.data.schoolId))
-        && request.resource.data.endedAt == null;
-      allow update: if isAdmin() || isCoordOf(resource.data.schoolId)
-        || (verified() && resource.data.uid == uid() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['endedAt']));
-      allow delete: if isAdmin();
-    }
 
-    // ── קבוצות: מורה רואה את שלו, רכז את מוסדו, מנהל את המרחב שהוגדר לו ──
+    // ── קבוצות: מורה מאושר רואה את שלו, רכז את מוסדו, מנהל הכול ──
     match /groups/{id} {
-      allow read: if isAdmin() || (signedIn() && (resource == null || resource.data.ownerUid == uid())) || (resource != null && isCoordOf(resource.data.schoolId));
-      allow create: if verified()
+      allow read: if (allowed() && (resource == null || resource.data.ownerUid == uid())) || isAdmin() || (resource != null && isCoordOf(resource.data.schoolId));
+      allow create: if allowed()
         && request.resource.data.ownerUid == uid()
-        && isMember(request.resource.data.schoolId)
+        && schoolAllowed(request.resource.data.schoolId)
         && request.resource.data.studentCount in [1, 2, 3]
         && request.resource.data.students.size() <= request.resource.data.studentCount
         && !exists(/databases/$(database)/documents/deletionLedger/$(request.resource.data.yearId));  // מחזור שנסגר
-      allow update: if verified() && (resource.data.ownerUid == uid() || isCoordOf(resource.data.schoolId) || isAdmin())
+      allow update: if ((allowed() && resource.data.ownerUid == uid()) || isCoordOf(resource.data.schoolId) || isAdmin())
         && request.resource.data.ownerUid == resource.data.ownerUid
         && request.resource.data.schoolId == resource.data.schoolId
         && request.resource.data.yearId == resource.data.yearId
         && request.resource.data.studentCount in [1, 2, 3]
         && request.resource.data.students.size() <= request.resource.data.studentCount;
-      allow delete: if verified() && (resource.data.ownerUid == uid() || isCoordOf(resource.data.schoolId) || isAdmin());
+      allow delete: if (allowed() && resource.data.ownerUid == uid()) || isCoordOf(resource.data.schoolId) || isAdmin();
     }
 
-    // ── היסטוריית נושאים: ציבורית לפי קוד מוסד ושנה (get בלבד, ללא רשימה), ללא פרטים מזהים ──
+    // ── היסטוריית נושאים: לא פתוחה לאורחים. מורה מאושר רואה רק מוסדות שאושרו לו; רכז את מוסדו; מנהל הכול.
+    //    מזהה המסמך: קוד מוסד, קו תחתון ושנה. אין רשימה (מנהל בלבד). קוד מוסד לבדו אינו מקנה גישה. ──
     match /schoolHistory/{id} {
-      allow get: if true;
+      allow get: if schoolAllowed(id.split('_')[0]) || isCoordOf(id.split('_')[0]) || isAdmin();
       allow list: if isAdmin();
-      allow write: if (isAdmin() || isCoordOf(request.resource.data.schoolId) || isMember(request.resource.data.schoolId))
+      allow write: if (schoolAllowed(request.resource.data.schoolId) || isCoordOf(request.resource.data.schoolId) || isAdmin())
         && id == request.resource.data.schoolId + '_' + request.resource.data.yearId;
     }
   }

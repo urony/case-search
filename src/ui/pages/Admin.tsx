@@ -22,7 +22,7 @@ export default function Admin() {
   if (ctx.role !== 'admin') return <Notice kind="bad" title="אין הרשאה. ">אזור זה מיועד למנהלי האתר. ההרשאה נאכפת גם בצד השירות.</Notice>;
   const { badges } = useSession();
   const cnt = (to: string): number => ({ '/admin/requests': badges.admin?.openRequests ?? 0, '/admin/sources': (badges.admin?.unreviewedSources ?? 0) + (badges.admin?.openReports ?? 0), '/admin/suggestions': badges.admin?.openSuggestions ?? 0 } as Record<string, number>)[to] ?? 0;
-  const links: [string, string][] = [['/admin', 'תמונת מצב'], ['/admin/topics', 'מחלות וכללים'], ['/admin/requests', 'בקשות והחלטות'], ['/admin/sources', 'מקורות איתור'], ['/admin/suggestions', 'הצעות'], ['/admin/schools', 'מוסדות'], ['/admin/cycles', 'מחזורים'], ['/admin/users', 'משתמשים והרשאות'], ['/admin/questions', 'בירורים מקצועיים'], ['/admin/rules', 'כללי סף כלליים'], ['/admin/settings', 'הגדרות'], ['/admin/backup', 'גיבוי ושחזור']];
+  const links: [string, string][] = [['/admin', 'תמונת מצב'], ['/admin/topics', 'מחלות וכללים'], ['/admin/requests', 'בקשות והחלטות'], ['/admin/sources', 'מקורות איתור'], ['/admin/suggestions', 'הצעות'], ['/admin/schools', 'מוסדות'], ['/admin/cycles', 'מחזורים'], ['/admin/teachers', 'מורים מאושרים'], ['/admin/users', 'תפקידים (רכז, מנהל)'], ['/admin/questions', 'בירורים מקצועיים'], ['/admin/rules', 'כללי סף כלליים'], ['/admin/settings', 'הגדרות'], ['/admin/backup', 'גיבוי ושחזור']];
   return (
     <div className="admin">
       <nav aria-label="ניווט ניהול">{links.map(([to, l]) => <NavLink key={to} to={to} end={to === '/admin'} className={({ isActive }) => (isActive ? 'active' : '')}>{l}{cnt(to) > 0 && <span className="count">{cnt(to)}</span>}</NavLink>)}</nav>
@@ -37,6 +37,7 @@ export default function Admin() {
           <Route path="suggestions" element={<SuggestionsAdmin />} />
           <Route path="schools" element={<SchoolsAdmin />} />
           <Route path="cycles" element={<CyclesAdmin />} />
+          <Route path="teachers" element={<TeachersAdmin />} />
           <Route path="users" element={<UsersAdmin />} />
           <Route path="questions" element={<QuestionsAdmin />} />
           <Route path="rules" element={<GeneralRulesAdmin />} />
@@ -347,7 +348,7 @@ function RequestsAdmin() {
         <div className={`card stack ${r.status === 'open' ? 'isnew' : ''}`} key={r.id}>
           <div className="row between"><b>{REQUEST_KIND_LABEL[r.kind]}{r.proposedHe ? `: ${r.proposedHe}` : ''}</b>
             <span className="badge neutral">{requestStateLabel(r)}</span></div>
-          <div className="small muted">{fmtDate(r.createdAt)} · יעד {fmtDate(r.dueAt)} {isOverdue(r, now) && <span className="badge warn">חרגה מהיעד</span>}{r.topicId && ` · נושא: ${catalog?.topics.find(t => t.id === r.topicId)?.he}`}</div>
+          <div className="small muted">הוגש בידי: <b>{r.createdByName || '—'}</b> <bdi className="ltr">{r.createdByEmail ?? ''}</bdi> · {fmtDate(r.createdAt)} · יעד {fmtDate(r.dueAt)} {isOverdue(r, now) && <span className="badge warn">חרגה מהיעד</span>}{r.topicId && ` · נושא: ${catalog?.topics.find(t => t.id === r.topicId)?.he}`}</div>
           <p>{r.description}</p>{r.rationale && <p><b>נימוק:</b> {r.rationale}</p>}{r.supplement && <p><b>השלמת המורה:</b> {r.supplement}</p>}
           {r.adminReply && <Notice kind="info" title="המענה שנמסר: ">{r.adminReply}{r.repliedAt && <span className="small muted"> · {fmtDate(r.repliedAt)}{r.teacherSeenAt ? ' · המורה ראה' : ' · טרם נראה בידי המורה'}</span>}</Notice>}
           <div className="row">
@@ -380,6 +381,7 @@ function SourcesAdmin() {
   const [only, setOnly] = useState<'new' | 'all'>('new');
   const s = useAsync(() => api.adminListSources(only === 'new'), [api, only]);
   const reports = useAsync(() => api.adminListSourceReports(true), [api]);
+  const names = useAsync(() => api.adminProfileNames(), [api]);
   const { busy, run } = useBusy();
   const reportsOf = (id: string) => reports.data?.filter(x => x.sourceId === id) ?? [];
   const reload = () => { s.reload(); reports.reload(); reloadSources(); refreshBadges(true); };
@@ -395,7 +397,7 @@ function SourcesAdmin() {
       {s.data && list.length === 0 && <div className="card empty">{only === 'new' ? 'אין מקורות חדשים שטרם נבדקו.' : 'אין מקורות.'}</div>}
       <div className="tablewrap"><table><thead><tr><th>כותרת</th><th>נושא</th><th>מצב</th><th>דיווחים</th><th></th></tr></thead>
         <tbody>{list.map(x => (
-          <tr key={x.id}><td><b>{x.title}</b>{x.reviewed === false && <span className="badge warn">חדש</span>}<div className="small muted">{x.text.slice(0, 100)} · {fmtDate(x.createdAt)}</div></td><td>{catalog?.topics.find(t => t.id === x.topicId)?.he ?? x.topicId}</td>
+          <tr key={x.id}><td><b>{x.title}</b>{x.reviewed === false && <span className="badge warn">חדש</span>}<div className="small muted">{x.text.slice(0, 100)}</div><div className="small muted">הוגש בידי: {names.data?.get(x.createdBy)?.name || '—'} <bdi className="ltr">{names.data?.get(x.createdBy)?.email ?? ''}</bdi> · {fmtDate(x.createdAt)}</div></td><td>{catalog?.topics.find(t => t.id === x.topicId)?.he ?? x.topicId}</td>
             <td>{x.visible ? <span className="badge ok">גלוי</span> : <span className="badge neutral">הוסר</span>}</td>
             <td>{reportsOf(x.id).length > 0 ? <span className="badge warn">{reportsOf(x.id).length}</span> : '—'}{reportsOf(x.id).map(r => <div key={r.id} className="small">{r.reason} <button className="linkbtn small" onClick={() => run(() => api.adminHandleReport(r.id)).then(reload)}>טופל</button></div>)}</td>
             <td><div className="row">
@@ -507,6 +509,70 @@ function CyclesAdmin() {
         {msg && <Notice kind="ok"><span role="status">{msg}</span></Notice>}{error && <p className="err" role="alert">{error}</p>}
       </div>
       <p className="small muted">הפעולה אינה הפיכה. היא אינה מוחקת קובצי גיבוי שכבר הורדו: היומן מבטיח שבשחזור מהם לא יחזרו קבוצות של מחזור שנסגר. אין להעתיק נתוני תלמידים ל־GitHub או לקובצי seed.</p>
+    </div>
+  );
+}
+
+// ───────── מורים מאושרים ─────────
+const TSTATUS: Record<string, [string, string]> = { pending: ['ממתין להרשמה', 'warn'], active: ['פעיל', 'ok'], revoked: ['הגישה בוטלה', 'neutral'] };
+const IMPORT_LABEL: Record<string, string> = { new: 'חדש', update: 'עדכון', unchanged: 'ללא שינוי', skip_revoked: 'בוטל (לא משוחזר)', error: 'שגיאה', duplicate_in_file: 'כפול בקובץ' };
+
+function TeachersAdmin() {
+  const { api } = useRT();
+  const t = useAsync(() => api.adminListTeachers(), [api]);
+  const schools = useAsync(() => api.adminListSchools(), [api]);
+  const { busy, error, run } = useBusy();
+  const [email, setEmail] = useState(''); const [name, setName] = useState(''); const [sch, setSch] = useState<string[]>([]);
+  const [csv, setCsv] = useState(''); const [prev, setPrev] = useState<Awaited<ReturnType<typeof api.adminPreviewTeacherImport>> | null>(null);
+  const [msg, setMsg] = useState<string | null>(null);
+  const [filter, setFilter] = useState<'all' | 'pending' | 'active' | 'revoked'>('all');
+  const list = (t.data ?? []).filter(x => filter === 'all' || x.status === filter);
+  const count = (f: string) => (t.data ?? []).filter(x => f === 'all' || x.status === f).length;
+  return (
+    <div className="stack">
+      <h2>מורים מאושרים</h2>
+      <Notice kind="info" title="איך זה עובד: ">רק מורה שכתובת המייל שלו ברשימה הזו יכול לשמור קבוצות, להגיש בקשות ולהוסיף מקורות. המורה נרשם בכתובת מכל ספק, ומאמת במייל שהוא שולט בה. הקלדת הכתובת ברשימה לבדה אינה מקנה גישה. השיוך למוסד נקבע כאן. ביטול גישה חל מיד.</Notice>
+
+      <div className="card stack">
+        <h3 style={{ margin: 0 }}>הוספת מורה</h3>
+        <div className="grid2">
+          <Field label="כתובת מייל"><input type="email" dir="ltr" value={email} onChange={e => setEmail(e.target.value)} /></Field>
+          <Field label="שם (רשות)"><input type="text" value={name} onChange={e => setName(e.target.value)} /></Field>
+        </div>
+        <Field label="מוסדות (אפשר לסמן כמה)">
+          <select multiple value={sch} onChange={e => setSch([...e.target.selectedOptions].map(o => o.value))} style={{ minHeight: 90 }}>
+            {(schools.data ?? []).filter(s => s.active).map(s => <option key={s.id} value={s.id}>{s.name} ({s.id})</option>)}
+          </select>
+        </Field>
+        <div className="row"><button className="btn" disabled={busy || !email} onClick={() => run(() => api.adminSaveTeacher({ email, name, schoolIds: sch })).then(r => { if (r) { setMsg(`נוסף: ${r.email}`); setEmail(''); setName(''); setSch([]); t.reload(); } })}>הוספה לרשימה</button></div>
+      </div>
+
+      <div className="card stack">
+        <h3 style={{ margin: 0 }}>ייבוא רשימה מקובץ</h3>
+        <p className="small muted">קובץ CSV עם העמודות: מייל, שם (רשות), קודי מוסד (רשות, מופרדים ב־| או ברווח). אפשר להדביק גם טקסט. מוסד חייב להיות קיים. מורה שהגישה שלו בוטלה אינו משוחזר בייבוא.</p>
+        <input type="file" accept=".csv,text/csv,text/plain" aria-label="קובץ מורים" onChange={async e => { const f = e.target.files?.[0]; if (f) { const text = await f.text(); setCsv(text); setPrev(null); } }} />
+        <textarea dir="ltr" rows={4} value={csv} onChange={e => { setCsv(e.target.value); setPrev(null); }} placeholder={'email,name,school\nteacher@example.com,שם מורה,999001'} aria-label="תוכן הקובץ" />
+        <div className="row"><button className="btn secondary" disabled={busy || !csv.trim()} onClick={() => run(() => api.adminPreviewTeacherImport(csv)).then(r => r && setPrev(r))}>תצוגה מקדימה</button>
+          {prev && <button className="btn" disabled={busy || !prev.some(r => r.status === 'new' || r.status === 'update')} onClick={() => run(() => api.adminApplyTeacherImport(csv)).then(r => { if (r) { setMsg(`נוספו ${r.added}, עודכנו ${r.updated}, דולגו ${r.skipped}.`); setPrev(null); setCsv(''); t.reload(); } })}>אישור הייבוא</button>}</div>
+        {prev && (<div className="tablewrap"><table><thead><tr><th>שורה</th><th>מייל</th><th>שם</th><th>מוסדות</th><th>מצב</th></tr></thead>
+          <tbody>{prev.map(r => <tr key={r.line}><td>{r.line}</td><td><bdi className="ltr">{r.email}</bdi></td><td>{r.name}</td><td>{r.schoolIds.join(', ')}</td><td>{IMPORT_LABEL[r.status]}{r.message && ` · ${r.message}`}</td></tr>)}</tbody></table></div>)}
+      </div>
+      {msg && <Notice kind="ok"><span role="status">{msg}</span></Notice>}{error && <p className="err" role="alert">{error}</p>}
+
+      <h3 style={{ margin: 0 }}>הרשימה</h3>
+      <div className="tabs-lite" role="group" aria-label="סינון">{([['all', 'הכול'], ['pending', 'ממתינים להרשמה'], ['active', 'פעילים'], ['revoked', 'גישה בוטלה']] as const).map(([f, l]) => <button key={f} className="chip" aria-pressed={filter === f} onClick={() => setFilter(f)}>{l} ({count(f)})</button>)}</div>
+      {t.loading && <Loading />}
+      <div className="tablewrap"><table><thead><tr><th>מייל</th><th>שם</th><th>מוסדות</th><th>מצב</th><th>נוסף</th><th></th></tr></thead>
+        <tbody>{list.map(x => (
+          <tr key={x.id}><td><bdi className="ltr">{x.email}</bdi></td><td>{x.name || '—'}</td><td>{x.schoolIds.join(', ') || '—'}</td>
+            <td><span className={`badge ${TSTATUS[x.status][1]}`}>{TSTATUS[x.status][0]}</span>{x.revokedAt && <div className="small muted">בוטל {fmtDate(x.revokedAt)}{x.revokedReason ? `: ${x.revokedReason}` : ''}</div>}</td>
+            <td className="small">{fmtDate(x.addedAt)}</td>
+            <td><div className="row">
+              {x.active
+                ? <button className="btn small danger" disabled={busy} onClick={() => { const r = prompt('ביטול גישה חל מיד. סיבה (רשות):', 'עזב את התפקיד'); if (r !== null) run(() => api.adminRevokeTeacher(x.email, r)).then(t.reload); }}>ביטול גישה</button>
+                : <button className="btn small" disabled={busy} onClick={() => run(() => api.adminRestoreTeacher(x.email)).then(t.reload)}>שחזור גישה</button>}
+              <button className="btn small secondary" disabled={busy} onClick={() => { if (confirm(`להסיר את ${x.email} מהרשימה? (אם צריך רק לבטל גישה, השתמשו ב"ביטול גישה")`)) run(() => api.adminDeleteTeacher(x.email)).then(t.reload); }}>הסרה</button></div></td></tr>))}</tbody></table></div>
+      <p className="small muted">מה קורה אחרי ביטול: המורה אינו יכול לשמור, לקרוא את הקבוצות שלו או את ההיסטוריה. הקבוצות והמקורות שהוסיף נשארים (מנהל ורכז רואים אותם, ומי הוסיף מופיע בעמודת "הוגש בידי"). הקבוצות יימחקו בסגירת המחזור, או שאפשר לבטל אותן.</p>
     </div>
   );
 }

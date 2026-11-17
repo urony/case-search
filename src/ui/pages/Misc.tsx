@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { academicYear } from '../../domain/years';
 import type { SchoolYearHistory } from '../../domain/types';
-import { Field, Loading, Notice, PolicyBadge, useBusy } from '../components';
-import { useCatalog, useRT } from '../ctx';
+import { Field, Loading, Notice, PolicyBadge, useAsync, useBusy } from '../components';
+import { useCatalog, useRT, useSession } from '../ctx';
 import { HISTORY_STATE_LABEL, loadSchoolHistories } from '../history';
 import { TopicCard } from './Home';
 
@@ -30,31 +30,41 @@ export function NewThisYear() {
 
 export function HistoryPage() {
   const { api } = useRT();
+  const { ctx } = useSession();
   const { catalog, topicById } = useCatalog();
   const [code, setCode] = useState('');
   const [school, setSchool] = useState<{ id: string; name: string; city: string } | null>(null);
   const [hist, setHist] = useState<SchoolYearHistory[] | null>(null);
+  const mine = useAsync(async () => (ctx.approved ? api.mySchools() : []), [api, ctx.approved]);
   const { busy, error, run } = useBusy();
 
-  async function lookup(e: React.FormEvent) {
-    e.preventDefault();
+  async function show(id: string) {
     setSchool(null); setHist(null);
     const r = await run(async () => {
-      const s = await api.getSchool(code);
-      if (!s) throw new Error('קוד מוסד לא נמצא. בדקו את הקוד, או פנו לאחראי להוספת המוסד.');
+      const s = (await api.getSchool(id)) ?? { id, name: id, city: '', active: true };
       const h = await loadSchoolHistories(api, s.id, catalog!.settings.currentYearId);
       return { s, h: h.histories };
     });
     if (r) { setSchool(r.s); setHist(r.h); }
   }
+  useEffect(() => { if (ctx.role !== 'admin' && mine.data && mine.data.length === 1 && !school && !hist) show(mine.data[0].schoolId); }, [mine.data]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!ctx.user) return <Notice kind="warn">היסטוריית נושאים של מוסד זמינה למורים מאושרים בלבד. יש <Link to="/login?next=/history">להיכנס</Link>.</Notice>;
+  if (!ctx.approved) return <Notice kind="warn" title="הכתובת שלך עדיין לא אושרה. ">היסטוריית נושאים של מוסד זמינה למורים שהפיקוח אישר מראש ושויכו למוסד.</Notice>;
   return (
     <div className="stack">
       <h2>היסטוריית נושאים של מוסד</h2>
-      <p>הזינו קוד מוסד כדי לראות אילו נושאים נבחרו בו בשנים האחרונות. ההיסטוריה מכילה נושא, שנה ומצב בלבד, ללא תלמידים או מטופלים. הזנת קוד מאפשרת עיון בהיסטוריה בלבד, ואינה מקנה גישה לקבוצות או לפרטי תלמידים.</p>
-      <form className="card row" onSubmit={lookup}>
-        <Field label="קוד מוסד"><input type="text" dir="ltr" value={code} onChange={e => setCode(e.target.value)} required autoComplete="off" /></Field>
-        <button className="btn" disabled={busy} style={{ alignSelf: 'end' }}>{busy ? 'מחפש…' : 'הצגה'}</button>
-      </form>
+      <p>אילו נושאים נבחרו במוסד שלכם בשנים האחרונות. ההיסטוריה מכילה נושא, שנה ומצב בלבד, ללא תלמידים או מטופלים. היא זמינה רק למוסדות שאושרו לכם. הקלדת קוד מוסד אינה מקנה גישה.</p>
+      {mine.data && mine.data.length > 1 && (
+        <div className="card row">{mine.data.map(m => <button key={m.id} className="btn secondary" disabled={busy} onClick={() => show(m.schoolId)}>{m.school?.name ?? m.schoolId}</button>)}</div>
+      )}
+      {mine.data && mine.data.length === 0 && ctx.role !== 'admin' && <Notice kind="info">עדיין לא שויך לכם מוסד. השיוך נקבע בידי הפיקוח.</Notice>}
+      {ctx.role === 'admin' && (
+        <form className="card row" onSubmit={e => { e.preventDefault(); show(code.trim()); }}>
+          <Field label="קוד מוסד (מנהל)"><input type="text" dir="ltr" value={code} onChange={e => setCode(e.target.value)} required autoComplete="off" /></Field>
+          <button className="btn" disabled={busy} style={{ alignSelf: 'end' }}>{busy ? 'מחפש…' : 'הצגה'}</button>
+        </form>
+      )}
       {error && <Notice kind="bad">{error}</Notice>}
       {school && hist && (
         <div className="stack">

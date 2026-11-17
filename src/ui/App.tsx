@@ -9,7 +9,7 @@ import Admin from './pages/Admin';
 import Coordinator from './pages/Coordinator';
 import Home from './pages/Home';
 import { About, HistoryPage, NewThisYear } from './pages/Misc';
-import { Groups, Login, MyRequests, Profile, RequestForm, VerifyBanner } from './pages/Account';
+import { ApprovalBanner, Groups, Login, MyRequests, Profile, RequestForm, VerifyBanner } from './pages/Account';
 import { AddSourceForm } from './pages/Sources';
 import TopicPage from './pages/TopicPage';
 import { Notice } from './components';
@@ -56,8 +56,8 @@ function Header() {
           <NavLink to="/new-this-year">חדשים השנה</NavLink>
           <NavLink to="/history">היסטוריית מוסד</NavLink>
           <NavLink to="/about">הסבר</NavLink>
-          {ctx.verified && <NavLink to="/groups">הקבוצות שלי</NavLink>}
-          {ctx.verified && <NavLink to="/requests">הבקשות שלי{badges.unseenReplies > 0 && <span className="count" aria-label={`${badges.unseenReplies} עדכונים חדשים`}>{badges.unseenReplies}</span>}</NavLink>}
+          {ctx.approved && <NavLink to="/groups">הקבוצות שלי</NavLink>}
+          {ctx.approved && <NavLink to="/requests">הבקשות שלי{badges.unseenReplies > 0 && <span className="count" aria-label={`${badges.unseenReplies} עדכונים חדשים`}>{badges.unseenReplies}</span>}</NavLink>}
           {ctx.role === 'coordinator' && <NavLink to="/coordinator">רכז</NavLink>}
           {ctx.role === 'admin' && <NavLink to="/admin">ניהול{(badges.admin?.total ?? 0) > 0 && <span className="count" aria-label={`${badges.admin!.total} פריטים הממתינים לטיפול`}>{badges.admin!.total}</span>}</NavLink>}
         </nav>
@@ -80,6 +80,7 @@ function Shell() {
       <main id="main" tabIndex={-1}>
         <div className="wrap">
           <VerifyBanner />
+          <ApprovalBanner />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/topic/:id" element={<TopicPage />} />
@@ -112,7 +113,7 @@ function Shell() {
 function AddSourcePage() {
   const { ctx } = useSession();
   const nav = useNavigate();
-  if (!ctx.verified) return <Notice kind="warn">יש <Link to="/login?next=/sources/add">להיכנס</Link>. מומלץ להוסיף מקור מכרטיס הנושא.</Notice>;
+  if (!ctx.approved) return <Notice kind="warn">הוספת מקור זמינה למורים מאושרים בלבד. יש <Link to="/login?next=/sources/add">להיכנס</Link>. מומלץ להוסיף מקור מכרטיס הנושא.</Notice>;
   return <AddSourceForm topicId="" onDone={() => nav('/')} />;
 }
 

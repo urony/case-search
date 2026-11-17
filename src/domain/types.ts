@@ -102,7 +102,11 @@ export interface RoleDoc { role: Role; schoolId?: string; grantedBy: string; gra
 
 export interface Profile { uid: string; displayName: string; email: string; emailVerified: boolean; createdAt: number }
 export interface School { id: string; name: string; city: string; active: boolean }
-export interface Membership { id: string; uid: string; schoolId: string; startedAt: number; endedAt: number | null }
+/** מורה שהפיקוח אישר מראש. מזהה המסמך הוא כתובת המייל באותיות קטנות. הגישה נבדקת בכל בקשה: ביטול (active=false) חל מיד. */
+export interface AllowedTeacher {
+  id: string; email: string; name: string; schoolIds: string[]; active: boolean; note?: string;
+  addedBy: string; addedAt: number; revokedAt?: number; revokedBy?: string; revokedReason?: string;
+}
 
 export type GroupStatus = 'draft' | 'self_check' | 'case_check_done' | 'needs_clarification' | 'submitted_external' | 'done' | 'cancelled';
 export interface Group {
@@ -145,6 +149,8 @@ export interface RequestDoc {
   /** מועד המענה האחרון של המנהל, ומועד שבו המורה ראה אותו (חיווי "חדש" בלי דוא"ל) */
   repliedAt?: number;
   teacherSeenAt?: number;
+  createdByEmail?: string;
+  createdByName?: string;
   clientId?: string;
 }
 

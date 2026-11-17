@@ -35,7 +35,7 @@ describe('גיבוי ידני: תוכן ופרטיות', () => {
     const b = await api.exportBackup(false);
     const text = JSON.stringify(b);
     for (const bad of ['כינוי־סודי', 'טקסט־בקשה', '@demo.test']) expect(text).not.toContain(bad);
-    for (const coll of ['groups', 'requests', 'sourceReports', 'profiles', 'roles', 'memberships']) expect(b.data[coll]).toBeUndefined();
+    for (const coll of ['groups', 'requests', 'sourceReports', 'profiles', 'roles', 'allowedTeachers']) expect(b.data[coll]).toBeUndefined();
     expect(b.format).toBe('mat-backup-2');
     expect(b.counts!.topics).toBeGreaterThan(100);
     expect(b.includesPrivate).toBe(false);
@@ -151,7 +151,7 @@ describe('ניקוי מחזור: מה נמחק ומה נשאר', () => {
     expect((await store.list('topics')).length).toBe(topicsBefore);
     expect((await store.list('sources')).length).toBe(sourcesBefore);
     expect((await store.list('profiles')).length).toBeGreaterThan(0);
-    expect((await store.list('memberships')).length).toBeGreaterThan(0);
+    expect((await store.list('allowedTeachers')).length).toBeGreaterThan(0);
     expect(await getDoc(`requests/${r.id}`)).toMatchObject({ groupId: '' });
     expect(await getDoc(`deletionLedger/${YEAR}`)).not.toBeNull();
     expect((await getDoc(`schoolHistory/${DEMO_SCHOOL_ID}_${YEAR}`)).items.length).toBeGreaterThan(0);
