@@ -49,7 +49,7 @@ export async function createRuntime(): Promise<Runtime> {
   const cfg = firebaseConfig();
   if (cfg && !wantsDemo()) {
     const app = initializeApp(cfg);
-    const db = initializeFirestore(app, { localCache: memoryLocalCache() }); // בלי IndexedDB: אין מטמון מתמשך
+    const db = initializeFirestore(app, { localCache: memoryLocalCache(), ignoreUndefinedProperties: true }); // בלי IndexedDB: אין מטמון מתמשך
     const auth = new FirebaseAuthService(app);
     const api = new Api(new FirestoreStore(db), auth, 'service');
     api.snapshotCache = localStorageSnapshotCache; // מידע ציבורי בלבד, לחיסכון בקריאות
