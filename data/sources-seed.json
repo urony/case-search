@@ -1,5 +1,5 @@
 {
- "description": "מאגר קישורים לאיתור מטופלים לפי מחלה (מסמך נובמבר 2026), חלק א׳ בלבד. שורות לא רלוונטיות הוסרו. נוצר מהמסמך מאגר_קישורים_לאיתור_מטופלים_לפי_מחלה.docx",
+ "description": "מאגר קישורים לאיתור מטופלים לפי מחלה: שני מסמכי נובמבר 2026 (מאגר_קישורים_לאיתור_מטופלים_לפי_מחלה, patient_sources_by_disease), חלק א׳ בלבד, ללא כפילויות. שורות לא רלוונטיות הוסרו.",
  "sources": [
   {
    "seedId": "S001",
@@ -4414,6 +4414,2010 @@
     {
      "label": "יצירת קשר",
      "url": "https://rdisrael.org.il/%D7%99%D7%A6%D7%99%D7%A8%D7%AA-%D7%A7%D7%A9%D7%A8/"
+    }
+   ]
+  },
+  {
+   "seedId": "S001",
+   "title": "המחלקה לאשפוז קרדיולוגי, איכילוב",
+   "kind": "clinic",
+   "text": "מחלקה המטפלת גם במחלות לב דלקתיות ומסתמיות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/cardiology-hospitalization/"
+    }
+   ]
+  },
+  {
+   "seedId": "S001",
+   "title": "עמותת אומץ לב",
+   "kind": "association",
+   "text": "עמותה ישראלית למטופלי לב ולמשפחותיהם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://ometz-lev.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S002",
+   "title": "עמותת נאמן, נפגעי אירוע מוחי",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.healthycities.co.il/html5/web/16874/46148ImageFile3.pdf"
+    }
+   ]
+  },
+  {
+   "seedId": "S003",
+   "title": "היחידה לטראומה כירורגית, איכילוב",
+   "kind": "clinic",
+   "text": "יחידה לטיפול בנפגעי טראומה ופציעות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/general-surgery/trauma/"
+    }
+   ]
+  },
+  {
+   "seedId": "S005",
+   "title": "יחידת קרישת דם, רמב״ם",
+   "kind": "clinic",
+   "text": "יחידה לאבחון ולטיפול בהפרעות קרישת דם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/hematology_bone_marrow_transplantation/coagulation_unit/"
+    }
+   ]
+  },
+  {
+   "seedId": "S007",
+   "title": "מרכז האנצפליטיס, איכילוב",
+   "kind": "clinic",
+   "text": "מרכז רפואי העוסק בדלקת המוח.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neurology-encephalitis/"
+    }
+   ]
+  },
+  {
+   "seedId": "S010",
+   "title": "מרכז רפואי שמיר",
+   "kind": "clinic",
+   "text": "אם ועובר (הריון בסיכון) - אשפוז יום. מרפאה או בית חולים | עמוד של שירות רפואי בתחום הנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.shamir.org/clinics/gynecology/pregnancylinks/ambulatoryunithighriskpregnancy/"
+    }
+   ]
+  },
+  {
+   "seedId": "S011",
+   "title": "המרפאה לטיפול ביתר לחץ דם",
+   "kind": "clinic",
+   "text": "איכילוב. מרפאה או בית חולים | עמוד של שירות רפואי בתחום הנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/endocrinology-hbp/"
+    }
+   ]
+  },
+  {
+   "seedId": "S013",
+   "title": "המחלקה לאשפוז קרדיולוגי, איכילוב",
+   "kind": "clinic",
+   "text": "מחלקה המטפלת גם במחלות לב דלקתיות ומסתמיות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/cardiology-hospitalization/"
+    }
+   ]
+  },
+  {
+   "seedId": "S013",
+   "title": "עמותת אומץ לב",
+   "kind": "association",
+   "text": "עמותה ישראלית למטופלי לב ולמשפחותיהם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://ometz-lev.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S013",
+   "title": "אי-ספיקת לב: אבחון וטיפול",
+   "kind": "clinic",
+   "text": "שיבא-מרכז הלב. מרפאה או בית חולים | עמוד של שירות רפואי בתחום הנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://heart.sheba.co.il/%D7%94%D7%93%D7%A8%D7%9B%D7%94-%D7%9C%D7%9E%D7%98%D7%95%D7%A4%D7%9C%D7%99%D7%9D-%D7%A2%D7%9D-%D7%90%D7%99-%D7%A1%D7%A4%D7%99%D7%A7%D7%AA-%D7%9C%D7%91"
+    }
+   ]
+  },
+  {
+   "seedId": "S014",
+   "title": "המחלקה לאשפוז קרדיולוגי, איכילוב",
+   "kind": "clinic",
+   "text": "מחלקה המטפלת גם במחלות לב דלקתיות ומסתמיות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/cardiology-hospitalization/"
+    }
+   ]
+  },
+  {
+   "seedId": "S014",
+   "title": "עמותת אומץ לב",
+   "kind": "association",
+   "text": "עמותה ישראלית למטופלי לב ולמשפחותיהם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://ometz-lev.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S015",
+   "title": "המחלקה לאשפוז קרדיולוגי, איכילוב",
+   "kind": "clinic",
+   "text": "מחלקה המטפלת גם במחלות לב דלקתיות ומסתמיות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/cardiology-hospitalization/"
+    }
+   ]
+  },
+  {
+   "seedId": "S015",
+   "title": "עמותת אומץ לב",
+   "kind": "association",
+   "text": "עמותה ישראלית למטופלי לב ולמשפחותיהם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://ometz-lev.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S016",
+   "title": "המחלקה לאשפוז קרדיולוגי, איכילוב",
+   "kind": "clinic",
+   "text": "מחלקה המטפלת גם במחלות לב דלקתיות ומסתמיות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/cardiology-hospitalization/"
+    }
+   ]
+  },
+  {
+   "seedId": "S016",
+   "title": "עמותת אומץ לב",
+   "kind": "association",
+   "text": "עמותה ישראלית למטופלי לב ולמשפחותיהם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://ometz-lev.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S018",
+   "title": "עמותת אומץ לב",
+   "kind": "association",
+   "text": "עמותה ישראלית למטופלי לב ולמשפחותיהם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://ometz-lev.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S019",
+   "title": "אנדוקרינולוגיה וסוכרת, וולפסון",
+   "kind": "clinic",
+   "text": "יחידה למחלות הורמונליות, סוכרת ומחלות עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/he/departments/topics/endocrinology-department"
+    }
+   ]
+  },
+  {
+   "seedId": "S020",
+   "title": "אנדוקרינולוגיה וסוכרת, וולפסון",
+   "kind": "clinic",
+   "text": "יחידה למחלות הורמונליות, סוכרת ומחלות עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/he/departments/topics/endocrinology-department"
+    }
+   ]
+  },
+  {
+   "seedId": "S020",
+   "title": "האגודה לסוכרת נעורים בישראל (סוג 1), עמותות",
+   "kind": "association",
+   "text": "האגודה לזכויות החולה בישראל. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.patients-rights.org/%D7%94%D7%90%D7%92%D7%95%D7%93%D7%94-%D7%9C%D7%A1%D7%95%D7%9B%D7%A8%D7%AA-%D7%A0%D7%A2%D7%95%D7%A8%D7%99%D7%9D-%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C-%D7%A1%D7%95%D7%92-1"
+    }
+   ]
+  },
+  {
+   "seedId": "S020",
+   "title": "האגודה לסוכרת נעורים (סוג 1) בישראל (ע\"ר)",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kesher.org.il/knowledge_item/%D7%94%D7%90%D7%92%D7%95%D7%93%D7%94-%D7%9C%D7%A1%D7%95%D7%9B%D7%A8%D7%AA-%D7%A0%D7%A2%D7%95%D7%A8%D7%99%D7%9D-%D7%A1%D7%95%D7%92-1-%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C-%D7%A2%D7%A8/"
+    }
+   ]
+  },
+  {
+   "seedId": "S020",
+   "title": "האגודה לסוכרת סוג 1 בישראל",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://be.breakthrought1d.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S020",
+   "title": "מרכז מצוינות לסוכרת והשמנה",
+   "kind": "clinic",
+   "text": "סוכרת סוג 1. הקריה הרפואית רמב\"ם | מרפאה או בית חולים | עמוד של שירות רפואי בתחום הנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/endocrinology_diabetes_metabolism_institute/excellence_center_for_diabetes_and_obesity/"
+    }
+   ]
+  },
+  {
+   "seedId": "S021",
+   "title": "אנדוקרינולוגיה וסוכרת, וולפסון",
+   "kind": "clinic",
+   "text": "יחידה למחלות הורמונליות, סוכרת ומחלות עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/he/departments/topics/endocrinology-department"
+    }
+   ]
+  },
+  {
+   "seedId": "S021",
+   "title": "מרכז רפואי שמיר",
+   "kind": "clinic",
+   "text": "סוכרת הריונית וסוכרת מבוגרים - מרפאה. מרפאה או בית חולים | עמוד של שירות רפואי בתחום הנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.shamir.org/clinic/diabetescareunit/diabetesclinic/"
+    }
+   ]
+  },
+  {
+   "seedId": "S022",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "ארגון גג הפועל בתחום המחלות הנדירות בישראל.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S022",
+   "title": "אנדוקרינולוגיה וסוכרת, וולפסון",
+   "kind": "clinic",
+   "text": "יחידה למחלות הורמונליות, סוכרת ומחלות עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/he/departments/topics/endocrinology-department"
+    }
+   ]
+  },
+  {
+   "seedId": "S023",
+   "title": "אנדוקרינולוגיה וסוכרת, וולפסון",
+   "kind": "clinic",
+   "text": "יחידה למחלות הורמונליות, סוכרת ומחלות עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/he/departments/topics/endocrinology-department"
+    }
+   ]
+  },
+  {
+   "seedId": "S023",
+   "title": "בלוטת התריס מרכז רב תחומי",
+   "kind": "clinic",
+   "text": "איכילוב. מרפאה או בית חולים | עמוד של שירות רפואי בתחום הנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/otolaryngology/head-neck-surgery/thyroid-parathyroid/"
+    }
+   ]
+  },
+  {
+   "seedId": "S024",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "ארגון גג הפועל בתחום המחלות הנדירות בישראל.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S024",
+   "title": "אנדוקרינולוגיה וסוכרת, וולפסון",
+   "kind": "clinic",
+   "text": "יחידה למחלות הורמונליות, סוכרת ומחלות עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/he/departments/topics/endocrinology-department"
+    }
+   ]
+  },
+  {
+   "seedId": "S025",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "ארגון גג הפועל בתחום המחלות הנדירות בישראל.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S025",
+   "title": "אנדוקרינולוגיה וסוכרת, וולפסון",
+   "kind": "clinic",
+   "text": "יחידה למחלות הורמונליות, סוכרת ומחלות עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/he/departments/topics/endocrinology-department"
+    }
+   ]
+  },
+  {
+   "seedId": "S026",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "ארגון גג הפועל בתחום המחלות הנדירות בישראל.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S026",
+   "title": "אנדוקרינולוגיה וסוכרת, וולפסון",
+   "kind": "clinic",
+   "text": "יחידה למחלות הורמונליות, סוכרת ומחלות עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/he/departments/topics/endocrinology-department"
+    }
+   ]
+  },
+  {
+   "seedId": "S027",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "ארגון גג הפועל בתחום המחלות הנדירות בישראל.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S027",
+   "title": "אנדוקרינולוגיה וסוכרת, וולפסון",
+   "kind": "clinic",
+   "text": "יחידה למחלות הורמונליות, סוכרת ומחלות עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/he/departments/topics/endocrinology-department"
+    }
+   ]
+  },
+  {
+   "seedId": "S028",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "ארגון גג הפועל בתחום המחלות הנדירות בישראל.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S028",
+   "title": "אנדוקרינולוגיה וסוכרת, וולפסון",
+   "kind": "clinic",
+   "text": "יחידה למחלות הורמונליות, סוכרת ומחלות עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/he/departments/topics/endocrinology-department"
+    }
+   ]
+  },
+  {
+   "seedId": "S029",
+   "title": "אנדוקרינולוגיה וסוכרת, וולפסון",
+   "kind": "clinic",
+   "text": "יחידה למחלות הורמונליות, סוכרת ומחלות עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/he/departments/topics/endocrinology-department"
+    }
+   ]
+  },
+  {
+   "seedId": "S029",
+   "title": "קהילת אוסטאופורוזיס: פורום תמיכה, התייעצות ומומחים",
+   "kind": "community",
+   "text": "כמוני. קהילה | עמוד קהילה העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.camoni.co.il/community/2979/"
+    }
+   ]
+  },
+  {
+   "seedId": "S034",
+   "title": "ארגון זכויות הצליאק ע\"ר (עמותת צליאק חדשה בישראל)",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://celiacrights.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S034",
+   "title": "עמותת צליאק בישראל, עמותות",
+   "kind": "association",
+   "text": "האגודה לזכויות החולה בישראל. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.patients-rights.org/%D7%A2%D7%9E%D7%95%D7%AA%D7%AA-%D7%A6%D7%9C%D7%99%D7%90%D7%A7-%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+    }
+   ]
+  },
+  {
+   "seedId": "S034",
+   "title": "ארגון זכויות הצליאק, עמותות",
+   "kind": "association",
+   "text": "האגודה לזכויות החולה בישראל. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.patients-rights.org/%D7%90%D7%A8%D7%92%D7%95%D7%9F-%D7%96%D7%9B%D7%95%D7%99%D7%95%D7%AA-%D7%94%D7%A6%D7%9C%D7%99%D7%90%D7%A7"
+    }
+   ]
+  },
+  {
+   "seedId": "S034",
+   "title": "ארגון זכויות הצליאק (ארגון) – כל-זכות",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kolzchut.org.il/he/%D7%90%D7%A8%D7%92%D7%95%D7%9F_%D7%96%D7%9B%D7%95%D7%99%D7%95%D7%AA_%D7%94%D7%A6%D7%9C%D7%99%D7%90%D7%A7"
+    }
+   ]
+  },
+  {
+   "seedId": "S034",
+   "title": "אודותינו",
+   "kind": "association",
+   "text": "ארגון זכויות הצליאק ע\"ר (עמותת צליאק חדשה בישראל). עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://celiacrights.org.il/about-us"
+    }
+   ]
+  },
+  {
+   "seedId": "S034",
+   "title": "הודעות וואטסאפ מהארגון",
+   "kind": "association",
+   "text": "ארגון זכויות הצליאק ע\"ר (עמותת צליאק חדשה בישראל). עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://celiacrights.org.il/about-us/whatsup"
+    }
+   ]
+  },
+  {
+   "seedId": "S034",
+   "title": "עמותת צליאק בישראל (ע\"ר)",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kesher.org.il/knowledge_item/%D7%A2%D7%9E%D7%95%D7%AA%D7%AA-%D7%A6%D7%9C%D7%99%D7%90%D7%A7-%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C-%D7%A2%D7%A8/"
+    }
+   ]
+  },
+  {
+   "seedId": "S035",
+   "title": "העמותה לתמיכה בחולי קרוהן וקוליטיס כיבית (ארגון) – כל-זכות",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kolzchut.org.il/he/%D7%94%D7%A2%D7%9E%D7%95%D7%AA%D7%94_%D7%9C%D7%AA%D7%9E%D7%99%D7%9B%D7%94_%D7%91%D7%97%D7%95%D7%9C%D7%99_%D7%A7%D7%A8%D7%95%D7%94%D7%9F_%D7%95%D7%A7%D7%95%D7%9C%D7%99%D7%98%D7%99%D7%A1_%D7%9B%D7%99%D7%91%D7%99%D7%AA"
+    }
+   ]
+  },
+  {
+   "seedId": "S035",
+   "title": "עזרי מעם לקרוהן וקוליטיס (ארגון) – כל-זכות",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kolzchut.org.il/he/%D7%A2%D7%96%D7%A8%D7%99_%D7%9E%D7%A2%D7%9D_%D7%9C%D7%A7%D7%A8%D7%95%D7%94%D7%9F_%D7%95%D7%A7%D7%95%D7%9C%D7%99%D7%98%D7%99%D7%A1"
+    }
+   ]
+  },
+  {
+   "seedId": "S035",
+   "title": "שירותי מרכז “יד ביד” - העמותה הארצית לקרוהן ולקוליטיס כיבית",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://ccfi.co.il/%D7%A9%D7%99%D7%A8%D7%95%D7%AA%D7%99-%D7%9E%D7%A8%D7%9B%D7%96-%D7%99%D7%93-%D7%91%D7%99%D7%93/"
+    }
+   ]
+  },
+  {
+   "seedId": "S035",
+   "title": "עזרי מעם לקרוהן וקוליטיס, עמותות",
+   "kind": "association",
+   "text": "האגודה לזכויות החולה בישראל. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.patients-rights.org/4078"
+    }
+   ]
+  },
+  {
+   "seedId": "S035",
+   "title": "אודות העמותה",
+   "kind": "association",
+   "text": "עזרי מעם לקרוהן וקוליטיס. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://ezri.co.il/%D7%90%D7%95%D7%93%D7%95%D7%AA-%D7%94%D7%A2%D7%9E%D7%95%D7%AA%D7%94/"
+    }
+   ]
+  },
+  {
+   "seedId": "S035",
+   "title": "העמותה לתמיכה בחולי קרוהן וכוליטיס כיבית",
+   "kind": "association",
+   "text": "התנדבות בתל אביב. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.happytlv.com/volunteer/%D7%94%D7%A2%D7%9E%D7%95%D7%AA%D7%94-%D7%9C%D7%AA%D7%9E%D7%99%D7%9B%D7%94-%D7%91%D7%97%D7%95%D7%9C%D7%99-%D7%A7%D7%A8%D7%95%D7%94%D7%9F-%D7%95%D7%9B%D7%95%D7%9C%D7%99%D7%98%D7%99%D7%A1-%D7%9B%D7%99%D7%91%D7%99%D7%AA"
+    }
+   ]
+  },
+  {
+   "seedId": "S036",
+   "title": "המערך האונקולוגי, איכילוב",
+   "kind": "clinic",
+   "text": "מערך רפואי לטיפול במחלות סרטן.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S037",
+   "title": "מרפאת השמנת יתר, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה לטיפול בהשמנת יתר.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/obesity-clinic/"
+    }
+   ]
+  },
+  {
+   "seedId": "S038",
+   "title": "הקריה הרפואית רמב\"ם - מרפאה אנדו אורולוגיה ואבנים בדרכי השתן",
+   "kind": "clinic",
+   "text": "עמוד של שירות רפואי בתחום הנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.rambam.org.il/departmentsandclinics/surgicaldivision/urology/urology_clinics/endo_urology_clinic_and_urinary_stones/"
+    }
+   ]
+  },
+  {
+   "seedId": "S041",
+   "title": "המערך האונקולוגי, איכילוב",
+   "kind": "clinic",
+   "text": "מערך רפואי לטיפול במחלות סרטן.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S041",
+   "title": "המטולוגיה והשתלות מח עצם, רמב״ם",
+   "kind": "clinic",
+   "text": "מחלקה המטפלת במחלות דם ובהשתלות מח עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/hematology_bone_marrow_transplantation/"
+    }
+   ]
+  },
+  {
+   "seedId": "S041",
+   "title": "המערך ההמטולוגי, שמיר",
+   "kind": "clinic",
+   "text": "מערך רפואי המטפל במחלות דם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.shamir.org/he/clinics/hematology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S042",
+   "title": "המערך האונקולוגי, איכילוב",
+   "kind": "clinic",
+   "text": "מערך רפואי לטיפול במחלות סרטן.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S042",
+   "title": "המטולוגיה והשתלות מח עצם, רמב״ם",
+   "kind": "clinic",
+   "text": "מחלקה המטפלת במחלות דם ובהשתלות מח עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/hematology_bone_marrow_transplantation/"
+    }
+   ]
+  },
+  {
+   "seedId": "S042",
+   "title": "המערך ההמטולוגי, שמיר",
+   "kind": "clinic",
+   "text": "מערך רפואי המטפל במחלות דם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.shamir.org/he/clinics/hematology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S043",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "ארגון גג הפועל בתחום המחלות הנדירות בישראל.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S043",
+   "title": "המטולוגיה והשתלות מח עצם, רמב״ם",
+   "kind": "clinic",
+   "text": "מחלקה המטפלת במחלות דם ובהשתלות מח עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/hematology_bone_marrow_transplantation/"
+    }
+   ]
+  },
+  {
+   "seedId": "S043",
+   "title": "המערך ההמטולוגי, שמיר",
+   "kind": "clinic",
+   "text": "מערך רפואי המטפל במחלות דם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.shamir.org/he/clinics/hematology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S044",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "ארגון גג הפועל בתחום המחלות הנדירות בישראל.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S044",
+   "title": "יחידת קרישת דם, רמב״ם",
+   "kind": "clinic",
+   "text": "יחידה לאבחון ולטיפול בהפרעות קרישת דם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/hematology_bone_marrow_transplantation/coagulation_unit/"
+    }
+   ]
+  },
+  {
+   "seedId": "S044",
+   "title": "המטולוגיה והשתלות מח עצם, רמב״ם",
+   "kind": "clinic",
+   "text": "מחלקה המטפלת במחלות דם ובהשתלות מח עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/hematology_bone_marrow_transplantation/"
+    }
+   ]
+  },
+  {
+   "seedId": "S044",
+   "title": "המערך ההמטולוגי, שמיר",
+   "kind": "clinic",
+   "text": "מערך רפואי המטפל במחלות דם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.shamir.org/he/clinics/hematology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S044",
+   "title": "עלה - עמותה לחולי המופיליה (ארגון) – כל-זכות",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kolzchut.org.il/he/%D7%A2%D7%9C%D7%94_-_%D7%A2%D7%9E%D7%95%D7%AA%D7%94_%D7%9C%D7%97%D7%95%D7%9C%D7%99_%D7%94%D7%9E%D7%95%D7%A4%D7%99%D7%9C%D7%99%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S044",
+   "title": "על''ה - עמותה לחולי המופיליה, עמותות",
+   "kind": "association",
+   "text": "האגודה לזכויות החולה בישראל. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.patients-rights.org/%D7%A2%D7%9C%D7%94-%D7%A2%D7%9E%D7%95%D7%AA%D7%94-%D7%9C%D7%97%D7%95%D7%9C%D7%99-%D7%94%D7%9E%D7%95%D7%A4%D7%99%D7%9C%D7%99%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S044",
+   "title": "על\"ה : העמותה לחולי המופיליה (ע\"ר)",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kesher.org.il/knowledge_item/%D7%A2%D7%9C%D7%94-%D7%94%D7%A2%D7%9E%D7%95%D7%AA%D7%94-%D7%9C%D7%97%D7%95%D7%9C%D7%99-%D7%94%D7%9E%D7%95%D7%A4%D7%99%D7%9C%D7%99%D7%94-%D7%A2%D7%A8/"
+    }
+   ]
+  },
+  {
+   "seedId": "S044",
+   "title": "המרכז הארצי להמופיליה – עמותת על\"ה",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.hemophilia.org.il/association-about/the-national-center-for-hemophilia/"
+    }
+   ]
+  },
+  {
+   "seedId": "S044",
+   "title": "עמותה לחולי המופיליה-עלה",
+   "kind": "association",
+   "text": "Hemophilia-Aleh. about us | עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://hemophilia.co.il/aboutus.asp"
+    }
+   ]
+  },
+  {
+   "seedId": "S044",
+   "title": "על\"ה - עמותה לחולי המופיליה",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://self-help.org.il/organizations/%D7%A2%D7%9C%D7%94-%D7%A2%D7%9E%D7%95%D7%AA%D7%94-%D7%9C%D7%97%D7%95%D7%9C%D7%99-%D7%94%D7%9E%D7%95%D7%A4%D7%99%D7%9C%D7%99%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S045",
+   "title": "אגודת איל, אינסטגרם",
+   "kind": "community",
+   "text": "חשבון האינסטגרם המקושר מאתר אגודת איל.",
+   "links": [
+    {
+     "label": "אינסטגרם",
+     "url": "https://www.instagram.com/eyal_epilepsy/"
+    }
+   ]
+  },
+  {
+   "seedId": "S045",
+   "title": "אגודת איל, פייסבוק",
+   "kind": "community",
+   "text": "עמוד הפייסבוק המקושר מאתר אגודת איל.",
+   "links": [
+    {
+     "label": "פייסבוק",
+     "url": "https://www.facebook.com/eyal.epilepsy"
+    }
+   ]
+  },
+  {
+   "seedId": "S045",
+   "title": "מרכז מידע ותמיכה - אגודה ישראלית לאפילפסיה: עמותת איל",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.epilepsy.org.il/activities/support/"
+    }
+   ]
+  },
+  {
+   "seedId": "S045",
+   "title": "על עמותת איל - אגודה ישראלית לאפילפסיה: עמותת איל",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.epilepsy.org.il/about-us/"
+    }
+   ]
+  },
+  {
+   "seedId": "S046",
+   "title": "על העמותה - עמותת פרקינסון בישראל",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.parkinson.org.il/%D7%A2%D7%9C-%D7%94%D7%A2%D7%9E%D7%95%D7%AA%D7%94/"
+    }
+   ]
+  },
+  {
+   "seedId": "S046",
+   "title": "אודות העמותה - עמותת פרקינסון בישראל",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.parkinson.org.il/%D7%90%D7%95%D7%93%D7%95%D7%AA-%D7%94%D7%A2%D7%9E%D7%95%D7%AA%D7%94/"
+    }
+   ]
+  },
+  {
+   "seedId": "S046",
+   "title": "עמותת פרקינסון בישראל, עמותות",
+   "kind": "association",
+   "text": "האגודה לזכויות החולה בישראל. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.patients-rights.org/%D7%A2%D7%9E%D7%95%D7%AA%D7%AA-%D7%A4%D7%A8%D7%A7%D7%99%D7%A0%D7%A1%D7%95%D7%9F-%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+    }
+   ]
+  },
+  {
+   "seedId": "S046",
+   "title": "עמותת פרקינסון בישראל (ארגון) – כל-זכות",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kolzchut.org.il/he/%D7%A2%D7%9E%D7%95%D7%AA%D7%AA_%D7%A4%D7%A8%D7%A7%D7%99%D7%A0%D7%A1%D7%95%D7%9F_%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C"
+    }
+   ]
+  },
+  {
+   "seedId": "S046",
+   "title": "עמותת פרקינסון",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.parkinsons.org.il/%D7%A2%D7%9E%D7%95%D7%AA%D7%AA-%D7%A4%D7%A8%D7%A7%D7%99%D7%A0%D7%A1%D7%95%D7%9F/"
+    }
+   ]
+  },
+  {
+   "seedId": "S046",
+   "title": "עמותת הפרקינסון בישראל - פיזיוגרופ",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://physio-tnoa.co.il/%D7%A2%D7%9E%D7%95%D7%AA%D7%AA-%D7%A4%D7%A8%D7%A7%D7%99%D7%A0%D7%A1%D7%95%D7%9F/"
+    }
+   ]
+  },
+  {
+   "seedId": "S046",
+   "title": "פרקינסון - מרפאה לטיפולים מתקדמים",
+   "kind": "clinic",
+   "text": "איכילוב. מרפאה או בית חולים | עמוד של שירות רפואי בתחום הנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neurology-mdu/parkinson/"
+    }
+   ]
+  },
+  {
+   "seedId": "S047",
+   "title": "אתר הבית לחולי טרשת נפוצה (ע''ר)",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://mshome.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S047",
+   "title": "הבית לחולי טרשת נפוצה (ארגון) – כל-זכות",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kolzchut.org.il/he/%D7%94%D7%91%D7%99%D7%AA_%D7%9C%D7%97%D7%95%D7%9C%D7%99_%D7%98%D7%A8%D7%A9%D7%AA_%D7%A0%D7%A4%D7%95%D7%A6%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S047",
+   "title": "קהילת הבית לחולי טרשת נפוצה וקייר גיברס - האתר הרשמי של עמותת הבית",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://mshome.org.il/%D7%A7%D7%94%D7%99%D7%9C%D7%AA-%D7%94%D7%91%D7%99%D7%AA-%D7%9C%D7%97%D7%95%D7%9C%D7%99-%D7%98%D7%A8%D7%A9%D7%AA-%D7%A0%D7%A4%D7%95%D7%A6%D7%94-%D7%95-care-givers/"
+    }
+   ]
+  },
+  {
+   "seedId": "S047",
+   "title": "הבית לחולי טרשת נפוצה, עמותות",
+   "kind": "association",
+   "text": "האגודה לזכויות החולה בישראל. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.patients-rights.org/3804"
+    }
+   ]
+  },
+  {
+   "seedId": "S048",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "ארגון גג הפועל בתחום המחלות הנדירות בישראל.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S048",
+   "title": "מרפאת עצב־שריר, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה למחלות עצב ושריר ומכון לבדיקות עצביות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neuromuscular/"
+    }
+   ]
+  },
+  {
+   "seedId": "S048",
+   "title": "מרפאת ניוון שרירים ALS - כרמל - הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/centers/%D7%9E%D7%A8%D7%A4%D7%90%D7%AA-als-%D7%9B%D7%A8%D7%9E%D7%9C/"
+    }
+   ]
+  },
+  {
+   "seedId": "S049",
+   "title": "מרפאות ALS, ישראלס",
+   "kind": "website",
+   "text": "רשימת מרפאות ייעודיות לאנשים עם ALS.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://israls.org.il/%D7%AA%D7%9E%D7%99%D7%9B%D7%94/%D7%9E%D7%A8%D7%A4%D7%90%D7%95%D7%AA-als-%D7%99%D7%99%D7%A2%D7%95%D7%93%D7%99%D7%95%D7%AA/"
+    }
+   ]
+  },
+  {
+   "seedId": "S049",
+   "title": "ישראלס",
+   "kind": "association",
+   "text": "עמותה הפועלת למען אנשים עם ALS ולקידום המחקר.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://israls.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S049",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "ארגון גג הפועל בתחום המחלות הנדירות בישראל.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S049",
+   "title": "מרפאת עצב־שריר, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה למחלות עצב ושריר ומכון לבדיקות עצביות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neuromuscular/"
+    }
+   ]
+  },
+  {
+   "seedId": "S049",
+   "title": "מערך נוירולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך מחלקות ומרפאות למחלות מערכת העצבים.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S051",
+   "title": "מוקד סיוע 24/7 לחולי אלצהיימר ומשפחותיהם » המרכז הרפואי הישראלי לאלצהיימר",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.alzheimer.org.il/%D7%9E%D7%95%D7%A7%D7%93-%D7%AA%D7%9E%D7%99%D7%9B%D7%94-%D7%98%D7%9C%D7%A4%D7%95%D7%A0%D7%99/"
+    }
+   ]
+  },
+  {
+   "seedId": "S051",
+   "title": "עמותת עמדא - הכתובת לחולי אלצהיימר ודמנציה בישראל ובני משפחותיהם",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://emda.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S051",
+   "title": "עמותת עמדא - למען חולי אלצהיימר ודמנציה בישראל ובני משפחותיהם",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://emda.org.il/new-home-page/"
+    }
+   ]
+  },
+  {
+   "seedId": "S051",
+   "title": "מחלת אלצהיימר ודמנציה",
+   "kind": "website",
+   "text": "כל מה שחייבים לדעת - עמותת עמדא. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://emda.org.il/about_alzheimers/"
+    }
+   ]
+  },
+  {
+   "seedId": "S052",
+   "title": "עמותת גוונים של סגול לקידום זכויות חולי פיברומיאלגיה (ארגון) – כל-זכות",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kolzchut.org.il/he/%D7%A2%D7%9E%D7%95%D7%AA%D7%AA_%D7%92%D7%95%D7%95%D7%A0%D7%99%D7%9D_%D7%A9%D7%9C_%D7%A1%D7%92%D7%95%D7%9C_%D7%9C%D7%A7%D7%99%D7%93%D7%95%D7%9D_%D7%96%D7%9B%D7%95%D7%99%D7%95%D7%AA_%D7%97%D7%95%D7%9C%D7%99_%D7%A4%D7%99%D7%91%D7%A8%D7%95%D7%9E%D7%99%D7%90%D7%9C%D7%92%D7%99%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S052",
+   "title": "עמותת גוונים של סגול - לקידום זכויות חולי פיברומיאלגיה",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.fibrosite.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S052",
+   "title": "עמותת אס\"ף - אגודת חולי סי. אף. אס. ופיברומיאלגיה (ע\"ר)",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://self-help.org.il/organizations/%D7%A2%D7%9E%D7%95%D7%AA%D7%AA-%D7%90%D7%A1%D7%A3-%D7%90%D7%92%D7%95%D7%93%D7%AA-%D7%97%D7%95%D7%9C%D7%99-%D7%A1%D7%99-%D7%90%D7%A3-%D7%90%D7%A1-%D7%95%D7%A4%D7%99%D7%91%D7%A8%D7%95%D7%9E%D7%99%D7%90%D7%9C%D7%92%D7%99%D7%94-%D7%A2%D7%A8"
+    }
+   ]
+  },
+  {
+   "seedId": "S052",
+   "title": "עמותת גוונים של סגול - לקידום זכויות חולי פיברומיאלגיה, עמותות",
+   "kind": "association",
+   "text": "האגודה לזכויות החולה בישראל. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.patients-rights.org/%D7%A2%D7%9E%D7%95%D7%AA%D7%AA-%D7%92%D7%95%D7%95%D7%A0%D7%99%D7%9D-%D7%A9%D7%9C-%D7%A1%D7%92%D7%95%D7%9C-%D7%9C%D7%A7%D7%99%D7%93%D7%95%D7%9D-%D7%96%D7%9B%D7%95%D7%99%D7%95%D7%AA-%D7%97%D7%95%D7%9C%D7%99-%D7%A4%D7%99%D7%91%D7%A8%D7%95%D7%9E%D7%99%D7%90%D7%9C%D7%92%D7%99%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S053",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "ארגון גג הפועל בתחום המחלות הנדירות בישראל.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S053",
+   "title": "איגוד סיסטיק פיברוזיס, עמותות",
+   "kind": "association",
+   "text": "האגודה לזכויות החולה בישראל. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.patients-rights.org/%D7%90%D7%99%D7%92%D7%95%D7%93-%D7%A1%D7%99%D7%A1%D7%98%D7%99%D7%A7-%D7%A4%D7%99%D7%91%D7%A8%D7%95%D7%96%D7%99%D7%A1"
+    }
+   ]
+  },
+  {
+   "seedId": "S053",
+   "title": "חברות בעמותה - איגוד סיסטיק פיברוזיס בישראל",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://cff.org.il/membership/"
+    }
+   ]
+  },
+  {
+   "seedId": "S053",
+   "title": "איגוד סיסטיק פיברוזיס (ארגון) – כל-זכות",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kolzchut.org.il/he/%D7%90%D7%99%D7%92%D7%95%D7%93_%D7%A1%D7%99%D7%A1%D7%98%D7%99%D7%A7_%D7%A4%D7%99%D7%91%D7%A8%D7%95%D7%96%D7%99%D7%A1"
+    }
+   ]
+  },
+  {
+   "seedId": "S057",
+   "title": "מחלות זיהומיות, איכילוב",
+   "kind": "clinic",
+   "text": "מערך לאבחון ולטיפול במחלות זיהומיות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/"
+    }
+   ]
+  },
+  {
+   "seedId": "S058",
+   "title": "עשור של תקווה - העמותה הישראלית לסרטן הריאה",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.ilcf.org.il/%D7%A2%D7%A9%D7%95%D7%A8-%D7%A9%D7%9C-%D7%AA%D7%A7%D7%95%D7%95%D7%94/"
+    }
+   ]
+  },
+  {
+   "seedId": "S058",
+   "title": "ראשי - העמותה הישראלית לסרטן הריאה",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.ilcf.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S058",
+   "title": "העמותה הישראלית לסרטן ריאה - העמותה הישראלית לסרטן ריאה",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.ilcf.org.il/%D7%94%D7%A2%D7%9E%D7%95%D7%AA%D7%94-%D7%94%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99%D7%AA-%D7%9C%D7%A1%D7%A8%D7%98%D7%9F-%D7%A8%D7%99%D7%90%D7%94/"
+    }
+   ]
+  },
+  {
+   "seedId": "S058",
+   "title": "העמותה הישראלית לסרטן ריאה, עמותות",
+   "kind": "association",
+   "text": "האגודה לזכויות החולה בישראל. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.patients-rights.org/%D7%94%D7%A2%D7%9E%D7%95%D7%AA%D7%94-%D7%94%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99%D7%AA-%D7%9C%D7%A1%D7%A8%D7%98%D7%9F-%D7%94%D7%A8%D7%99%D7%90%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S058",
+   "title": "העמותה הישראלית לסרטן ריאה",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://self-help.org.il/organizations/%D7%94%D7%A2%D7%9E%D7%95%D7%AA%D7%94-%D7%94%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99%D7%AA-%D7%9C%D7%A1%D7%A8%D7%98%D7%9F-%D7%A8%D7%99%D7%90%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S058",
+   "title": "העמותה הישראלית לסרטן ריאה - תוצאות לשאילתה במנוע Booa",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://booa.co.il/search.php?q=%D7%94%D7%A2%D7%9E%D7%95%D7%AA%D7%94-%D7%94%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99%D7%AA-%D7%9C%D7%A1%D7%A8%D7%98%D7%9F-%D7%A8%D7%99%D7%90%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S058",
+   "title": "עמוד האגודה בפייסבוק: האגודה למלחמה בסרטן - לחיים בריאים",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://d2mp61vkno2eva.cloudfront.net/download/files/hadshon%202018.pdf"
+    }
+   ]
+  },
+  {
+   "seedId": "S058",
+   "title": "קבוצות תמיכה לחולי סרטן (שירות) – כל-זכות",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kolzchut.org.il/he/%D7%A7%D7%91%D7%95%D7%A6%D7%95%D7%AA_%D7%AA%D7%9E%D7%99%D7%9B%D7%94_%D7%9C%D7%97%D7%95%D7%9C%D7%99_%D7%A1%D7%A8%D7%98%D7%9F"
+    }
+   ]
+  },
+  {
+   "seedId": "S063",
+   "title": "עמותת לנשום : עמותה ישראלית לחולי אסתמה ו-COPD (ע\"ר)",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kesher.org.il/knowledge_item/%D7%A2%D7%9E%D7%95%D7%AA%D7%AA-%D7%9C%D7%A0%D7%A9%D7%95%D7%9D-%D7%A2%D7%9E%D7%95%D7%AA%D7%94-%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99%D7%AA-%D7%9C%D7%97%D7%95%D7%9C%D7%99-%D7%90%D7%A1%D7%AA%D7%9E%D7%94/"
+    }
+   ]
+  },
+  {
+   "seedId": "S064",
+   "title": "אף אוזן גרון ילדים, איכילוב",
+   "kind": "clinic",
+   "text": "יחידה למחלות אף, אוזן וגרון בילדים.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/dana-dwek/unit-pediatric/hospitalization/peds-ent/"
+    }
+   ]
+  },
+  {
+   "seedId": "S066",
+   "title": "פורום קטרקט בניהול עמותת לראות - zap doctors",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.doctors.co.il/forum-2861/"
+    }
+   ]
+  },
+  {
+   "seedId": "S067",
+   "title": "פורום גלאוקומה בניהול עמותת לראות - zap doctors",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.doctors.co.il/forum-2886/"
+    }
+   ]
+  },
+  {
+   "seedId": "S067",
+   "title": "גלאוקומה בעין - המדריך המלא",
+   "kind": "website",
+   "text": "עמותת לראות. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://lirot2025.catom.site/%D7%92%D7%9C%D7%90%D7%95%D7%A7%D7%95%D7%9E%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S068",
+   "title": "היפרדות רשתית וקרע ברשתית – מדריך תסמינים וטיפול",
+   "kind": "website",
+   "text": "עמותת לראות. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.eyes.org.il/%D7%A7%D7%A8%D7%A2-%D7%91%D7%A8%D7%A9%D7%AA%D7%99%D7%AA-%D7%95%D7%94%D7%A4%D7%A8%D7%93%D7%95%D7%AA-%D7%A8%D7%A9%D7%AA%D7%99%D7%AA"
+    }
+   ]
+  },
+  {
+   "seedId": "S071",
+   "title": "אגודת הפסוריאזיס הישראלית (ארגון) – כל-זכות",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kolzchut.org.il/he/%D7%90%D7%92%D7%95%D7%93%D7%AA_%D7%94%D7%A4%D7%A1%D7%95%D7%A8%D7%99%D7%90%D7%96%D7%99%D7%A1_%D7%94%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99%D7%AA"
+    }
+   ]
+  },
+  {
+   "seedId": "S071",
+   "title": "אגודת הפסוריאזיס הישראלית, עמותות",
+   "kind": "association",
+   "text": "האגודה לזכויות החולה בישראל. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.patients-rights.org/%D7%90%D7%92%D7%95%D7%93%D7%AA-%D7%94%D7%A4%D7%A1%D7%95%D7%A8%D7%99%D7%90%D7%96%D7%99%D7%A1-%D7%94%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99%D7%AA"
+    }
+   ]
+  },
+  {
+   "seedId": "S071",
+   "title": "קהילת תמיכה לחולי פסוריאזיס באתר \"כמוני\" - אגודת הפסוריאזיס הישראלית",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://psoriasis.org.il/%D7%9B%D7%9C%D7%9C%D7%99/%D7%A7%D7%94%D7%99%D7%9C%D7%AA-%D7%AA%D7%9E%D7%99%D7%9B%D7%94-%D7%9C%D7%97%D7%95%D7%9C%D7%99-%D7%A4%D7%A1%D7%95%D7%A8%D7%99%D7%90%D7%96%D7%99%D7%A1-%D7%91%D7%90%D7%AA%D7%A8-%D7%9B%D7%9E%D7%95%D7%A0/"
+    }
+   ]
+  },
+  {
+   "seedId": "S072",
+   "title": "מחלות זיהומיות, איכילוב",
+   "kind": "clinic",
+   "text": "מערך לאבחון ולטיפול במחלות זיהומיות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/"
+    }
+   ]
+  },
+  {
+   "seedId": "S073",
+   "title": "המערך האונקולוגי, איכילוב",
+   "kind": "clinic",
+   "text": "מערך רפואי לטיפול במחלות סרטן.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S073",
+   "title": "האגודה למלחמה בסרטן, פורומים",
+   "kind": "community",
+   "text": "רשימת פורומים בתחומי מחלות הסרטן.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://forums.cancer.org.il/forums/"
+    }
+   ]
+  },
+  {
+   "seedId": "S073",
+   "title": "סיקור חוג מלנומה - העמותה הישראלית לסרטן העור",
+   "kind": "association",
+   "text": "סרטן עור. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.melanoma.org.il/%D7%A1%D7%99%D7%A7%D7%95%D7%A8-%D7%97%D7%95%D7%92-%D7%9E%D7%9C%D7%A0%D7%95%D7%9E%D7%94/"
+    }
+   ]
+  },
+  {
+   "seedId": "S073",
+   "title": "העמותה הישראלית לסרטן העור",
+   "kind": "association",
+   "text": "כאן בשביל כל מטופלי מלנומה של העור. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.melanoma.org.il/about/"
+    }
+   ]
+  },
+  {
+   "seedId": "S073",
+   "title": "קבוצת חולים עמותת מלנומה",
+   "kind": "community",
+   "text": "7chairs. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://general.7chairs.org/group/view?id=485"
+    }
+   ]
+  },
+  {
+   "seedId": "S076",
+   "title": "היחידה לטראומה כירורגית, איכילוב",
+   "kind": "clinic",
+   "text": "יחידה לטיפול בנפגעי טראומה ופציעות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/general-surgery/trauma/"
+    }
+   ]
+  },
+  {
+   "seedId": "S076",
+   "title": "יחידת הכוויות, הדסה עין כרם",
+   "kind": "clinic",
+   "text": "יחידה רפואית המתמחה בכוויות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://he.hadassah.org.il/surgery/burn-unit-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S076",
+   "title": "יחידת הכוויות, רמב״ם",
+   "kind": "clinic",
+   "text": "יחידה המטפלת בנפגעי כוויות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.rambam.org.il/departmentsandclinics/surgicaldivision/plasticsurgery/burns-unit/"
+    }
+   ]
+  },
+  {
+   "seedId": "S080",
+   "title": "מחלות זיהומיות, איכילוב",
+   "kind": "clinic",
+   "text": "מערך לאבחון ולטיפול במחלות זיהומיות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/"
+    }
+   ]
+  },
+  {
+   "seedId": "S080",
+   "title": "הוועד למלחמה באיידס (ארגון) – כל-זכות",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.kolzchut.org.il/he/%D7%94%D7%95%D7%95%D7%A2%D7%93_%D7%9C%D7%9E%D7%9C%D7%97%D7%9E%D7%94_%D7%91%D7%90%D7%99%D7%99%D7%93%D7%A1"
+    }
+   ]
+  },
+  {
+   "seedId": "S080",
+   "title": "הוועד למלחמה באיידס – כל המידע שחשוב לדעת על עמותת החולים",
+   "kind": "association",
+   "text": "Infomed. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.insurance.infomed.co.il/definitions/aids-israel/"
+    }
+   ]
+  },
+  {
+   "seedId": "S081",
+   "title": "מחלות זיהומיות, איכילוב",
+   "kind": "clinic",
+   "text": "מערך לאבחון ולטיפול במחלות זיהומיות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/"
+    }
+   ]
+  },
+  {
+   "seedId": "S082",
+   "title": "מחלות זיהומיות, איכילוב",
+   "kind": "clinic",
+   "text": "מערך לאבחון ולטיפול במחלות זיהומיות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/"
+    }
+   ]
+  },
+  {
+   "seedId": "S083",
+   "title": "מחלות זיהומיות, איכילוב",
+   "kind": "clinic",
+   "text": "מערך לאבחון ולטיפול במחלות זיהומיות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/"
+    }
+   ]
+  },
+  {
+   "seedId": "S084",
+   "title": "אנדומטריוזיס ישראל, קבוצת תמיכה",
+   "kind": "community",
+   "text": "קבוצת תמיכה המקושרת מאתר אנדומטריוזיס ישראל.",
+   "links": [
+    {
+     "label": "פייסבוק",
+     "url": "https://www.facebook.com/groups/167224873294618/"
+    }
+   ]
+  },
+  {
+   "seedId": "S084",
+   "title": "אנדומטריוזיס, עמותות",
+   "kind": "association",
+   "text": "האגודה לזכויות החולה בישראל. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.patients-rights.org/3888"
+    }
+   ]
+  },
+  {
+   "seedId": "S084",
+   "title": "פעילות העמותה - אנדומטריוזיס ישראל",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://endoisrael.org/projects/"
+    }
+   ]
+  },
+  {
+   "seedId": "S084",
+   "title": "עמותת אנדומטריוזיס ישראל",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/BlobFolder/generalpage/healthcare-commendation/he/files_publications_subjects_healthcare-commendation_mekadmeyZchoiot_winers2021_accessible.pdf"
+    }
+   ]
+  },
+  {
+   "seedId": "S084",
+   "title": "מי זו עמותת אנדומטריוזיס ישראל אל?",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://endoisrael.org/wp-content/uploads/2022/02/%D7%97%D7%95%D7%91%D7%A8%D7%AA-%D7%9E%D7%99%D7%93%D7%A2-%D7%9C%D7%9E%D7%98%D7%95%D7%A4%D7%9C%D7%AA.pdf"
+    }
+   ]
+  },
+  {
+   "seedId": "S084",
+   "title": "• מי זו עמותת אנדומטריוזיס ישר אל?",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://boneiolam.co.il/wp-content/uploads/2022/05/%D7%97%D7%95%D7%91%D7%A8%D7%AA-%D7%9E%D7%99%D7%93%D7%A2-%D7%90%D7%A0%D7%93%D7%95%D7%9E%D7%98%D7%A8%D7%99%D7%95%D7%96%D7%99%D7%A1.pdf"
+    }
+   ]
+  },
+  {
+   "seedId": "S087",
+   "title": "המערך האונקולוגי, איכילוב",
+   "kind": "clinic",
+   "text": "מערך רפואי לטיפול במחלות סרטן.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S087",
+   "title": "האגודה למלחמה בסרטן, פורומים",
+   "kind": "community",
+   "text": "רשימת פורומים בתחומי מחלות הסרטן.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://forums.cancer.org.il/forums/"
+    }
+   ]
+  },
+  {
+   "seedId": "S087",
+   "title": "המרפאה לגידולים גניקולוגיים",
+   "kind": "clinic",
+   "text": "סרטן צוואר הרחם. הקריה הרפואית רמב\"ם | מרפאה או בית חולים | עמוד של שירות רפואי בתחום הנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.rambam.org.il/departmentsandclinics/oncologydivision/oncology-clinic/gynegocological_tumors_unit/"
+    }
+   ]
+  },
+  {
+   "seedId": "S087",
+   "title": "שבוע המודעות לסרטן צוואר הרחם 2026 - האגודה למלחמה בסרטן",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.cancer.org.il/articles/18448/"
+    }
+   ]
+  },
+  {
+   "seedId": "S089",
+   "title": "אנדוקרינולוגיה וסוכרת, וולפסון",
+   "kind": "clinic",
+   "text": "יחידה למחלות הורמונליות, סוכרת ומחלות עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/he/departments/topics/endocrinology-department"
+    }
+   ]
+  },
+  {
+   "seedId": "S090",
+   "title": "אנדוקרינולוגיה וסוכרת, וולפסון",
+   "kind": "clinic",
+   "text": "יחידה למחלות הורמונליות, סוכרת ומחלות עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/he/departments/topics/endocrinology-department"
+    }
+   ]
+  },
+  {
+   "seedId": "S091",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "ארגון גג הפועל בתחום המחלות הנדירות בישראל.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S091",
+   "title": "מרפאת עצב־שריר, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה למחלות עצב ושריר ומכון לבדיקות עצביות.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neuromuscular/"
+    }
+   ]
+  },
+  {
+   "seedId": "S091",
+   "title": "אנשי העמותה",
+   "kind": "association",
+   "text": "מיאסטניה גרביס ישראל. עמותה או ארגון | אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.mgis22.com/copy-of-%D7%90%D7%95%D7%93%D7%95%D7%AA"
+    }
+   ]
+  },
+  {
+   "seedId": "S091",
+   "title": "העמותה למיאסטניה גרביס - מ.ג.י - הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/members/%D7%94%D7%A2%D7%9E%D7%95%D7%AA%D7%94-%D7%9C%D7%9E%D7%99%D7%90%D7%A1%D7%98%D7%A0%D7%99%D7%94-%D7%92%D7%A8%D7%91%D7%99%D7%A1-%D7%9E-%D7%92-%D7%99/"
+    }
+   ]
+  },
+  {
+   "seedId": "S092",
+   "title": "דלקת מפרקים שגרונית RA - עמותת עינבר עמותת עינבר",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.inbar.org.il/ra/"
+    }
+   ]
+  },
+  {
+   "seedId": "S092",
+   "title": "קבוצת מיקוד RA דלקת מפרקים שגרונית - עמותת עינבר עמותת עינבר",
+   "kind": "association",
+   "text": "אתר המציג גוף או מידע העוסק בנושא.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.inbar.org.il/ra-focus-group/"
+    }
+   ]
+  },
+  {
+   "seedId": "S096",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "ארגון גג הפועל בתחום המחלות הנדירות בישראל.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S096",
+   "title": "אנדוקרינולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מכון למחלות אנדוקריניות וסוכרת.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S096",
+   "title": "אנדוקרינולוגיה וסוכרת, וולפסון",
+   "kind": "clinic",
+   "text": "יחידה למחלות הורמונליות, סוכרת ומחלות עצם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/he/departments/topics/endocrinology-department"
+    }
+   ]
+  },
+  {
+   "seedId": "S114",
+   "title": "העמותה הארצית לקרוהן ולקוליטיס כיבית",
+   "kind": "association",
+   "text": "עמותה למתמודדים עם קרוהן וקוליטיס ולבני משפחותיהם.",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://ccfi.co.il/"
     }
    ]
   }
