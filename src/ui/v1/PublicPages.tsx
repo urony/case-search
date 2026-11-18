@@ -8,7 +8,6 @@ import { useCatalog, useRT } from '../ctx';
 import { SuggestForm } from './SuggestForm';
 import { conditionSnippet, StatusBadge, TopicBody, V1_LABEL } from './TopicBody';
 
-const EXAMPLES = ['התקף לב', 'COPD', 'סוכרת נעורים', 'Celiac', 'אסתמה', 'לופוס'];
 
 /** הודעות מצב העותק הציבורי: לא מציגים מידע ישן כאילו עודכן */
 export function FreshnessNotice({ catalog }: { catalog: Catalog }) {
@@ -81,9 +80,6 @@ export function PublicHome() {
           <input id="q" type="search" value={draft} onChange={e => setDraft(e.target.value)} placeholder="שם מחלה או מצב, בעברית או באנגלית" autoComplete="off" />
           <button className="btn" type="submit">חיפוש</button>
         </form>
-        <div className="chips" aria-label="דוגמאות לחיפוש">
-          {EXAMPLES.map(x => <button key={x} type="button" className="chip" onClick={() => { setDraft(x); setP({ q: x, all: null }); }}><bdi>{x}</bdi></button>)}
-        </div>
         <div className="row bigactions">
           <button type="button" className="btn secondary" aria-expanded={sysOpen} aria-controls="syspanel" onClick={() => setSysOpen(o => !o)}>מערכות הגוף {sysOpen ? '▴' : '▾'}</button>
           <Link className="btn newbtn" to="/new-this-year">מה נוסף השנה{newCount > 0 ? ` (${newCount})` : ''}</Link>
