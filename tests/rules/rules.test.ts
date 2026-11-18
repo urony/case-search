@@ -421,3 +421,34 @@ describe('גרסה ראשונה: ניהול התוכן הציבורי (מנהל 
     await assertFails(db.doc('sources/s-free').set(adminSrc));
   });
 });
+
+describe('הצעות מהציבור: אורח יוצר בלבד, מנהל קורא ומטפל', () => {
+  const sug = { topicId: 't-1', title: 'כותרת הצעה', text: 'טקסט הצעה באורך תקין', url: '', contact: '', status: 'open', createdAt: NOW };
+  for (const who of [null, 't1', 't3'] as const) {
+    it(`${who ?? 'אורח'} יוצר הצעה תקינה אך אינו קורא, מעדכן או מוחק`, async () => {
+      const db = ctx(who);
+      await assertSucceeds(db.doc('publicSuggestions/p-1').set(sug));
+      await assertFails(db.doc('publicSuggestions/p-1').get());
+      await assertFails(db.collection('publicSuggestions').get());
+      await assertFails(db.doc('publicSuggestions/p-1').update({ status: 'approved' }));
+      await assertFails(db.doc('publicSuggestions/p-1').delete());
+    });
+  }
+  it('דוחה הצעה לא תקינה: שדה נוסף, סטטוס מאושר, טקסט קצר או ארוך, קישור מסוכן, כותרת קצרה', async () => {
+    const db = ctx(null);
+    await assertFails(db.doc('publicSuggestions/p-2').set({ ...sug, extra: 1 }));
+    await assertFails(db.doc('publicSuggestions/p-3').set({ ...sug, status: 'approved' }));
+    await assertFails(db.doc('publicSuggestions/p-4').set({ ...sug, text: 'קצר' }));
+    await assertFails(db.doc('publicSuggestions/p-5').set({ ...sug, text: 'א'.repeat(1001) }));
+    await assertFails(db.doc('publicSuggestions/p-6').set({ ...sug, url: 'javascript:alert(1)' }));
+    await assertFails(db.doc('publicSuggestions/p-7').set({ ...sug, title: 'א' }));
+    await assertFails(db.doc('publicSuggestions/p-8').set({ ...sug, contact: 'א'.repeat(101) }));
+  });
+  it('מנהל קורא ומסמן; מנהל לא מאומת אינו', async () => {
+    await env.withSecurityRulesDisabled(async c => { await c.firestore().doc('publicSuggestions/p-9').set(sug); });
+    await assertSucceeds(ctx('admin1').doc('publicSuggestions/p-9').get());
+    await assertSucceeds(ctx('admin1').collection('publicSuggestions').get());
+    await assertSucceeds(ctx('admin1').doc('publicSuggestions/p-9').update({ status: 'approved' }));
+    await assertFails(ctx('admin1', false).doc('publicSuggestions/p-9').get());
+  });
+});

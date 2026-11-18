@@ -5,6 +5,7 @@ import { academicYear } from '../../domain/years';
 import type { Catalog, Policy, Topic } from '../../domain/types';
 import { DifficultyMark, En, ErrorBox, fmtDate, Loading, Notice } from '../components';
 import { useCatalog, useRT } from '../ctx';
+import { SuggestForm } from './SuggestForm';
 import { conditionSnippet, StatusBadge, TopicBody, V1_LABEL } from './TopicBody';
 
 const EXAMPLES = ['התקף לב', 'COPD', 'סוכרת נעורים', 'Celiac', 'אסתמה', 'לופוס'];
@@ -151,7 +152,7 @@ export function PublicTopic() {
     <>
       <p className="small"><Link to="/">← חזרה לחיפוש</Link></p>
       <FreshnessNotice catalog={catalog} />
-      <TopicBody topic={topic} systems={catalog.systems} generalText={general} sources={catalog.sources?.[topic.id] ?? []} updatedAt={catalog.generatedAt} />
+      <TopicBody topic={topic} systems={catalog.systems} generalText={general} sources={catalog.sources?.[topic.id] ?? []} suggest={<SuggestForm topicId={topic.id} topicHe={topic.he} />} />
     </>
   );
 }
@@ -203,7 +204,7 @@ export function PublicAbout() {
       <div className="card stack">
         <p><b>מה הכלי עושה.</b> עוזר לתלמידים ולמורים לבדוק אם מחלה או מצב רפואי יכולים לשמש נושא לעבודת גמר במערכות רפואיות, עוד לפני שמחפשים מטופלים: אפשר לחפש לפי שם (בעברית, באנגלית, בקיצור או בשם חלופי), או לעיין לפי מערכת גוף.</p>
         <p><b>מה הכלי אינו.</b> הוא אינו אישור פיקוח, אינו מנפיק אישור, ואינו בודק או מאשר מטופל מסוים. בחירת מטופלים והגשת הנושא כפופות להנחיות ולאישור הפיקוח, והגשה רשמית נעשית בדרך הקיימת.</p>
-        <p><b>מקור המידע.</b> הרשימה מבוססת על מסמכי התוכנית. כרגע חלק מהרשומות הן מיפוי ראשוני של המקורות, שטרם נבדק סופית בידי מנהל האתר (מסומן בכל כרטיס). כאשר המקורות סותרים או אינם ברורים, הנושא מסומן ״דורש בירור״ ולא נקבע עבורו מעמד.</p>
+        <p><b>מקור המידע.</b> הרשימה מבוססת על מסמכי התוכנית. כאשר המקורות סותרים או אינם ברורים, הנושא מסומן ״דורש בירור״ ולא נקבע עבורו מעמד.</p>
         <p><b>פרטיות.</b> האתר אינו מבקש פרטים אישיים מהמבקרים, ואין בו פרטי תלמידים או מטופלים. החיפוש מתבצע בדפדפן שלכם ואינו נשלח לשום מקום.</p>
         {catalog?.settings.submissionNote && <p><b>מועד הגשה.</b> {catalog.settings.submissionNote}</p>}
         {catalog?.settings.officialFormUrl && <p><a href={catalog.settings.officialFormUrl} target="_blank" rel="noopener noreferrer">לטופס הרשמי (נפתח בחלון חדש)</a></p>}

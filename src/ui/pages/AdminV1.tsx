@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { academicYear } from '../../domain/years';
-import type { NewItem, SourceKind } from '../../domain/types';
+import type { NewItem, PublicSuggestion, SourceKind } from '../../domain/types';
 import { checkSourceInput, SOURCE_KINDS, SourceInput } from '../../domain/helpers';
 import { Field, fmtDate, Loading, Notice, useAsync, useBusy, ErrorBox } from '../components';
 import { useCatalog, useRT } from '../ctx';
@@ -155,16 +155,55 @@ export function AdminAddSource({ onDone }: { onDone: () => void }) {
   );
 }
 
+/** הצעות שנשלחו מהציבור (בלי כניסה). אישור יוצר מקור איתור שמתפרסם בפרסום הבא; דחייה רק מסמנת. */
+export function PublicSuggestionsAdmin() {
+  const { api } = useRT();
+  const { catalog } = useCatalog();
+  const [view, setView] = useState<'open' | 'all'>('open');
+  const list = useAsync(() => api.adminListPublicSuggestions(view === 'open' ? 'open' : undefined), [api, view]);
+  const { busy, error, run } = useBusy();
+  const [msg, setMsg] = useState<string | null>(null);
+  const topicName = (id: string) => catalog?.topics.find(t => t.id === id)?.he ?? id;
+  const act = async (s: PublicSuggestion, d: 'approved' | 'rejected') => {
+    if (d === 'approved' && !confirm('לאשר ולהוסיף כמקור איתור? (יופיע לציבור בפרסום הבא. ודאו שאין בו פרטי מטופל.)')) return;
+    const r = await run(async () => { await api.adminResolvePublicSuggestion(s.id, d); return true; });
+    if (r) { setMsg(d === 'approved' ? 'נוסף כמקור איתור. כדי שיופיע לציבור יש לפרסם.' : 'ההצעה נדחתה.'); list.reload(); }
+  };
+  const label: Record<PublicSuggestion['status'], string> = { open: 'ממתינה', approved: 'אושרה', rejected: 'נדחתה' };
+  return (
+    <div className="stack">
+      <h2>הצעות מהציבור</h2>
+      <p className="muted small">כל אחד יכול לשלוח הצעה מכרטיס נושא, בלי כניסה. ההצעה אינה מתפרסמת עד שאתם מאשרים. פרטי הקשר (אם נמסרו) מוצגים כאן בלבד. הצעה שנראית ספאם: דחו.</p>
+      <div className="tabs-lite" role="group" aria-label="סינון"><button className="chip" aria-pressed={view === 'open'} onClick={() => setView('open')}>ממתינות</button><button className="chip" aria-pressed={view === 'all'} onClick={() => setView('all')}>כל ההצעות</button></div>
+      {msg && <Notice kind="ok"><span role="status">{msg}</span> <Link to="/admin/publish">לפרסום</Link></Notice>}
+      {error && <Notice kind="bad">{error}</Notice>}
+      {list.loading && <Loading />}
+      {list.error && <ErrorBox error={list.error} retry={list.reload} />}
+      {list.data && list.data.length === 0 && <div className="card empty">אין הצעות.</div>}
+      {(list.data ?? []).map(s => (
+        <div className="card" key={s.id}>
+          <div className="row between"><b>{s.title}</b><span className={`badge ${s.status === 'open' ? 'warn' : s.status === 'approved' ? 'ok' : 'neutral'}`}>{label[s.status]}</span></div>
+          <p className="small muted">נושא: {topicName(s.topicId)} · {fmtDate(s.createdAt)}</p>
+          <p style={{ whiteSpace: 'pre-wrap' }}>{s.text}</p>
+          {s.url && <p className="small"><bdi className="ltr">{s.url}</bdi></p>}
+          {s.contact && <p className="small muted">פרטי קשר: {s.contact}</p>}
+          {s.status === 'open' && <div className="row"><button className="btn small" disabled={busy} onClick={() => act(s, 'approved')}>אישור והוספה כמקור</button><button className="btn small danger" disabled={busy} onClick={() => act(s, 'rejected')}>דחייה</button></div>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /** תמונת מצב לגרסה הראשונה */
 export function DashboardV1() {
   const { api } = useRT();
   const d = useAsync(async () => {
-    const [topics, diff, items, sources] = await Promise.all([api.adminListTopics(), api.adminPublishDiff(), api.adminListNewItems(), api.adminListSources(false)]);
-    return { topics, diff, items, sources };
+    const [topics, diff, items, sources, openSug] = await Promise.all([api.adminListTopics(), api.adminPublishDiff(), api.adminListNewItems(), api.adminListSources(false), api.adminCountOpenPublicSuggestions()]);
+    return { topics, diff, items, sources, openSug };
   }, [api]);
   if (d.loading) return <Loading />;
   if (d.error || !d.data) return <ErrorBox error={d.error ?? ''} retry={d.reload} />;
-  const { topics, diff, items, sources } = d.data;
+  const { topics, diff, items, sources, openSug } = d.data;
   const pub = topics.filter(t => t.publish === 'published');
   const by = (p: string) => pub.filter(t => t.policy === p).length;
   const unchecked = pub.filter(t => t.sourceMapped).length;
@@ -181,6 +220,7 @@ export function DashboardV1() {
         <div className="card"><b>{by('not_suitable')}</b>אינם מאושרים</div>
         <div className="card"><b>{by('needs_review')}</b>דורשים בירור</div>
         <Link className="card" to="/admin/topics"><b>{unchecked}</b>מיפוי ראשוני שטרם נבדק</Link>
+        <Link className="card" to="/admin/public-suggestions"><b>{openSug}</b>הצעות מהציבור הממתינות לטיפול</Link>
         <Link className="card" to="/admin/sources"><b>{sources.filter(s => s.visible).length}</b>מקורות לאיתור</Link>
         <Link className="card" to="/admin/whats-new"><b>{items.filter(i => i.visible).length}</b>פריטים ב״מה נוסף השנה״</Link>
       </div>

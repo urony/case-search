@@ -57,6 +57,20 @@ service cloud.firestore {
     }
     // "מה נוסף השנה": המנהל עורך כאן; הציבור קורא רק את העותק שב-public
     match /newItems/{id} { allow read, write: if isAdmin(); }
+    // הצעות מהציבור: כל אחד יכול ליצור הצעה (בלי כניסה), בצורה מוגבלת בלבד. רק מנהל קורא, מאשר או מוחק. אין קריאה ואין עדכון לאחרים.
+    match /publicSuggestions/{id} {
+      allow read, update, delete: if isAdmin();
+      allow create: if request.resource.data.keys().hasOnly(['id', 'topicId', 'title', 'text', 'url', 'contact', 'status', 'createdAt'])
+        && request.resource.data.status == 'open'
+        && id.size() <= 60
+        && request.resource.data.topicId is string && request.resource.data.topicId.size() >= 1 && request.resource.data.topicId.size() <= 60
+        && request.resource.data.title is string && request.resource.data.title.size() >= 3 && request.resource.data.title.size() <= 120
+        && request.resource.data.text is string && request.resource.data.text.size() >= 10 && request.resource.data.text.size() <= 1000
+        && request.resource.data.url is string && request.resource.data.url.size() <= 500
+        && (request.resource.data.url == '' || request.resource.data.url.matches('^https?://.*'))
+        && request.resource.data.contact is string && request.resource.data.contact.size() <= 100
+        && isNum(request.resource.data.createdAt);
+    }
     match /seedEntries/{id} { allow read, write: if isAdmin(); }
     match /suggestions/{id} { allow read, write: if isAdmin(); }
     match /policyQuestions/{id} { allow read, write: if isAdmin(); }

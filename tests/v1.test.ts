@@ -244,3 +244,47 @@ describe('חיסכון בקריאות ומצבי כשל', () => {
     expect(c.systems.length).toBeGreaterThan(5);
   });
 });
+
+describe('הצעות מהציבור (בלי כניסה, מתפרסמות רק באישור מנהל)', () => {
+  const good = { topicId: 't-S063', title: 'עמותת אסתמה מלאכותית', text: 'עמותה לדוגמה שעשויה לסייע באיתור, מלאכותי לבדיקה.', url: 'https://example.org', contact: 'דוא״ל לבדיקה' };
+  it('אורח שולח הצעה, ואינה מתפרסמת ואינה נקראת בידו', async () => {
+    auth.as(null);
+    await api.submitSuggestion(good);
+    expect((await inner.list('publicSuggestions')).length).toBe(1);
+    await expect(api.adminListPublicSuggestions()).rejects.toThrow(PermissionError);
+    await expect(api.adminResolvePublicSuggestion('x', 'approved')).rejects.toThrow(PermissionError);
+    expect((await api.loadCatalog()).sources?.['t-S063'] ?? []).toEqual([]);
+  });
+  it('דוחה קלט לא תקין: כותרת קצרה, טקסט קצר, קישור מסוכן, פרטים אישיים', async () => {
+    auth.as(null);
+    await expect(api.submitSuggestion({ ...good, title: 'א' })).rejects.toThrow(/כותרת/);
+    await expect(api.submitSuggestion({ ...good, text: 'קצר' })).rejects.toThrow(/תיאור/);
+    await expect(api.submitSuggestion({ ...good, url: 'javascript:alert(1)' })).rejects.toThrow(/כתובת/);
+    await expect(api.submitSuggestion({ ...good, text: 'צרו קשר someone@example.com בבקשה' })).rejects.toThrow(/זיהוי|מייל/);
+    await expect(api.submitSuggestion({ ...good, topicId: '' })).rejects.toThrow(/נושא/);
+    expect((await inner.list('publicSuggestions')).length).toBe(0);
+  });
+  it('מנהל רואה, מאשר: נוצר מקור שמתפרסם רק בפרסום הבא', async () => {
+    auth.as(null); await api.submitSuggestion(good);
+    auth.as('demo-admin');
+    const [s] = await api.adminListPublicSuggestions('open');
+    expect(await api.adminCountOpenPublicSuggestions()).toBe(1);
+    await api.adminResolvePublicSuggestion(s.id, 'approved');
+    expect(await api.adminCountOpenPublicSuggestions()).toBe(0);
+    auth.as(null); cache.clear();
+    expect((await api.loadCatalog()).sources?.['t-S063'] ?? []).toEqual([]);
+    auth.as('demo-admin'); NOW += 1000; await api.publishCatalog();
+    auth.as(null); cache.clear();
+    const pub = (await api.loadCatalog()).sources!['t-S063'];
+    expect(pub.length).toBe(1);
+    expect(JSON.stringify(pub)).not.toContain('דוא״ל לבדיקה'); // פרטי הקשר אינם מתפרסמים
+  });
+  it('דחייה אינה יוצרת מקור, ואי אפשר לטפל פעמיים', async () => {
+    auth.as(null); await api.submitSuggestion(good);
+    auth.as('demo-admin');
+    const [s] = await api.adminListPublicSuggestions('open');
+    await api.adminResolvePublicSuggestion(s.id, 'rejected');
+    await expect(api.adminResolvePublicSuggestion(s.id, 'approved')).rejects.toThrow(/כבר טופלה/);
+    expect((await inner.list('sources')).some((x: any) => x.title === good.title)).toBe(false);
+  });
+});

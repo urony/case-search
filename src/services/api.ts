@@ -1,12 +1,12 @@
 import { validateRuleSet } from '../engine/validate';
 import { DEFAULT_GENERAL_RULES } from '../engine/general';
 import type { RuleSet } from '../engine/types';
-import { checkSourceInput, dueAtFor, looksLikePersonalData, SourceInput } from '../domain/helpers';
+import { checkSourceInput, dueAtFor, looksLikePersonalData, safeWebUrl, SourceInput } from '../domain/helpers';
 import { normEmail, EMAIL_RE, previewSchoolImport, previewTeacherImport } from '../domain/csv';
 import { planSeedImport, SeedRecord } from '../domain/seedImport';
 import type {
   AcademicYear, AllowedTeacher, AuditEvent, Catalog, CatalogMeta, Group, NewItem, PublicSource, GroupStatus, PolicyQuestion,
-  Profile, RecruitmentSource, RequestDoc, RequestKind, Role, RoleDoc, School, SchoolYearHistory, Settings, SourceReport, SystemDef, TagDef, Topic,
+  Profile, PublicSuggestion, RecruitmentSource, RequestDoc, RequestKind, Role, RoleDoc, School, SchoolYearHistory, Settings, SourceReport, SystemDef, TagDef, Topic,
 } from '../domain/types';
 import type { AuthService, AuthUser } from './auth';
 import { buildBundledCatalog, DEFAULT_TAGS, defaultSettings, defaultYears, SEED, SEED_AUX } from './bundled';
@@ -455,6 +455,35 @@ export class Api {
   }
   /** מה ישתנה בפרסום הבא לעומת מה שהציבור רואה עכשיו (תצוגה מקדימה לפני פרסום) */
   async adminPublishDiff(): Promise<PublishDiff> { await this.need('admin'); return diffAgainstLive(this.store, this.now()); }
+
+  // ───────── הצעות מהציבור (פתוח לכל אחד, בלי כניסה; מתפרסם רק באישור מנהל) ─────────
+  /** שליחת הצעה. אינה דורשת כניסה ואינה מפרסמת דבר: ההצעה נקראת רק בידי מנהל. */
+  async submitSuggestion(input: { topicId: string; title: string; text: string; url?: string; contact?: string }): Promise<void> {
+    const title = input.title.trim(), text = input.text.trim(), contact = (input.contact ?? '').trim(), rawUrl = (input.url ?? '').trim();
+    if (!input.topicId || input.topicId.length > 60) throw new Error('לא נבחר נושא.');
+    if (title.length < 3 || title.length > 120) throw new Error('כותרת: 3 עד 120 תווים.');
+    if (text.length < 10 || text.length > 1000) throw new Error('נדרש תיאור של 10 עד 1,000 תווים.');
+    if (contact.length > 100) throw new Error('פרטי הקשר ארוכים מדי (עד 100 תווים).');
+    let url = '';
+    if (rawUrl) { const u = safeWebUrl(rawUrl); if (!u || u.length > 500) throw new Error('כתובת האתר אינה תקינה. מותרים רק קישורי http או https.'); url = u; }
+    if (looksLikePersonalData(`${title} ${text}`)) throw new Error('נראה שהטקסט כולל מספר זיהוי או כתובת מייל. אין לשלוח פרטי מטופל או פרטים אישיים.');
+    const s: PublicSuggestion = { id: `p-${uuid()}`, topicId: input.topicId, title, text, url, contact, status: 'open', createdAt: this.now() };
+    await this.store.set(`publicSuggestions/${s.id}`, s);
+  }
+  async adminListPublicSuggestions(status?: PublicSuggestion['status']): Promise<PublicSuggestion[]> {
+    await this.need('admin');
+    return (await this.store.list<PublicSuggestion>('publicSuggestions', status ? [['status', '==', status]] : [])).sort((a, b) => b.createdAt - a.createdAt);
+  }
+  async adminCountOpenPublicSuggestions(): Promise<number> { await this.need('admin'); return this.store.count('publicSuggestions', [['status', '==', 'open']]); }
+  /** אישור: יוצר מקור איתור (מתפרסם לציבור בפרסום הבא) ומסמן את ההצעה. דחייה: מסמנת בלבד. */
+  async adminResolvePublicSuggestion(id: string, decision: 'approved' | 'rejected'): Promise<void> {
+    const c = await this.need('admin');
+    const s = await this.store.get<PublicSuggestion>(`publicSuggestions/${id}`);
+    if (!s) throw new Error('ההצעה לא נמצאה.');
+    if (s.status !== 'open') throw new Error('ההצעה כבר טופלה.');
+    if (decision === 'approved') await this.adminAddSource({ topicId: s.topicId, title: s.title, kind: 'free', text: s.text, url: s.url, phone: '', region: '', population: '', confirmNoPatientData: true });
+    await this.store.batch([{ op: 'update', path: `publicSuggestions/${id}`, data: { status: decision, handledBy: c.user!.uid, handledAt: this.now() } }, this.audit(`public_suggestion_${decision}`, id, c.user!.uid)]);
+  }
 
   // ───────── "מה נוסף השנה" ─────────
   async adminListNewItems(): Promise<NewItem[]> {

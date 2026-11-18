@@ -1,8 +1,9 @@
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { ageLine } from '../../domain/helpers';
 import type { Policy, PublicSource, SystemDef, Topic } from '../../domain/types';
 import { safePhone, safeWebUrl, SOURCE_KINDS } from '../../domain/helpers';
-import { DifficultyMark, En, fmtDate, Notice } from '../components';
+import { DifficultyMark, En, Notice } from '../components';
 
 /** תוויות הגרסה הראשונה. הטקסט הוא החלק המחייב; הצבע והסמל רק תומכים. */
 export const V1_LABEL: Record<Policy, string> = {
@@ -42,8 +43,8 @@ const NOTE_KIND: Record<string, 'info' | 'warn' | 'bad'> = { info: 'info', warni
  * גוף כרטיס הנושא בגרסה הראשונה. מציג בסדר הזה: שם, מערכות, מעמד והסבר, תנאים והערות (לא בלשונית צדדית),
  * קושי באיתור (רק אם נקבע), מקורות לאיתור מטופלים (או הודעה שטרם נוספו), מקור המידע, והבהרה על אישור פיקוח.
  */
-export function TopicBody({ topic, systems, generalText, sources, updatedAt }: {
-  topic: Topic; systems: SystemDef[]; generalText?: string; sources: PublicSource[]; updatedAt?: number;
+export function TopicBody({ topic, systems, generalText, sources, suggest }: {
+  topic: Topic; systems: SystemDef[]; generalText?: string; sources: PublicSource[]; suggest?: ReactNode;
 }) {
   const sysLabels = topic.systems.map(id => systems.find(s => s.id === id)).filter(Boolean) as SystemDef[];
   const age = ageLine(topic);
@@ -100,14 +101,10 @@ export function TopicBody({ topic, systems, generalText, sources, updatedAt }: {
           ? <p className="muted">טרם נוספו מקורות לאיתור מטופלים.</p>
           : <div className="stack">{sources.map(s => <SourceItem key={s.id} s={s} />)}</div>}
         {sources.length > 0 && <p className="small muted">מקור איתור הוא פרטי קשר של ארגון, אתר או קבוצה. אין בו פרטי מטופלים, והוא אינו משנה את תנאי ההתאמה.</p>}
+        {suggest}
       </section>
 
-      <p className="small muted">
-        <b>מקור המידע:</b> מסמכי התוכנית, עמודים <bdi>{topic.sourcePages || 'לא צוין'}</bdi>.{' '}
-        {topic.sourceMapped ? 'זהו מיפוי ראשוני של המקורות, שטרם נבדק סופית בידי מנהל האתר.' : 'הרשומה נבדקה ועודכנה בידי מנהל האתר.'}
-        {updatedAt ? <> המידע באתר עודכן לאחרונה ב־{fmtDate(updatedAt)}.</> : null}
-        {topic.aliases.length > 0 && <> שמות נוספים: {topic.aliases.map((a, i) => <span key={a}>{i > 0 && ', '}<En>{a}</En></span>)}.</>}
-      </p>
+      {topic.aliases.length > 0 && <p className="small muted">שמות נוספים: {topic.aliases.map((a, i) => <span key={a}>{i > 0 && ', '}<En>{a}</En></span>)}.</p>}
       <Notice kind="info">המידע מתייחס להתאמת הנושא. בחירת מטופלים והגשת הנושא כפופות להנחיות ולאישור הפיקוח.</Notice>
     </article>
   );

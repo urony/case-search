@@ -199,6 +199,11 @@ export interface NewItem {
   createdBy?: string;
   updatedAt: number;
 }
+/** הצעה מהציבור (בלי כניסה): מקור לאיתור מטופלים או המלצה לנושא. נקראת רק בידי מנהל; מתפרסמת רק אחרי אישורו. */
+export interface PublicSuggestion {
+  id: string; topicId: string; title: string; text: string; url: string; contact: string;
+  status: 'open' | 'approved' | 'rejected'; createdAt: number; handledBy?: string; handledAt?: number;
+}
 /** מקור איתור כפי שהוא מופיע בעותק הציבורי: בלי מזהי משתמש, בלי מצב בדיקה פנימי */
 export interface PublicSource {
   id: string; topicId: string; title: string; kind: SourceKind; text: string; url: string; phone: string; region: string; population: string; createdAt: number;
