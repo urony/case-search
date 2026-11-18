@@ -73,6 +73,20 @@ service cloud.firestore {
         && request.resource.data.contact is string && request.resource.data.contact.size() <= 100
         && isNum(request.resource.data.createdAt);
     }
+    // הצעת נושא חדש לבדיקה (מורה או תלמיד): יצירה פתוחה בצורה מוגבלת בלבד; קריאה, עדכון ומחיקה: מנהל בלבד
+    match /topicProposals/{id} {
+      allow read, update, delete: if isAdmin();
+      allow create: if request.resource.data.keys().hasOnly(['id', 'name', 'details', 'who', 'role', 'school', 'contact', 'status', 'createdAt'])
+        && request.resource.data.status == 'open'
+        && id.size() <= 60
+        && request.resource.data.name is string && request.resource.data.name.size() >= 3 && request.resource.data.name.size() <= 120
+        && request.resource.data.details is string && request.resource.data.details.size() <= 1000
+        && request.resource.data.who is string && request.resource.data.who.size() >= 2 && request.resource.data.who.size() <= 80
+        && request.resource.data.role in ['teacher', 'student', 'other']
+        && request.resource.data.school is string && request.resource.data.school.size() >= 2 && request.resource.data.school.size() <= 100
+        && request.resource.data.contact is string && request.resource.data.contact.size() <= 100
+        && isNum(request.resource.data.createdAt);
+    }
     match /seedEntries/{id} { allow read, write: if isAdmin(); }
     match /suggestions/{id} { allow read, write: if isAdmin(); }
     match /policyQuestions/{id} { allow read, write: if isAdmin(); }

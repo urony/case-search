@@ -207,6 +207,11 @@ export interface PublicSuggestion {
   id: string; topicId: string; title: string; text: string; url: string; contact: string;
   status: 'open' | 'approved' | 'rejected'; createdAt: number; handledBy?: string; handledAt?: number;
 }
+/** הצעה לנושא חדש לבדיקה (מורה או תלמיד, בלי כניסה). מגיעה למנהל בלבד */
+export interface TopicProposal {
+  id: string; name: string; details: string; who: string; role: 'teacher' | 'student' | 'other'; school: string; contact: string;
+  status: 'open' | 'added' | 'rejected'; createdAt: number; handledBy?: string; handledAt?: number;
+}
 /** מקור איתור כפי שהוא מופיע בעותק הציבורי: בלי מזהי משתמש, בלי מצב בדיקה פנימי */
 export interface PublicSource {
   id: string; topicId: string; title: string; kind: SourceKind; text: string; url: string; links?: SourceLink[]; phone: string; region: string; population: string; createdAt: number;

@@ -6,7 +6,7 @@ import { normEmail, EMAIL_RE, previewSchoolImport, previewTeacherImport } from '
 import { planSeedImport, SeedRecord } from '../domain/seedImport';
 import type {
   AcademicYear, AllowedTeacher, AuditEvent, Catalog, CatalogMeta, Group, NewItem, PublicSource, GroupStatus, PolicyQuestion,
-  Profile, PublicSuggestion, RecruitmentSource, RequestDoc, RequestKind, Role, RoleDoc, School, SchoolYearHistory, Settings, SourceKind, SourceLink, SourceReport, SystemDef, TagDef, Topic,
+  Profile, PublicSuggestion, RecruitmentSource, RequestDoc, RequestKind, Role, RoleDoc, School, SchoolYearHistory, Settings, SourceKind, SourceLink, SourceReport, SystemDef, TagDef, Topic, TopicProposal,
 } from '../domain/types';
 import type { AuthService, AuthUser } from './auth';
 import { buildBundledCatalog, DEFAULT_TAGS, defaultSettings, defaultYears, SEED, SEED_AUX } from './bundled';
@@ -475,6 +475,30 @@ export class Api {
     if (looksLikePersonalData(`${title} ${text}`)) throw new Error('נראה שהטקסט כולל מספר זיהוי או כתובת מייל. אין לשלוח פרטי מטופל או פרטים אישיים.');
     const s: PublicSuggestion = { id: `p-${uuid()}`, topicId: input.topicId, title, text, url, contact, status: 'open', createdAt: this.now() };
     await this.store.set(`publicSuggestions/${s.id}`, s);
+  }
+  // ───────── הצעת נושא חדש לבדיקה ─────────
+  async submitTopicProposal(input: { name: string; details?: string; who: string; role: 'teacher' | 'student' | 'other'; school: string; contact?: string }): Promise<void> {
+    const name = input.name.trim(), details = (input.details ?? '').trim(), who = input.who.trim(), school = input.school.trim(), contact = (input.contact ?? '').trim();
+    if (name.length < 3 || name.length > 120) throw new Error('שם הנושא: 3 עד 120 תווים.');
+    if (details.length > 1000) throw new Error('ההסבר ארוך מדי (עד 1,000 תווים).');
+    if (who.length < 2 || who.length > 80) throw new Error('נא לכתוב את שמכם (2 עד 80 תווים).');
+    if (!['teacher', 'student', 'other'].includes(input.role)) throw new Error('נא לבחור תפקיד.');
+    if (school.length < 2 || school.length > 100) throw new Error('נא לכתוב את שם בית הספר או המוסד.');
+    if (contact.length > 100) throw new Error('פרטי הקשר ארוכים מדי (עד 100 תווים).');
+    if (looksLikePersonalData(`${name} ${details}`)) throw new Error('נראה שהטקסט כולל מספר זיהוי או כתובת מייל. אין לשלוח פרטי מטופל או פרטים אישיים.');
+    const p: TopicProposal = { id: `tp-${uuid()}`, name, details, who, role: input.role, school, contact, status: 'open', createdAt: this.now() };
+    await this.store.set(`topicProposals/${p.id}`, p);
+  }
+  async adminListTopicProposals(status?: TopicProposal['status']): Promise<TopicProposal[]> {
+    await this.need('admin');
+    return (await this.store.list<TopicProposal>('topicProposals', status ? [['status', '==', status]] : [])).sort((a, b) => b.createdAt - a.createdAt);
+  }
+  async adminResolveTopicProposal(id: string, decision: 'added' | 'rejected'): Promise<void> {
+    const c = await this.need('admin');
+    const p = await this.store.get<TopicProposal>(`topicProposals/${id}`);
+    if (!p) throw new Error('ההצעה לא נמצאה.');
+    if (p.status !== 'open') throw new Error('ההצעה כבר טופלה.');
+    await this.store.batch([{ op: 'update', path: `topicProposals/${id}`, data: { status: decision, handledBy: c.user!.uid, handledAt: this.now() } }, this.audit(`topic_proposal_${decision}`, id, c.user!.uid)]);
   }
   async adminListPublicSuggestions(status?: PublicSuggestion['status']): Promise<PublicSuggestion[]> {
     await this.need('admin');

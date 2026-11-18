@@ -113,6 +113,7 @@ export function PublicHome() {
       {!searching && (
         <div className="card empty">
           <p>הקלידו שם מחלה בשדה החיפוש, או בחרו מערכת גוף.</p>
+          <p className="small muted">לא מצאתם נושא? <Link to="/propose-topic">הציעו נושא לבדיקה</Link>.</p>
           <button type="button" className="btn secondary small" onClick={() => setP({ all: '1' })}>הצגת כל הנושאים ({catalog.topics.filter(t => t.publish === 'published').length})</button>
         </div>
       )}
@@ -120,7 +121,7 @@ export function PublicHome() {
       {searching && (
         <>
           <h3 aria-live="polite">{main.length === 1 ? 'תוצאה אחת' : `${main.length} תוצאות`}{q ? ` עבור ״${q}״` : ''}{sysLabel ? ` במערכת ${sysLabel}` : ''}</h3>
-          {main.length === 0 && approx.length === 0 && <div className="card empty"><p>לא נמצאו נושאים. נסו ניסוח אחר, שם באנגלית או קיצור.</p><p className="small muted">נושא שאינו ברשימה אינו בהכרח מאושר או לא מאושר: יש לברר מול הפיקוח.</p></div>}
+          {main.length === 0 && approx.length === 0 && <div className="card empty"><p>לא נמצאו נושאים. נסו ניסוח אחר, שם באנגלית או קיצור.</p><p className="small muted">נושא שאינו ברשימה אינו בהכרח מאושר או לא מאושר: יש לברר מול הפיקוח.</p><p><Link className="btn secondary small" to="/propose-topic">הנושא לא נמצא? הציעו אותו לבדיקה</Link></p></div>}
           <div className="grid">{main.slice(0, 80).map(h => <ResultCard key={h.topic.id} topic={h.topic} via={h.via} sources={sourceCounts[h.topic.id] ?? 0} />)}</div>
           {main.length > 80 && <p className="muted">מוצגות 80 התוצאות הראשונות. צמצמו את החיפוש כדי לראות עוד.</p>}
           {approx.length > 0 && (

@@ -15,6 +15,7 @@ import TopicPage from './pages/TopicPage';
 import { Notice } from './components';
 import { V1 } from '../features';
 import { PublicAbout, PublicHome, PublicTopic, WhatsNew } from './v1/PublicPages';
+import { ProposeTopic } from './v1/ProposeTopic';
 
 function Banners() {
   const { mode, notice, demo, demoAvailable } = useRT();
@@ -56,6 +57,7 @@ function Header() {
         <nav className="main" aria-label="ניווט ראשי">
           <NavLink to="/" end>חיפוש</NavLink>
           <NavLink to="/new-this-year">{V1 ? 'מה נוסף השנה' : 'חדשים השנה'}</NavLink>
+          {V1 && mode !== 'bundled' && <NavLink to="/propose-topic">הצעת נושא</NavLink>}
           {!V1 && <NavLink to="/history">היסטוריית מוסד</NavLink>}
           <NavLink to="/about">{V1 ? 'על הכלי' : 'הסבר'}</NavLink>
           {!V1 && ctx.approved && <NavLink to="/groups">הקבוצות שלי</NavLink>}
@@ -88,6 +90,7 @@ function Shell() {
             <Route path="/topic/:id" element={V1 ? <PublicTopic /> : <TopicPage />} />
             <Route path="/new-this-year" element={V1 ? <WhatsNew /> : <NewThisYear />} />
             <Route path="/about" element={V1 ? <PublicAbout /> : <About />} />
+            {V1 && <Route path="/propose-topic" element={<ProposeTopic />} />}
             <Route path="/login" element={<Login />} />
             {!V1 && <>
               <Route path="/history" element={<HistoryPage />} />

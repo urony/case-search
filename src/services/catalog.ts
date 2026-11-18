@@ -81,7 +81,16 @@ export interface PublishDiff {
   otherChanged: boolean;
 }
 
-const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
+/** השוואה שאינה תלויה בסדר המפתחות: Firestore מחזיר שדות ממוינים, ולכן JSON.stringify פשוט גרם ל"שינויים שטרם פורסמו" תמידיים */
+function canon(v: unknown): unknown {
+  if (Array.isArray(v)) return v.map(canon);
+  if (v && typeof v === 'object') {
+    const o = v as Record<string, unknown>;
+    return Object.fromEntries(Object.keys(o).filter(k => o[k] !== undefined).sort().map(k => [k, canon(o[k])]));
+  }
+  return v;
+}
+const same = (a: unknown, b: unknown) => JSON.stringify(canon(a)) === JSON.stringify(canon(b));
 
 /**
  * משווה את מה שיפורסם עכשיו (לפי תוכן המאגר הראשי) למה שמוצג בפועל לציבור.

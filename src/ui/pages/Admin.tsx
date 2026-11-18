@@ -15,7 +15,7 @@ import { TopicCard } from './Home';
 import RuleSetEditor from './RuleEditor';
 import { BackupAdmin } from './AdminOps';
 import { V1 } from '../../features';
-import { AdminAddSource, SourceSeedImport, DashboardV1, PublicSuggestionsAdmin, PublishAdmin, WhatsNewAdmin } from './AdminV1';
+import { AdminAddSource, SourceSeedImport, TopicProposalsAdmin, DashboardV1, PublicSuggestionsAdmin, PublishAdmin, WhatsNewAdmin } from './AdminV1';
 import { TopicBody } from '../v1/TopicBody';
 
 export default function Admin() {
@@ -25,7 +25,7 @@ export default function Admin() {
   if (ctx.role !== 'admin') return <Notice kind="bad" title="אין הרשאה. ">אזור זה מיועד למנהלי האתר. ההרשאה נאכפת גם בצד השירות.</Notice>;
   const { badges } = useSession();
   const cnt = (to: string): number => ({ '/admin/requests': badges.admin?.openRequests ?? 0, '/admin/sources': (badges.admin?.unreviewedSources ?? 0) + (badges.admin?.openReports ?? 0), '/admin/suggestions': badges.admin?.openSuggestions ?? 0 } as Record<string, number>)[to] ?? 0;
-  const linksV1: [string, string][] = [['/admin', 'תמונת מצב'], ['/admin/topics', 'מחלות וכללים'], ['/admin/public-suggestions', 'הצעות מהציבור'], ['/admin/sources', 'מקורות איתור'], ['/admin/whats-new', 'מה נוסף השנה'], ['/admin/publish', 'פרסום לציבור'], ['/admin/questions', 'בירורים מקצועיים'], ['/admin/rules', 'כללי סף כלליים'], ['/admin/settings', 'הגדרות'], ['/admin/users', 'מנהלים ותפקידים'], ['/admin/backup', 'גיבוי ושחזור']];
+  const linksV1: [string, string][] = [['/admin', 'תמונת מצב'], ['/admin/topics', 'מחלות וכללים'], ['/admin/topic-proposals', 'הצעות נושאים חדשים'], ['/admin/public-suggestions', 'הצעות מקורות'], ['/admin/sources', 'מקורות איתור'], ['/admin/whats-new', 'מה נוסף השנה'], ['/admin/publish', 'פרסום לציבור'], ['/admin/questions', 'בירורים מקצועיים'], ['/admin/rules', 'כללי סף כלליים'], ['/admin/settings', 'הגדרות'], ['/admin/users', 'מנהלים ותפקידים'], ['/admin/backup', 'גיבוי ושחזור']];
   const linksFull: [string, string][] = [['/admin', 'תמונת מצב'], ['/admin/topics', 'מחלות וכללים'], ['/admin/requests', 'בקשות והחלטות'], ['/admin/sources', 'מקורות איתור'], ['/admin/suggestions', 'הצעות'], ['/admin/schools', 'מוסדות'], ['/admin/cycles', 'מחזורים'], ['/admin/teachers', 'מורים מאושרים'], ['/admin/users', 'תפקידים (רכז, מנהל)'], ['/admin/questions', 'בירורים מקצועיים'], ['/admin/rules', 'כללי סף כלליים'], ['/admin/settings', 'הגדרות'], ['/admin/backup', 'גיבוי ושחזור'], ['/admin/whats-new', 'מה נוסף השנה'], ['/admin/publish', 'פרסום לציבור']];
   const links = V1 ? linksV1 : linksFull;
   return (
@@ -38,6 +38,7 @@ export default function Admin() {
           <Route path="whats-new" element={<WhatsNewAdmin />} />
           <Route path="publish" element={<PublishAdmin />} />
           <Route path="public-suggestions" element={<PublicSuggestionsAdmin />} />
+          <Route path="topic-proposals" element={<TopicProposalsAdmin />} />
           <Route path="topics" element={<TopicsAdmin />} />
           <Route path="topics/:id" element={<TopicEditor />} />
           <Route path="requests" element={<RequestsAdmin />} />

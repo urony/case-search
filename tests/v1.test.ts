@@ -323,3 +323,50 @@ describe('ייבוא מאגר הקישורים', () => {
     expect(pub.sources).toBeGreaterThan(0);
   });
 });
+
+/** מאגר שמחזיר שדות ממוינים לפי שם, כמו Firestore אמיתי */
+class SortingStore extends CountingStore {
+  private sortDeep(v: any): any { if (Array.isArray(v)) return v.map(x => this.sortDeep(x)); if (v && typeof v === 'object') return Object.fromEntries(Object.keys(v).sort().map(k => [k, this.sortDeep(v[k])])); return v; }
+  async get<T>(path: string) { return this.sortDeep(await super.get<T>(path)); }
+  async list<T>(c: string, w?: Filter[]) { return this.sortDeep(await super.list<T>(c, w)); }
+}
+
+describe('פרסום: אין "שינויים שטרם פורסמו" אחרי פרסום (גם כשהמאגר מחזיר שדות ממוינים)', () => {
+  it('אחרי פרסום ההפרש ריק, ושינוי אמיתי מזוהה', async () => {
+    const sapi = new Api(new SortingStore(inner), auth, 'service', () => NOW);
+    sapi.snapshotCache = new MemCache();
+    auth.as('demo-admin'); sapi.clearCtxCache();
+    await sapi.adminImportSourceSeed();
+    await sapi.publishCatalog();
+    const d = await sapi.adminPublishDiff();
+    expect(d.upToDate).toBe(true);
+    expect(d.otherChanged).toBe(false);
+    expect(d.topics.changed).toEqual([]);
+    await sapi.adminSaveNewItem(item);
+    expect((await sapi.adminPublishDiff()).upToDate).toBe(false);
+  });
+});
+
+describe('הצעת נושא חדש לבדיקה', () => {
+  const ok = { name: 'מחלה לדוגמה מלאכותית', details: 'הערה', who: 'מורה לדוגמה', role: 'teacher' as const, school: 'בית ספר לדוגמה', contact: '' };
+  it('כל אחד שולח, רק מנהל קורא ומטפל', async () => {
+    auth.as(null);
+    await api.submitTopicProposal(ok);
+    await expect(api.adminListTopicProposals()).rejects.toThrow(PermissionError);
+    auth.as('demo-admin'); api.clearCtxCache();
+    const l = await api.adminListTopicProposals('open');
+    expect(l.length).toBe(1);
+    expect(l[0].school).toBe('בית ספר לדוגמה');
+    await api.adminResolveTopicProposal(l[0].id, 'added');
+    expect((await api.adminListTopicProposals('open')).length).toBe(0);
+    await expect(api.adminResolveTopicProposal(l[0].id, 'rejected')).rejects.toThrow();
+  });
+  it('דוחה הצעה ללא שם, תפקיד או בית ספר, או עם פרטים אישיים', async () => {
+    auth.as(null);
+    await expect(api.submitTopicProposal({ ...ok, who: '' })).rejects.toThrow();
+    await expect(api.submitTopicProposal({ ...ok, school: '' })).rejects.toThrow();
+    await expect(api.submitTopicProposal({ ...ok, role: 'x' as any })).rejects.toThrow();
+    await expect(api.submitTopicProposal({ ...ok, name: 'ab' })).rejects.toThrow();
+    await expect(api.submitTopicProposal({ ...ok, details: 'דבר אליי במייל a@b.co' })).rejects.toThrow();
+  });
+});

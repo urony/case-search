@@ -480,3 +480,32 @@ describe('מנהל לפי רשימת מייל (אוסף admins)', () => {
     await assertFails(ctx(null).doc('admins/boss@x.test').get());
   });
 });
+
+describe('הצעת נושא חדש (topicProposals): יצירה פתוחה ומוגבלת, קריאה למנהל בלבד', () => {
+  const tp = { name: 'מחלה לדוגמה', details: '', who: 'מורה לדוגמה', role: 'teacher', school: 'בית ספר לדוגמה', contact: '', status: 'open', createdAt: NOW };
+  for (const who of [null, 't3'] as const) {
+    it(`${who ?? 'אורח'} יוצר אך אינו קורא, מעדכן או מוחק`, async () => {
+      const db = ctx(who);
+      await assertSucceeds(db.doc('topicProposals/tp-1').set(tp));
+      await assertFails(db.doc('topicProposals/tp-1').get());
+      await assertFails(db.collection('topicProposals').get());
+      await assertFails(db.doc('topicProposals/tp-1').update({ status: 'added' }));
+      await assertFails(db.doc('topicProposals/tp-1').delete());
+    });
+  }
+  it('דוחה: חסר בית ספר, תפקיד לא חוקי, שדה נוסף, סטטוס לא פתוח, שם קצר', async () => {
+    const db = ctx(null);
+    await assertFails(db.doc('topicProposals/tp-2').set({ ...tp, school: '' }));
+    await assertFails(db.doc('topicProposals/tp-3').set({ ...tp, role: 'admin' }));
+    await assertFails(db.doc('topicProposals/tp-4').set({ ...tp, extra: 1 }));
+    await assertFails(db.doc('topicProposals/tp-5').set({ ...tp, status: 'added' }));
+    await assertFails(db.doc('topicProposals/tp-6').set({ ...tp, name: 'א' }));
+    await assertFails(db.doc('topicProposals/tp-7').set({ ...tp, who: '' }));
+  });
+  it('מנהל קורא ומטפל; לא מאומת אינו', async () => {
+    await env.withSecurityRulesDisabled(async c => { await c.firestore().doc('topicProposals/tp-9').set(tp); });
+    await assertSucceeds(ctx('admin1').doc('topicProposals/tp-9').get());
+    await assertSucceeds(ctx('admin1').doc('topicProposals/tp-9').update({ status: 'added' }));
+    await assertFails(ctx('admin1', false).doc('topicProposals/tp-9').get());
+  });
+});

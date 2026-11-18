@@ -213,6 +213,37 @@ export function PublicSuggestionsAdmin() {
   );
 }
 
+/** הצעות נושאים חדשים לבדיקה (ממורים ותלמידים). המנהל מסמן "נוסף לרשימה" (ומוסיף את הנושא ידנית ב"מחלות וכללים") או "דחייה". */
+export function TopicProposalsAdmin() {
+  const { api } = useRT();
+  const [view, setView] = useState<'open' | 'all'>('open');
+  const list = useAsync(() => api.adminListTopicProposals(view === 'open' ? 'open' : undefined), [api, view]);
+  const { busy, error, run } = useBusy();
+  const role = { teacher: 'מורה', student: 'תלמיד/ה', other: 'אחר' } as const;
+  const label = { open: 'ממתינה', added: 'טופלה', rejected: 'נדחתה' } as const;
+  const act = async (id: string, d: 'added' | 'rejected') => { const r = await run(async () => { await api.adminResolveTopicProposal(id, d); return true; }); if (r) list.reload(); };
+  return (
+    <div className="stack">
+      <h2>הצעות נושאים חדשים</h2>
+      <p className="muted small">מורים ותלמידים מציעים נושאים שאינם ברשימה. כל הצעה כוללת שם, תפקיד ובית ספר, כדי שתוכלו לסנן. אישור אינו מוסיף נושא אוטומטית: אם החלטתם להוסיף, הוסיפו אותו ב<Link to="/admin/topics">"מחלות וכללים"</Link> ואז סמנו כאן "טופלה".</p>
+      <div className="tabs-lite" role="group" aria-label="סינון"><button className="chip" aria-pressed={view === 'open'} onClick={() => setView('open')}>ממתינות</button><button className="chip" aria-pressed={view === 'all'} onClick={() => setView('all')}>כל ההצעות</button></div>
+      {error && <Notice kind="bad">{error}</Notice>}
+      {list.loading && <Loading />}
+      {list.error && <ErrorBox error={list.error} retry={list.reload} />}
+      {list.data && list.data.length === 0 && <div className="card empty">אין הצעות.</div>}
+      {(list.data ?? []).map(p => (
+        <div className="card" key={p.id}>
+          <div className="row between"><b>{p.name}</b><span className={`badge ${p.status === 'open' ? 'warn' : p.status === 'added' ? 'ok' : 'neutral'}`}>{label[p.status]}</span></div>
+          <p className="small muted">{p.who} · {role[p.role]} · {p.school} · {fmtDate(p.createdAt)}</p>
+          {p.details && <p style={{ whiteSpace: 'pre-wrap' }}>{p.details}</p>}
+          {p.contact && <p className="small muted">פרטי קשר: {p.contact}</p>}
+          {p.status === 'open' && <div className="row"><button className="btn small" disabled={busy} onClick={() => act(p.id, 'added')}>טופלה (נוסף לרשימה)</button><button className="btn small danger" disabled={busy} onClick={() => act(p.id, 'rejected')}>דחייה</button></div>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /** תמונת מצב לגרסה הראשונה */
 export function DashboardV1() {
   const { api } = useRT();
