@@ -1,0 +1,4421 @@
+{
+ "description": "מאגר קישורים לאיתור מטופלים לפי מחלה (מסמך נובמבר 2026), חלק א׳ בלבד. שורות לא רלוונטיות הוסרו. נוצר מהמסמך מאגר_קישורים_לאיתור_מטופלים_לפי_מחלה.docx",
+ "sources": [
+  {
+   "seedId": "S001",
+   "title": "שיקום לב, איכילוב",
+   "kind": "clinic",
+   "text": "מסגרת לשיקום מטופלים לאחר אירועי לב",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/preventivecardiology/cardiac-rehabilitation/"
+    }
+   ]
+  },
+  {
+   "seedId": "S001",
+   "title": "קהילת התקף לב ושיקום, כמוני",
+   "kind": "community",
+   "text": "קהילת מידע ושיתוף בנושאי התאוששות ושיקום הלב",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.camoni.co.il/topic/1129/"
+    }
+   ]
+  },
+  {
+   "seedId": "S001",
+   "title": "אגודת הלב הישראלי",
+   "kind": "association",
+   "text": "קהילת חולים ופעילות למתמודדי מחלות לב וכלי דם",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/take-part"
+    }
+   ]
+  },
+  {
+   "seedId": "S001",
+   "title": "מרפאות לב וקרדיולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות ייעודיות בתחום מחלות הלב",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/heart/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S002",
+   "title": "עמותת נאמן, נפגעי שבץ מוחי",
+   "kind": "association",
+   "text": "עמותה לנפגעי שבץ עם קבוצות תמיכה וקו תמיכה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://neeman.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://neeman.org.il/%D7%A7%D7%91%D7%95%D7%A6%D7%95%D7%AA-%D7%AA%D7%9E%D7%99%D7%9B%D7%94/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://neeman.org.il/%D7%A7%D7%95-%D7%94%D7%AA%D7%9E%D7%99%D7%9B%D7%94-%D7%A9%D7%9C-%D7%A0%D7%90%D7%9E%D7%9F/"
+    }
+   ]
+  },
+  {
+   "seedId": "S002",
+   "title": "מערך נוירולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך למחלות נוירולוגיות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neurology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S003",
+   "title": "מחלקת אורתופדיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות וטיפולים לפגיעות ומחלות אורתופדיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/orthopedics-hospitalization/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/orthopedic-trauma/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/"
+    }
+   ]
+  },
+  {
+   "seedId": "S004",
+   "title": "העמותה לקידום זכויות חולי הכליות (INKF)",
+   "kind": "association",
+   "text": "עמותה הפועלת למען חולי כליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://inkf.org.il/wp-content/uploads/2025/03/%D7%97%D7%95%D7%91%D7%A8%D7%AA-%D7%AA%D7%96%D7%95%D7%A0%D7%94-%D7%9C%D7%A4%D7%A8%D7%94-%D7%93%D7%99%D7%90%D7%9C%D7%99%D7%96%D7%94.pdf"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://inkf.org.il/"
+    },
+    {
+     "label": "יצירת קשר",
+     "url": "https://www.guidestar.org.il/organization/580335941/contact"
+    }
+   ]
+  },
+  {
+   "seedId": "S004",
+   "title": "איגוד חולי כליות ומושתלים",
+   "kind": "association",
+   "text": "איגוד למטופלי כליות ומושתלים",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://eki.org.il/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://self-help.org.il/organizations/%D7%94%D7%A2%D7%9E%D7%95%D7%AA%D7%94-%D7%94%D7%9C%D7%90%D7%95%D7%9E%D7%99%D7%AA-%D7%94%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99%D7%AA-%D7%9C%D7%9E%D7%95%D7%A9%D7%AA%D7%9C%D7%99-%D7%9B%D7%9C%D7%99%D7%94-%D7%95%D7%9E%D7%98%D7%95%D7%A4%D7%9C%D7%99-%D7%93%D7%99%D7%90%D7%9C%D7%99%D7%96%D7%94-%D7%A2%D7%A8"
+    }
+   ]
+  },
+  {
+   "seedId": "S004",
+   "title": "נפרולוגיה ודיאליזה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך נפרולוגיה, מעקב וטיפולי דיאליזה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/nephrology-clinic/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/nephrology-oncology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S004",
+   "title": "נפרולוגיה, רמב״ם",
+   "kind": "clinic",
+   "text": "מחלקת נפרולוגיה ומרכז דיאליזה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/nephrology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.rambam.org.il/?catid=%7B492bde24-5406-4883-8dd1-c074734dec54%7D"
+    }
+   ]
+  },
+  {
+   "seedId": "S005",
+   "title": "מרפאת פקקת ורידית, איכילוב",
+   "kind": "clinic",
+   "text": "שירות רפואי העוסק בפקקת ורידים",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/cardiology/thrombosis/"
+    }
+   ]
+  },
+  {
+   "seedId": "S005",
+   "title": "מחלות כלי דם, איכילוב",
+   "kind": "clinic",
+   "text": "מערך לטיפול במחלות עורקים וורידים",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/vascular-surgery/"
+    }
+   ]
+  },
+  {
+   "seedId": "S006",
+   "title": "מחלות זיהומיות, איכילוב",
+   "kind": "clinic",
+   "text": "מחלקה לטיפול במחלות זיהומיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/infectious-diseases/"
+    }
+   ]
+  },
+  {
+   "seedId": "S006",
+   "title": "מערך נוירולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך למחלות נוירולוגיות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neurology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S007",
+   "title": "מחלות זיהומיות, איכילוב",
+   "kind": "clinic",
+   "text": "מחלקה לטיפול במחלות זיהומיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/infectious-diseases/"
+    }
+   ]
+  },
+  {
+   "seedId": "S007",
+   "title": "מערך נוירולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך למחלות נוירולוגיות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neurology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S008",
+   "title": "המכון לגסטרואנטרולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מכון לטיפול במחלות מערכת העיכול",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/endoscopy/"
+    }
+   ]
+  },
+  {
+   "seedId": "S008",
+   "title": "מרפאות גסטרואנטרולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "שירות רפואי למחלות קיבה ומערכת העיכול",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/gastro/ulcer/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S010",
+   "title": "מרפאת הריון בסיכון, איכילוב",
+   "kind": "clinic",
+   "text": "שירות מעקב וטיפול בנשים בהריון בסיכון",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/lis/lis-units/obstetrics-and-pregnanc/high-risk-pregnancy/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/lis/lis-units/obstetrics-and-pregnanc/high-risk-rheumatology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/lis/lis-units/obstetrics-and-pregnanc/high-risk-pregnancy/high-risk-home/"
+    }
+   ]
+  },
+  {
+   "seedId": "S010",
+   "title": "מרפאת הריון בסיכון, רמב״ם",
+   "kind": "clinic",
+   "text": "שירות ייעודי להריון בסיכון גבוה",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.rambam.org.il/departmentsandclinics/obstetrics_gynecology_section/pregnancy-risk-clinics/high-risk-pregnancy-clinic/"
+    }
+   ]
+  },
+  {
+   "seedId": "S010",
+   "title": "מרפאת הריון בסיכון, בני ציון",
+   "kind": "clinic",
+   "text": "שירות מיילדות להריון בסיכון",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.gov.il/he/departments/PublicBodies/high-risk-pregnancy"
+    }
+   ]
+  },
+  {
+   "seedId": "S010",
+   "title": "מרפאת הריון בסיכון, לניאדו",
+   "kind": "clinic",
+   "text": "מעקב וטיפול בנשים בהריון בסיכון",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.laniado.org.il/mahlakot/%D7%94%D7%99%D7%97%D7%99%D7%93%D7%94-%D7%9C%D7%94%D7%A8%D7%99%D7%95%D7%9F-%D7%91%D7%A1%D7%99%D7%9B%D7%95%D7%9F-%D7%92%D7%91%D7%95%D7%94/"
+    }
+   ]
+  },
+  {
+   "seedId": "S011",
+   "title": "נפרולוגיה ודיאליזה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך נפרולוגיה, מעקב וטיפולי דיאליזה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/nephrology-clinic/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/nephrology-oncology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S011",
+   "title": "מרפאות לב וקרדיולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות ייעודיות בתחום מחלות הלב",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/heart/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S011",
+   "title": "אגודת הלב הישראלי",
+   "kind": "association",
+   "text": "קהילת חולים ופעילות למתמודדי מחלות לב וכלי דם",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/take-part"
+    }
+   ]
+  },
+  {
+   "seedId": "S012",
+   "title": "העמותה לקידום זכויות חולי הכליות (INKF)",
+   "kind": "association",
+   "text": "עמותה הפועלת למען חולי כליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://inkf.org.il/wp-content/uploads/2025/03/%D7%97%D7%95%D7%91%D7%A8%D7%AA-%D7%AA%D7%96%D7%95%D7%A0%D7%94-%D7%9C%D7%A4%D7%A8%D7%94-%D7%93%D7%99%D7%90%D7%9C%D7%99%D7%96%D7%94.pdf"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://inkf.org.il/"
+    },
+    {
+     "label": "יצירת קשר",
+     "url": "https://www.guidestar.org.il/organization/580335941/contact"
+    }
+   ]
+  },
+  {
+   "seedId": "S012",
+   "title": "איגוד חולי כליות ומושתלים",
+   "kind": "association",
+   "text": "איגוד למטופלי כליות ומושתלים",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://eki.org.il/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://self-help.org.il/organizations/%D7%94%D7%A2%D7%9E%D7%95%D7%AA%D7%94-%D7%94%D7%9C%D7%90%D7%95%D7%9E%D7%99%D7%AA-%D7%94%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99%D7%AA-%D7%9C%D7%9E%D7%95%D7%A9%D7%AA%D7%9C%D7%99-%D7%9B%D7%9C%D7%99%D7%94-%D7%95%D7%9E%D7%98%D7%95%D7%A4%D7%9C%D7%99-%D7%93%D7%99%D7%90%D7%9C%D7%99%D7%96%D7%94-%D7%A2%D7%A8"
+    }
+   ]
+  },
+  {
+   "seedId": "S012",
+   "title": "נפרולוגיה ודיאליזה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך נפרולוגיה, מעקב וטיפולי דיאליזה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/nephrology-clinic/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/nephrology-oncology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S012",
+   "title": "נפרולוגיה, רמב״ם",
+   "kind": "clinic",
+   "text": "מחלקת נפרולוגיה ומרכז דיאליזה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/nephrology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.rambam.org.il/?catid=%7B492bde24-5406-4883-8dd1-c074734dec54%7D"
+    }
+   ]
+  },
+  {
+   "seedId": "S013",
+   "title": "אגודת הלב הישראלי",
+   "kind": "association",
+   "text": "קהילת חולים ופעילות למתמודדי מחלות לב וכלי דם",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/take-part"
+    }
+   ]
+  },
+  {
+   "seedId": "S013",
+   "title": "מרכז הלב, הדסה",
+   "kind": "clinic",
+   "text": "מרפאות אי־ספיקת לב ושירותי קרדיולוגיה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://he.hadassah.org.il/heart/heart-failure-center-en-karem/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/heart/advanced-chf-clinic-en-karem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S013",
+   "title": "מרפאות לב וקרדיולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות ייעודיות בתחום מחלות הלב",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/heart/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S014",
+   "title": "קרדיולוגיה, המרכז הרפואי בני ציון",
+   "kind": "clinic",
+   "text": "מערך קרדיולוגי למחלות לב",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.gov.il/h%20e/Departments/Units/bz_cardiology"
+    }
+   ]
+  },
+  {
+   "seedId": "S014",
+   "title": "מרפאות לב וקרדיולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות ייעודיות בתחום מחלות הלב",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/heart/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S014",
+   "title": "אגודת הלב הישראלי",
+   "kind": "association",
+   "text": "קהילת חולים ופעילות למתמודדי מחלות לב וכלי דם",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/take-part"
+    }
+   ]
+  },
+  {
+   "seedId": "S015",
+   "title": "שיקום לב, איכילוב",
+   "kind": "clinic",
+   "text": "מסגרת לשיקום מטופלים לאחר אירועי לב",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/preventivecardiology/cardiac-rehabilitation/"
+    }
+   ]
+  },
+  {
+   "seedId": "S015",
+   "title": "קהילת התקף לב ושיקום, כמוני",
+   "kind": "community",
+   "text": "קהילת מידע ושיתוף בנושאי התאוששות ושיקום הלב",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.camoni.co.il/topic/1129/"
+    }
+   ]
+  },
+  {
+   "seedId": "S015",
+   "title": "אגודת הלב הישראלי",
+   "kind": "association",
+   "text": "קהילת חולים ופעילות למתמודדי מחלות לב וכלי דם",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/take-part"
+    }
+   ]
+  },
+  {
+   "seedId": "S015",
+   "title": "מרפאות לב וקרדיולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות ייעודיות בתחום מחלות הלב",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/heart/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S016",
+   "title": "מרפאת הפרעות קצב, איכילוב",
+   "kind": "clinic",
+   "text": "טיפול ומעקב בהפרעות קצב לב",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/electrophysiology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S016",
+   "title": "מכון להפרעות קצב, שמיר",
+   "kind": "clinic",
+   "text": "מכון לאלקטרופיזיולוגיה והפרעות קצב",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.shamir.org/he/clinics/cardiology/electrophiziologicunit/"
+    }
+   ]
+  },
+  {
+   "seedId": "S016",
+   "title": "אגודת הלב הישראלי",
+   "kind": "association",
+   "text": "קהילת חולים ופעילות למתמודדי מחלות לב וכלי דם",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/take-part"
+    }
+   ]
+  },
+  {
+   "seedId": "S016",
+   "title": "מרפאות לב וקרדיולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות ייעודיות בתחום מחלות הלב",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/heart/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S017",
+   "title": "מערך אבי העורקים, איכילוב",
+   "kind": "clinic",
+   "text": "צוות העוסק בטיפול במפרצות ובמחלות אבי העורקים",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/thoracic-surgery/aorta-surgery/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/proceduresindex/procedures/atrial-fibrillation-treatment/aortic-aneurysm/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/surgery/abdominalaorticaneurysm/"
+    }
+   ]
+  },
+  {
+   "seedId": "S017",
+   "title": "מרכז הלב שיבא, מפרצת אבי העורקים",
+   "kind": "clinic",
+   "text": "שירות ייעודי למחלות אבי העורקים",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://heart.sheba.co.il/%D7%9E%D7%A4%D7%A8%D7%A6%D7%AA-%D7%90%D7%91%D7%99-%D7%94%D7%A2%D7%95%D7%A8%D7%A7%D7%99%D7%9D"
+    }
+   ]
+  },
+  {
+   "seedId": "S017",
+   "title": "אגודת הלב הישראלי",
+   "kind": "association",
+   "text": "קהילת חולים ופעילות למתמודדי מחלות לב וכלי דם",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/take-part"
+    }
+   ]
+  },
+  {
+   "seedId": "S017",
+   "title": "מרפאות לב וקרדיולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות ייעודיות בתחום מחלות הלב",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/heart/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S018",
+   "title": "הקרן הישראלית ללב בריא, מומי לב בילדים",
+   "kind": "association",
+   "text": "מידע ופעילות בתחום מומי לב בילדים",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://ihf.org.il/%D7%9E%D7%95%D7%9E%D7%99-%D7%9C%D7%91-%D7%91%D7%99%D7%9C%D7%93%D7%99%D7%9D/"
+    }
+   ]
+  },
+  {
+   "seedId": "S018",
+   "title": "לב של ילד",
+   "kind": "association",
+   "text": "עמותה העוסקת בילדים עם מחלות ומומי לב",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://levisrael.co.il/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://levisrael.co.il/%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA/"
+    }
+   ]
+  },
+  {
+   "seedId": "S018",
+   "title": "קהילת מומי לב, כמוני",
+   "kind": "community",
+   "text": "קהילה העוסקת במומי לב מולדים",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.camoni.co.il/topic/517/"
+    }
+   ]
+  },
+  {
+   "seedId": "S018",
+   "title": "אגודת הלב הישראלי",
+   "kind": "association",
+   "text": "קהילת חולים ופעילות למתמודדי מחלות לב וכלי דם",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.israeli-heart.org/take-part"
+    }
+   ]
+  },
+  {
+   "seedId": "S018",
+   "title": "מרפאות לב וקרדיולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות ייעודיות בתחום מחלות הלב",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/heart/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/cardiology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S019",
+   "title": "האגודה הישראלית לסוכרת",
+   "kind": "association",
+   "text": "ארגון ציבורי למתמודדים עם סוכרת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://ida.e-med.co.il/"
+    },
+    {
+     "label": "יצירת קשר",
+     "url": "https://ida.e-med.co.il/contact-us/"
+    }
+   ]
+  },
+  {
+   "seedId": "S019",
+   "title": "מרפאות סוכרת, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות ייעודיות לטיפול בסוכרת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/endocrinology-diabetes/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/diabetes/"
+    }
+   ]
+  },
+  {
+   "seedId": "S019",
+   "title": "אנדוקרינולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות המתמחות במחלות הורמונליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/internal/endocrinology-clinics-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S019",
+   "title": "מרפאה אנדוקרינולוגית, רמב״ם",
+   "kind": "clinic",
+   "text": "מרפאה לטיפול במחלות הורמונליות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/endocrinology_diabetes_metabolism_institute/endocrinology-clinic/"
+    }
+   ]
+  },
+  {
+   "seedId": "S019",
+   "title": "רשימת מכונים אנדוקריניים בישראל",
+   "kind": "clinic",
+   "text": "אינדקס מכונים לאנדוקרינולוגיה וסוכרת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.ies.org.il/%D7%90%D7%95%D7%93%D7%95%D7%AA/%D7%9E%D7%97%D7%9C%D7%A7%D7%95%D7%AA-%D7%95%D7%9E%D7%A2%D7%91%D7%93%D7%95%D7%AA/%D7%9E%D7%9B%D7%95%D7%A0%D7%99%D7%9D-%D7%9C%D7%90%D7%A0%D7%93%D7%95%D7%A7%D7%A8%D7%99%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94-%D7%95%D7%A1%D7%95%D7%9B%D7%A8%D7%AA-%D7%9E%D7%91%D7%95%D7%92%D7%A8-2/"
+    }
+   ]
+  },
+  {
+   "seedId": "S020",
+   "title": "האגודה לסוכרת מסוג 1 בישראל",
+   "kind": "association",
+   "text": "עמותה עם קבוצות WhatsApp ומסלולי קשר למשפחות",
+   "links": [
+    {
+     "label": "יצירת קשר",
+     "url": "https://breakthrought1d.org.il/%D7%A6%D7%95%D7%A8-%D7%A7%D7%A9%D7%A8/"
+    },
+    {
+     "label": "WhatsApp",
+     "url": "https://breakthrought1d.org.il/%D7%A7%D7%91%D7%95%D7%A6%D7%95%D7%AA-%D7%95%D7%95%D7%90%D7%98%D7%A1%D7%90%D7%A4/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://breakthrought1d.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S020",
+   "title": "סוכרת בילדים, שיבא",
+   "kind": "clinic",
+   "text": "מרפאות סוכרת ילדים ונוער",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://yeladim.sheba.co.il/%D7%90%D7%A0%D7%93%D7%95%D7%A7%D7%A8%D7%99%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94_%D7%95%D7%A1%D7%95%D7%9B%D7%A8%D7%AA_%D7%A0%D7%A2%D7%95%D7%A8%D7%99%D7%9D"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://yeladim.sheba.co.il/%D7%92%D7%93%D7%99%D7%9C%D7%94_%D7%95%D7%94%D7%AA%D7%A4%D7%AA%D7%97%D7%95%D7%AA_%D7%9E%D7%99%D7%A0%D7%99%D7%AA"
+    }
+   ]
+  },
+  {
+   "seedId": "S020",
+   "title": "מרפאות סוכרת, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות ייעודיות לטיפול בסוכרת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/endocrinology-diabetes/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/diabetes/"
+    }
+   ]
+  },
+  {
+   "seedId": "S020",
+   "title": "אנדוקרינולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות המתמחות במחלות הורמונליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/internal/endocrinology-clinics-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S020",
+   "title": "מרפאה אנדוקרינולוגית, רמב״ם",
+   "kind": "clinic",
+   "text": "מרפאה לטיפול במחלות הורמונליות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/endocrinology_diabetes_metabolism_institute/endocrinology-clinic/"
+    }
+   ]
+  },
+  {
+   "seedId": "S020",
+   "title": "רשימת מכונים אנדוקריניים בישראל",
+   "kind": "clinic",
+   "text": "אינדקס מכונים לאנדוקרינולוגיה וסוכרת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.ies.org.il/%D7%90%D7%95%D7%93%D7%95%D7%AA/%D7%9E%D7%97%D7%9C%D7%A7%D7%95%D7%AA-%D7%95%D7%9E%D7%A2%D7%91%D7%93%D7%95%D7%AA/%D7%9E%D7%9B%D7%95%D7%A0%D7%99%D7%9D-%D7%9C%D7%90%D7%A0%D7%93%D7%95%D7%A7%D7%A8%D7%99%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94-%D7%95%D7%A1%D7%95%D7%9B%D7%A8%D7%AA-%D7%9E%D7%91%D7%95%D7%92%D7%A8-2/"
+    }
+   ]
+  },
+  {
+   "seedId": "S021",
+   "title": "מרפאת סוכרת בהריון, ליס",
+   "kind": "clinic",
+   "text": "מרפאה ייעודית לנשים עם סוכרת הריונית",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/lis/lis-units/obstetrics-and-pregnanc/pregnancy-diabetes-clinic/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/lis/lis-units/obstetrics-and-pregnanc/metabolic-clinic-pregnancy/"
+    }
+   ]
+  },
+  {
+   "seedId": "S021",
+   "title": "מרפאת הריון בסיכון, איכילוב",
+   "kind": "clinic",
+   "text": "שירות מעקב וטיפול בנשים בהריון בסיכון",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/lis/lis-units/obstetrics-and-pregnanc/high-risk-pregnancy/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/lis/lis-units/obstetrics-and-pregnanc/high-risk-rheumatology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/lis/lis-units/obstetrics-and-pregnanc/high-risk-pregnancy/high-risk-home/"
+    }
+   ]
+  },
+  {
+   "seedId": "S021",
+   "title": "האגודה הישראלית לסוכרת",
+   "kind": "association",
+   "text": "ארגון ציבורי למתמודדים עם סוכרת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://ida.e-med.co.il/"
+    },
+    {
+     "label": "יצירת קשר",
+     "url": "https://ida.e-med.co.il/contact-us/"
+    }
+   ]
+  },
+  {
+   "seedId": "S021",
+   "title": "אנדוקרינולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות המתמחות במחלות הורמונליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/internal/endocrinology-clinics-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S021",
+   "title": "מרפאה אנדוקרינולוגית, רמב״ם",
+   "kind": "clinic",
+   "text": "מרפאה לטיפול במחלות הורמונליות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/endocrinology_diabetes_metabolism_institute/endocrinology-clinic/"
+    }
+   ]
+  },
+  {
+   "seedId": "S021",
+   "title": "רשימת מכונים אנדוקריניים בישראל",
+   "kind": "clinic",
+   "text": "אינדקס מכונים לאנדוקרינולוגיה וסוכרת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.ies.org.il/%D7%90%D7%95%D7%93%D7%95%D7%AA/%D7%9E%D7%97%D7%9C%D7%A7%D7%95%D7%AA-%D7%95%D7%9E%D7%A2%D7%91%D7%93%D7%95%D7%AA/%D7%9E%D7%9B%D7%95%D7%A0%D7%99%D7%9D-%D7%9C%D7%90%D7%A0%D7%93%D7%95%D7%A7%D7%A8%D7%99%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94-%D7%95%D7%A1%D7%95%D7%9B%D7%A8%D7%AA-%D7%9E%D7%91%D7%95%D7%92%D7%A8-2/"
+    }
+   ]
+  },
+  {
+   "seedId": "S022",
+   "title": "אנדוקרינולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות המתמחות במחלות הורמונליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/internal/endocrinology-clinics-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S022",
+   "title": "מרפאה אנדוקרינולוגית, רמב״ם",
+   "kind": "clinic",
+   "text": "מרפאה לטיפול במחלות הורמונליות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/endocrinology_diabetes_metabolism_institute/endocrinology-clinic/"
+    }
+   ]
+  },
+  {
+   "seedId": "S022",
+   "title": "רשימת מכונים אנדוקריניים בישראל",
+   "kind": "clinic",
+   "text": "אינדקס מכונים לאנדוקרינולוגיה וסוכרת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.ies.org.il/%D7%90%D7%95%D7%93%D7%95%D7%AA/%D7%9E%D7%97%D7%9C%D7%A7%D7%95%D7%AA-%D7%95%D7%9E%D7%A2%D7%91%D7%93%D7%95%D7%AA/%D7%9E%D7%9B%D7%95%D7%A0%D7%99%D7%9D-%D7%9C%D7%90%D7%A0%D7%93%D7%95%D7%A7%D7%A8%D7%99%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94-%D7%95%D7%A1%D7%95%D7%9B%D7%A8%D7%AA-%D7%9E%D7%91%D7%95%D7%92%D7%A8-2/"
+    }
+   ]
+  },
+  {
+   "seedId": "S023",
+   "title": "מרפאת בלוטת התריס וגרייבס, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות עיניים ואנדוקרינולוגיה במחלת גרייבס",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/go/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/things-thyroid-gland/"
+    }
+   ]
+  },
+  {
+   "seedId": "S023",
+   "title": "אנדוקרינולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות המתמחות במחלות הורמונליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/internal/endocrinology-clinics-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S023",
+   "title": "מרפאה אנדוקרינולוגית, רמב״ם",
+   "kind": "clinic",
+   "text": "מרפאה לטיפול במחלות הורמונליות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/endocrinology_diabetes_metabolism_institute/endocrinology-clinic/"
+    }
+   ]
+  },
+  {
+   "seedId": "S023",
+   "title": "רשימת מכונים אנדוקריניים בישראל",
+   "kind": "clinic",
+   "text": "אינדקס מכונים לאנדוקרינולוגיה וסוכרת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.ies.org.il/%D7%90%D7%95%D7%93%D7%95%D7%AA/%D7%9E%D7%97%D7%9C%D7%A7%D7%95%D7%AA-%D7%95%D7%9E%D7%A2%D7%91%D7%93%D7%95%D7%AA/%D7%9E%D7%9B%D7%95%D7%A0%D7%99%D7%9D-%D7%9C%D7%90%D7%A0%D7%93%D7%95%D7%A7%D7%A8%D7%99%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94-%D7%95%D7%A1%D7%95%D7%9B%D7%A8%D7%AA-%D7%9E%D7%91%D7%95%D7%92%D7%A8-2/"
+    }
+   ]
+  },
+  {
+   "seedId": "S024",
+   "title": "מרפאת קושינג, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה בתחום מחלת קושינג",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/cushings-disease/"
+    }
+   ]
+  },
+  {
+   "seedId": "S024",
+   "title": "אנדוקרינולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות המתמחות במחלות הורמונליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/internal/endocrinology-clinics-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S024",
+   "title": "מרפאה אנדוקרינולוגית, רמב״ם",
+   "kind": "clinic",
+   "text": "מרפאה לטיפול במחלות הורמונליות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/endocrinology_diabetes_metabolism_institute/endocrinology-clinic/"
+    }
+   ]
+  },
+  {
+   "seedId": "S024",
+   "title": "רשימת מכונים אנדוקריניים בישראל",
+   "kind": "clinic",
+   "text": "אינדקס מכונים לאנדוקרינולוגיה וסוכרת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.ies.org.il/%D7%90%D7%95%D7%93%D7%95%D7%AA/%D7%9E%D7%97%D7%9C%D7%A7%D7%95%D7%AA-%D7%95%D7%9E%D7%A2%D7%91%D7%93%D7%95%D7%AA/%D7%9E%D7%9B%D7%95%D7%A0%D7%99%D7%9D-%D7%9C%D7%90%D7%A0%D7%93%D7%95%D7%A7%D7%A8%D7%99%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94-%D7%95%D7%A1%D7%95%D7%9B%D7%A8%D7%AA-%D7%9E%D7%91%D7%95%D7%92%D7%A8-2/"
+    }
+   ]
+  },
+  {
+   "seedId": "S025",
+   "title": "אנדוקרינולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות המתמחות במחלות הורמונליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/internal/endocrinology-clinics-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S025",
+   "title": "מרפאה אנדוקרינולוגית, רמב״ם",
+   "kind": "clinic",
+   "text": "מרפאה לטיפול במחלות הורמונליות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/endocrinology_diabetes_metabolism_institute/endocrinology-clinic/"
+    }
+   ]
+  },
+  {
+   "seedId": "S025",
+   "title": "רשימת מכונים אנדוקריניים בישראל",
+   "kind": "clinic",
+   "text": "אינדקס מכונים לאנדוקרינולוגיה וסוכרת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.ies.org.il/%D7%90%D7%95%D7%93%D7%95%D7%AA/%D7%9E%D7%97%D7%9C%D7%A7%D7%95%D7%AA-%D7%95%D7%9E%D7%A2%D7%91%D7%93%D7%95%D7%AA/%D7%9E%D7%9B%D7%95%D7%A0%D7%99%D7%9D-%D7%9C%D7%90%D7%A0%D7%93%D7%95%D7%A7%D7%A8%D7%99%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94-%D7%95%D7%A1%D7%95%D7%9B%D7%A8%D7%AA-%D7%9E%D7%91%D7%95%D7%92%D7%A8-2/"
+    }
+   ]
+  },
+  {
+   "seedId": "S026",
+   "title": "מחלות יותרת המוח, איכילוב",
+   "kind": "clinic",
+   "text": "שירותי אבחון וטיפול בהפרעות יותרת המוח",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/prolactinoma/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/acromegaly/"
+    }
+   ]
+  },
+  {
+   "seedId": "S026",
+   "title": "אנדוקרינולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות המתמחות במחלות הורמונליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/internal/endocrinology-clinics-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S026",
+   "title": "מרפאה אנדוקרינולוגית, רמב״ם",
+   "kind": "clinic",
+   "text": "מרפאה לטיפול במחלות הורמונליות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/endocrinology_diabetes_metabolism_institute/endocrinology-clinic/"
+    }
+   ]
+  },
+  {
+   "seedId": "S026",
+   "title": "רשימת מכונים אנדוקריניים בישראל",
+   "kind": "clinic",
+   "text": "אינדקס מכונים לאנדוקרינולוגיה וסוכרת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.ies.org.il/%D7%90%D7%95%D7%93%D7%95%D7%AA/%D7%9E%D7%97%D7%9C%D7%A7%D7%95%D7%AA-%D7%95%D7%9E%D7%A2%D7%91%D7%93%D7%95%D7%AA/%D7%9E%D7%9B%D7%95%D7%A0%D7%99%D7%9D-%D7%9C%D7%90%D7%A0%D7%93%D7%95%D7%A7%D7%A8%D7%99%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94-%D7%95%D7%A1%D7%95%D7%9B%D7%A8%D7%AA-%D7%9E%D7%91%D7%95%D7%92%D7%A8-2/"
+    }
+   ]
+  },
+  {
+   "seedId": "S027",
+   "title": "מחלות יותרת המוח, איכילוב",
+   "kind": "clinic",
+   "text": "שירותי אבחון וטיפול בהפרעות יותרת המוח",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/prolactinoma/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/acromegaly/"
+    }
+   ]
+  },
+  {
+   "seedId": "S027",
+   "title": "אנדוקרינולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות המתמחות במחלות הורמונליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/internal/endocrinology-clinics-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S027",
+   "title": "מרפאה אנדוקרינולוגית, רמב״ם",
+   "kind": "clinic",
+   "text": "מרפאה לטיפול במחלות הורמונליות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/endocrinology_diabetes_metabolism_institute/endocrinology-clinic/"
+    }
+   ]
+  },
+  {
+   "seedId": "S027",
+   "title": "רשימת מכונים אנדוקריניים בישראל",
+   "kind": "clinic",
+   "text": "אינדקס מכונים לאנדוקרינולוגיה וסוכרת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.ies.org.il/%D7%90%D7%95%D7%93%D7%95%D7%AA/%D7%9E%D7%97%D7%9C%D7%A7%D7%95%D7%AA-%D7%95%D7%9E%D7%A2%D7%91%D7%93%D7%95%D7%AA/%D7%9E%D7%9B%D7%95%D7%A0%D7%99%D7%9D-%D7%9C%D7%90%D7%A0%D7%93%D7%95%D7%A7%D7%A8%D7%99%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94-%D7%95%D7%A1%D7%95%D7%9B%D7%A8%D7%AA-%D7%9E%D7%91%D7%95%D7%92%D7%A8-2/"
+    }
+   ]
+  },
+  {
+   "seedId": "S028",
+   "title": "מחלות יותרת המוח, איכילוב",
+   "kind": "clinic",
+   "text": "שירותי אבחון וטיפול בהפרעות יותרת המוח",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/prolactinoma/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/acromegaly/"
+    }
+   ]
+  },
+  {
+   "seedId": "S028",
+   "title": "אנדוקרינולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות המתמחות במחלות הורמונליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/internal/endocrinology-clinics-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S028",
+   "title": "מרפאה אנדוקרינולוגית, רמב״ם",
+   "kind": "clinic",
+   "text": "מרפאה לטיפול במחלות הורמונליות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/endocrinology_diabetes_metabolism_institute/endocrinology-clinic/"
+    }
+   ]
+  },
+  {
+   "seedId": "S028",
+   "title": "רשימת מכונים אנדוקריניים בישראל",
+   "kind": "clinic",
+   "text": "אינדקס מכונים לאנדוקרינולוגיה וסוכרת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.ies.org.il/%D7%90%D7%95%D7%93%D7%95%D7%AA/%D7%9E%D7%97%D7%9C%D7%A7%D7%95%D7%AA-%D7%95%D7%9E%D7%A2%D7%91%D7%93%D7%95%D7%AA/%D7%9E%D7%9B%D7%95%D7%A0%D7%99%D7%9D-%D7%9C%D7%90%D7%A0%D7%93%D7%95%D7%A7%D7%A8%D7%99%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94-%D7%95%D7%A1%D7%95%D7%9B%D7%A8%D7%AA-%D7%9E%D7%91%D7%95%D7%92%D7%A8-2/"
+    }
+   ]
+  },
+  {
+   "seedId": "S029",
+   "title": "מחלקת אורתופדיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות וטיפולים לפגיעות ומחלות אורתופדיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/orthopedics-hospitalization/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/orthopedic-trauma/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/"
+    }
+   ]
+  },
+  {
+   "seedId": "S029",
+   "title": "עילא, עמותת אוסטאופורוזיס",
+   "kind": "association",
+   "text": "עמותה למחלות עצם ולאוסטאופורוזיס",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.bone.org.il/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://self-help.org.il/organizations/%D7%A2%D7%99%D7%9C%D7%90-%D7%A2%D7%9E%D7%95%D7%AA%D7%94-%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99%D7%AA-%D7%9C%D7%90%D7%95%D7%A1%D7%98%D7%99%D7%90%D7%95%D7%A4%D7%95%D7%A8%D7%95%D7%96%D7%99%D7%A1-%D7%95%D7%9E%D7%97%D7%9C%D7%95%D7%AA-%D7%A2%D7%A6%D7%9D"
+    }
+   ]
+  },
+  {
+   "seedId": "S029",
+   "title": "מרפאת מחלות עצם, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה לאוסטאופורוזיס ומחלות עצם",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/endocrinology-bonediseases/"
+    }
+   ]
+  },
+  {
+   "seedId": "S029",
+   "title": "אנדוקרינולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות המתמחות במחלות הורמונליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/internal/endocrinology-clinics-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S029",
+   "title": "מרפאה אנדוקרינולוגית, רמב״ם",
+   "kind": "clinic",
+   "text": "מרפאה לטיפול במחלות הורמונליות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.rambam.org.il/departmentsandclinics/internaldivision/endocrinology_diabetes_metabolism_institute/endocrinology-clinic/"
+    }
+   ]
+  },
+  {
+   "seedId": "S030",
+   "title": "עמותת חץ לבריאות הכבד",
+   "kind": "association",
+   "text": "עמותה ישראלית לחולי כבד ומחלות כבד",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.hetzliver.org/about/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.hetzliver.org/hep-21/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.hetzliver.org/"
+    }
+   ]
+  },
+  {
+   "seedId": "S030",
+   "title": "מרפאת כבד וגסטרו, איכילוב",
+   "kind": "clinic",
+   "text": "מכון למחלות מערכת העיכול והכבד",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S030",
+   "title": "המכון לגסטרואנטרולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מכון לטיפול במחלות מערכת העיכול",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/endoscopy/"
+    }
+   ]
+  },
+  {
+   "seedId": "S031",
+   "title": "עמותת חץ לבריאות הכבד",
+   "kind": "association",
+   "text": "עמותה ישראלית לחולי כבד ומחלות כבד",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.hetzliver.org/about/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.hetzliver.org/hep-21/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.hetzliver.org/"
+    }
+   ]
+  },
+  {
+   "seedId": "S031",
+   "title": "מרפאת כבד וגסטרו, איכילוב",
+   "kind": "clinic",
+   "text": "מכון למחלות מערכת העיכול והכבד",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S031",
+   "title": "המכון לגסטרואנטרולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מכון לטיפול במחלות מערכת העיכול",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/endoscopy/"
+    }
+   ]
+  },
+  {
+   "seedId": "S032",
+   "title": "עמותת חץ לבריאות הכבד",
+   "kind": "association",
+   "text": "עמותה ישראלית לחולי כבד ומחלות כבד",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.hetzliver.org/about/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.hetzliver.org/hep-21/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.hetzliver.org/"
+    }
+   ]
+  },
+  {
+   "seedId": "S032",
+   "title": "מרפאת כבד וגסטרו, איכילוב",
+   "kind": "clinic",
+   "text": "מכון למחלות מערכת העיכול והכבד",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S032",
+   "title": "המכון לגסטרואנטרולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מכון לטיפול במחלות מערכת העיכול",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/endoscopy/"
+    }
+   ]
+  },
+  {
+   "seedId": "S033",
+   "title": "המכון לגסטרואנטרולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מכון לטיפול במחלות מערכת העיכול",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/endoscopy/"
+    }
+   ]
+  },
+  {
+   "seedId": "S034",
+   "title": "ארגון זכויות הצליאק",
+   "kind": "association",
+   "text": "עמותה ישראלית למשפחות ולמתמודדים עם צליאק",
+   "links": [
+    {
+     "label": "יצירת קשר",
+     "url": "https://celiacrights.org.il/contact"
+    }
+   ]
+  },
+  {
+   "seedId": "S034",
+   "title": "המכון לגסטרואנטרולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מכון לטיפול במחלות מערכת העיכול",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/endoscopy/"
+    }
+   ]
+  },
+  {
+   "seedId": "S035",
+   "title": "העמותה הארצית לקרוהן וקוליטיס כיבית",
+   "kind": "association",
+   "text": "עמותה עם פעילות קהילתית, מפגשים וערוצי קשר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://ccfi.co.il/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://ccfi.co.il/events/%D7%9E%D7%A4%D7%92%D7%A9-%D7%A6%D7%A2%D7%99%D7%A8%D7%99%D7%9D-ibd-%D7%A7%D7%A8%D7%95%D7%94%D7%9F-%D7%95%D7%A7%D7%95%D7%9C%D7%99%D7%98%D7%99%D7%A1/"
+    },
+    {
+     "label": "יצירת קשר",
+     "url": "https://ccfi.co.il/%D7%99%D7%A6%D7%99%D7%A8%D7%AA-%D7%A7%D7%A9%D7%A8/"
+    }
+   ]
+  },
+  {
+   "seedId": "S035",
+   "title": "מרכזים רפואיים למחלות מעי דלקתיות",
+   "kind": "clinic",
+   "text": "רשימת מרכזים רפואיים מטעם עמותת המטופלים",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://ccfi.co.il/%D7%A8%D7%A9%D7%99%D7%9E%D7%AA-%D7%9E%D7%A8%D7%9B%D7%96%D7%99%D7%9D-%D7%A8%D7%A4%D7%95%D7%90%D7%99%D7%99%D7%9D-%D7%91%D7%99%D7%A9%D7%A8%D7%90%D7%9C/"
+    }
+   ]
+  },
+  {
+   "seedId": "S035",
+   "title": "המכון לגסטרואנטרולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מכון לטיפול במחלות מערכת העיכול",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/endoscopy/"
+    }
+   ]
+  },
+  {
+   "seedId": "S036",
+   "title": "האגודה למלחמה בסרטן",
+   "kind": "association",
+   "text": "אגודה לחולי סרטן עם קבוצות תמיכה, פורומים וערוצי פנייה",
+   "links": [
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/6405/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/1171/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://welfare.cancer.org.il/ica-support-group-form/"
+    }
+   ]
+  },
+  {
+   "seedId": "S036",
+   "title": "פורומי האגודה למלחמה בסרטן",
+   "kind": "community",
+   "text": "פורומים למחלות אונקולוגיות שונות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://forums.cancer.org.il/forums/"
+    }
+   ]
+  },
+  {
+   "seedId": "S036",
+   "title": "המכון לגסטרואנטרולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מכון לטיפול במחלות מערכת העיכול",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/gastroenterology/endoscopy/"
+    }
+   ]
+  },
+  {
+   "seedId": "S037",
+   "title": "מרכז השמנת יתר, איכילוב",
+   "kind": "clinic",
+   "text": "מרכז לטיפול רפואי ובריאטרי בהשמנת יתר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/obesity-center/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/general-surgery/bariatric-surgery/"
+    }
+   ]
+  },
+  {
+   "seedId": "S037",
+   "title": "המרפאה לטיפול בהשמנת יתר, הדסה",
+   "kind": "clinic",
+   "text": "מרפאה ייעודית להשמנת יתר",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/internal/obesity-clinic-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S038",
+   "title": "אנדואורולוגיה ואבנים, איכילוב",
+   "kind": "clinic",
+   "text": "שירות ייעודי לאבנים בדרכי השתן",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/urology/urine-stones/"
+    }
+   ]
+  },
+  {
+   "seedId": "S038",
+   "title": "מרפאות אורולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות מערכת השתן והערמונית",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/urology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/urology/minimal-invasive-urology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S038",
+   "title": "נפרולוגיה ודיאליזה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך נפרולוגיה, מעקב וטיפולי דיאליזה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/nephrology-clinic/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/nephrology-oncology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S039",
+   "title": "אורואונקולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "טיפול בגידולים במערכת השתן והערמונית",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/urology/uro-oncology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/orology-cancer/"
+    }
+   ]
+  },
+  {
+   "seedId": "S039",
+   "title": "מרפאות אורולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות מערכת השתן והערמונית",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/urology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/urology/minimal-invasive-urology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S040",
+   "title": "אורואונקולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "טיפול בגידולים במערכת השתן והערמונית",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/urology/uro-oncology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/orology-cancer/"
+    }
+   ]
+  },
+  {
+   "seedId": "S040",
+   "title": "מרפאות אורולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות מערכת השתן והערמונית",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/urology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/urology/minimal-invasive-urology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S040",
+   "title": "האגודה למלחמה בסרטן",
+   "kind": "association",
+   "text": "אגודה לחולי סרטן עם קבוצות תמיכה, פורומים וערוצי פנייה",
+   "links": [
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/6405/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/1171/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://welfare.cancer.org.il/ica-support-group-form/"
+    }
+   ]
+  },
+  {
+   "seedId": "S040",
+   "title": "פורומי האגודה למלחמה בסרטן",
+   "kind": "community",
+   "text": "פורומים למחלות אונקולוגיות שונות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://forums.cancer.org.il/forums/"
+    }
+   ]
+  },
+  {
+   "seedId": "S040",
+   "title": "המכון האונקולוגי, איכילוב",
+   "kind": "clinic",
+   "text": "שירותי טיפול במחלות סרטן",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/oncology-hospitalization/"
+    }
+   ]
+  },
+  {
+   "seedId": "S040",
+   "title": "נפרולוגיה ודיאליזה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך נפרולוגיה, מעקב וטיפולי דיאליזה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/nephrology-clinic/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/nephrology/nephrology-oncology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S012",
+   "title": "מרפאות אורולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות מערכת השתן והערמונית",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/urology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/urology/minimal-invasive-urology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S012",
+   "title": "קהילות השתלות איברים, כמוני",
+   "kind": "community",
+   "text": "מפת ארגונים בתחום השתלות איברים",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.camoni.co.il/9805/"
+    }
+   ]
+  },
+  {
+   "seedId": "S041",
+   "title": "המטולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות דם וממאירויות המטולוגיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/hematology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/hematology/ambulatory/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/hematology/hematology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S041",
+   "title": "האגודה למלחמה בסרטן",
+   "kind": "association",
+   "text": "אגודה לחולי סרטן עם קבוצות תמיכה, פורומים וערוצי פנייה",
+   "links": [
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/6405/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/1171/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://welfare.cancer.org.il/ica-support-group-form/"
+    }
+   ]
+  },
+  {
+   "seedId": "S041",
+   "title": "פורומי האגודה למלחמה בסרטן",
+   "kind": "community",
+   "text": "פורומים למחלות אונקולוגיות שונות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://forums.cancer.org.il/forums/"
+    }
+   ]
+  },
+  {
+   "seedId": "S042",
+   "title": "המטולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות דם וממאירויות המטולוגיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/hematology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/hematology/ambulatory/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/hematology/hematology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S042",
+   "title": "האגודה למלחמה בסרטן",
+   "kind": "association",
+   "text": "אגודה לחולי סרטן עם קבוצות תמיכה, פורומים וערוצי פנייה",
+   "links": [
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/6405/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/1171/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://welfare.cancer.org.il/ica-support-group-form/"
+    }
+   ]
+  },
+  {
+   "seedId": "S042",
+   "title": "פורומי האגודה למלחמה בסרטן",
+   "kind": "community",
+   "text": "פורומים למחלות אונקולוגיות שונות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://forums.cancer.org.il/forums/"
+    }
+   ]
+  },
+  {
+   "seedId": "S043",
+   "title": "המטולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות דם וממאירויות המטולוגיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/hematology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/hematology/ambulatory/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/hematology/hematology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S043",
+   "title": "המרכז הארצי להמופיליה וקרישה",
+   "kind": "clinic",
+   "text": "מרכז ארצי לטיפול בהמופיליה ומחלות קרישה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/centers/%D7%94%D7%9E%D7%A8%D7%9B%D7%96-%D7%94%D7%90%D7%A8%D7%A6%D7%99-%D7%9C%D7%94%D7%9E%D7%95%D7%A4%D7%99%D7%9C%D7%99%D7%94-%D7%95%D7%A7%D7%A8%D7%99%D7%A9%D7%AA-%D7%93%D7%9D/"
+    }
+   ]
+  },
+  {
+   "seedId": "S044",
+   "title": "על״ה, עמותה לחולי המופיליה",
+   "kind": "association",
+   "text": "עמותת חולים ושירותים למתמודדים עם המופיליה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.hemophilia.org.il/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.hemophilia.org.il/health-services/"
+    }
+   ]
+  },
+  {
+   "seedId": "S044",
+   "title": "המרכז הארצי להמופיליה וקרישה",
+   "kind": "clinic",
+   "text": "מרכז ארצי לטיפול בהמופיליה ומחלות קרישה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/centers/%D7%94%D7%9E%D7%A8%D7%9B%D7%96-%D7%94%D7%90%D7%A8%D7%A6%D7%99-%D7%9C%D7%94%D7%9E%D7%95%D7%A4%D7%99%D7%9C%D7%99%D7%94-%D7%95%D7%A7%D7%A8%D7%99%D7%A9%D7%AA-%D7%93%D7%9D/"
+    }
+   ]
+  },
+  {
+   "seedId": "S044",
+   "title": "המטולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות דם וממאירויות המטולוגיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/hematology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/hematology/ambulatory/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/hematology/hematology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S045",
+   "title": "עמותת איל, אגודה ישראלית לאפילפסיה",
+   "kind": "association",
+   "text": "עמותה עם קבוצות תמיכה ומרכז מידע",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.epilepsy.org.il/"
+    },
+    {
+     "label": "יצירת קשר",
+     "url": "https://www.epilepsy.org.il/about-us/contact-us/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.epilepsy.org.il/activities/supportgroups/"
+    }
+   ]
+  },
+  {
+   "seedId": "S045",
+   "title": "רשימת מרפאות מומחים לאפילפסיה",
+   "kind": "clinic",
+   "text": "מפת מרפאות מטעם אגודת איל",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.epilepsy.org.il/diagnosing-and-treating/epilepsy-clinics/"
+    }
+   ]
+  },
+  {
+   "seedId": "S045",
+   "title": "מערך נוירולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך למחלות נוירולוגיות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neurology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S046",
+   "title": "עמותת פרקינסון בישראל",
+   "kind": "association",
+   "text": "עמותה עם סניפים וקהילות למתמודדים ולמשפחות",
+   "links": [
+    {
+     "label": "יצירת קשר",
+     "url": "https://www.parkinson.org.il/%D7%A6%D7%95%D7%A8-%D7%A7%D7%A9%D7%A8/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.parkinson.org.il/%D7%9E%D7%AA%D7%9E%D7%95%D7%93%D7%93-%D7%A6%D7%A2%D7%99%D7%A8-%D7%9E%D7%99%D7%93%D7%A2-%D7%A0%D7%95%D7%A1%D7%A3/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.parkinson.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S046",
+   "title": "פרקינסון צעירים",
+   "kind": "community",
+   "text": "קהילה למתמודדים צעירים עם מחלת פרקינסון",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.parkinsonyoung.com/about"
+    }
+   ]
+  },
+  {
+   "seedId": "S046",
+   "title": "מערך נוירולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך למחלות נוירולוגיות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neurology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S047",
+   "title": "האגודה הישראלית לטרשת נפוצה",
+   "kind": "association",
+   "text": "עמותה המפעילה קבוצות תמיכה לחולים",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://mssociety.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://mssociety.org.il/%D7%91%D7%A0%D7%99-40-50-%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%AA%D7%9E%D7%99%D7%9B%D7%94/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://mssociety.org.il/category/%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%99%D7%95%D7%AA-%D7%94%D7%90%D7%92%D7%95%D7%93%D7%94-%D7%9C%D7%A8%D7%95%D7%95%D7%97%D7%AA-%D7%97%D7%95%D7%9C%D7%99-%D7%94%D7%98%D7%A8%D7%A9%D7%AA-%D7%94%D7%A0%D7%A4/%D7%A7%D7%91%D7%95%D7%A6%D7%95%D7%AA-%D7%AA%D7%9E%D7%99%D7%9B%D7%94/"
+    }
+   ]
+  },
+  {
+   "seedId": "S047",
+   "title": "הבית לחולי טרשת נפוצה",
+   "kind": "association",
+   "text": "קהילה ושירותי מידע ותמיכה לחולים ובני משפחות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://mshome.org.il/%D7%9B%D7%9C-%D7%94%D7%A8%D7%92%D7%A2%D7%99%D7%9D-%D7%A9%D7%9C%D7%A0%D7%95/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://mshome.org.il/%D7%9C%D7%A8%D7%A9%D7%95%D7%AA%D7%9B%D7%9D-%D7%9E%D7%95%D7%A7%D7%93-%D7%98%D7%9C%D7%A4%D7%95%D7%A0%D7%99-%D7%97%D7%99%D7%A0%D7%9E%D7%99-%D7%91%D7%A0%D7%95%D7%A9%D7%90-%D7%A9%D7%9C-%D7%9E%D7%99%D7%A6/"
+    }
+   ]
+  },
+  {
+   "seedId": "S047",
+   "title": "מערך נוירולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך למחלות נוירולוגיות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neurology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S048",
+   "title": "עמותת ישראלס (IsrALS)",
+   "kind": "association",
+   "text": "עמותה עם קישור למרפאות ALS וערוצי קשר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://israls.org.il/"
+    },
+    {
+     "label": "יצירת קשר",
+     "url": "https://israls.org.il/%D7%99%D7%A6%D7%99%D7%A8%D7%AA-%D7%A7%D7%A9%D7%A8/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://israls.org.il/%D7%AA%D7%9E%D7%99%D7%9B%D7%94/%D7%9E%D7%A8%D7%A4%D7%90%D7%95%D7%AA-als-%D7%99%D7%99%D7%A2%D7%95%D7%93%D7%99%D7%95%D7%AA/"
+    }
+   ]
+  },
+  {
+   "seedId": "S048",
+   "title": "מרפאה נוירומוסקולרית, אלי״ן",
+   "kind": "clinic",
+   "text": "מרפאה למחלות שריר ועצב",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://rdisrael.org.il/centers/%D7%9E%D7%A8%D7%A4%D7%90%D7%94-%D7%A0%D7%95%D7%99%D7%A8%D7%95%D7%9E%D7%95%D7%A1%D7%A7%D7%95%D7%9C%D7%A8%D7%99%D7%AA-%D7%A9%D7%99%D7%A7%D7%95%D7%9E%D7%99%D7%AA/"
+    }
+   ]
+  },
+  {
+   "seedId": "S048",
+   "title": "מערך נוירולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך למחלות נוירולוגיות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neurology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S050",
+   "title": "הראש הכרוני שלי, עמותת מיגרנה",
+   "kind": "association",
+   "text": "עמותה וקהילת מידע למתמודדים עם מיגרנות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://israelmigrainefoundation.co.il/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.guidestar.org.il/organization/580697860"
+    }
+   ]
+  },
+  {
+   "seedId": "S050",
+   "title": "מרפאת כאב ראש ופנים, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה ייעודית למיגרנות וכאבי ראש",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neurology-headache/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/neurology/cluster-headache/"
+    }
+   ]
+  },
+  {
+   "seedId": "S050",
+   "title": "מערך נוירולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך למחלות נוירולוגיות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neurology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S051",
+   "title": "עמותת עמדא, אלצהיימר ודמנציה",
+   "kind": "association",
+   "text": "עמותה עם קבוצות פייסבוק ו־WhatsApp ותמיכה למשפחות",
+   "links": [
+    {
+     "label": "יצירת קשר",
+     "url": "https://emda.org.il/contact-us-2-emda-association2026/"
+    },
+    {
+     "label": "WhatsApp",
+     "url": "https://emda.org.il/whatsapp-community-emda/"
+    },
+    {
+     "label": "פייסבוק",
+     "url": "https://emda.org.il/b/facebook-group-for-dementia-families/"
+    }
+   ]
+  },
+  {
+   "seedId": "S051",
+   "title": "מרפאה גריאטרית, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאת מומחים לרפואת הגיל המבוגר",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/rehabilitation/units/geriatrics/multidisciplinary-geriatric/"
+    }
+   ]
+  },
+  {
+   "seedId": "S051",
+   "title": "מערך נוירולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך למחלות נוירולוגיות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neurology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S052",
+   "title": "מרפאת כאב, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה לכאב כרוני ותסמונות כאב",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/anesthesiology/pain-management/"
+    }
+   ]
+  },
+  {
+   "seedId": "S052",
+   "title": "עמותת עינבר למחלות ראומטיות",
+   "kind": "association",
+   "text": "עמותה וקבוצות תמיכה למחלות דלקתיות ואוטואימוניות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.inbar.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.inbar.org.il/support-groups/"
+    }
+   ]
+  },
+  {
+   "seedId": "S052",
+   "title": "מערך נוירולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך למחלות נוירולוגיות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neurology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S054",
+   "title": "לנשום, עמותת חולי ריאה",
+   "kind": "association",
+   "text": "עמותה עם קהילות ומפגשים לחולי ריאה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://lungs.org.il/join?community=copd"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/stories/pah-breath-together"
+    }
+   ]
+  },
+  {
+   "seedId": "S054",
+   "title": "מכון ריאות, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ריאה ודרכי האוויר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/pulmonary-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/airways/"
+    }
+   ]
+  },
+  {
+   "seedId": "S053",
+   "title": "איגוד סיסטיק פיברוזיס בישראל",
+   "kind": "association",
+   "text": "עמותת חולים וערוץ פנייה למתמודדים עם CF",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://cff.org.il/"
+    },
+    {
+     "label": "יצירת קשר",
+     "url": "https://cff.org.il/%D7%A6%D7%95%D7%A8-%D7%A7%D7%A9%D7%A8/"
+    }
+   ]
+  },
+  {
+   "seedId": "S053",
+   "title": "מכון ריאות, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ריאה ודרכי האוויר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/pulmonary-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/airways/"
+    }
+   ]
+  },
+  {
+   "seedId": "S053",
+   "title": "לנשום, עמותת חולי ריאה",
+   "kind": "association",
+   "text": "עמותה עם קהילות ומפגשים לחולי ריאה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://lungs.org.il/join?community=copd"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/stories/pah-breath-together"
+    }
+   ]
+  },
+  {
+   "seedId": "S055",
+   "title": "לנשום, עמותת חולי ריאה",
+   "kind": "association",
+   "text": "עמותה עם קהילות ומפגשים לחולי ריאה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://lungs.org.il/join?community=copd"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/stories/pah-breath-together"
+    }
+   ]
+  },
+  {
+   "seedId": "S055",
+   "title": "מכון ריאות, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ריאה ודרכי האוויר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/pulmonary-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/airways/"
+    }
+   ]
+  },
+  {
+   "seedId": "S056",
+   "title": "לנשום, עמותת חולי ריאה",
+   "kind": "association",
+   "text": "עמותה עם קהילות ומפגשים לחולי ריאה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://lungs.org.il/join?community=copd"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/stories/pah-breath-together"
+    }
+   ]
+  },
+  {
+   "seedId": "S056",
+   "title": "מכון ריאות, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ריאה ודרכי האוויר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/pulmonary-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/airways/"
+    }
+   ]
+  },
+  {
+   "seedId": "S057",
+   "title": "לנשום, עמותת חולי ריאה",
+   "kind": "association",
+   "text": "עמותה עם קהילות ומפגשים לחולי ריאה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://lungs.org.il/join?community=copd"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/stories/pah-breath-together"
+    }
+   ]
+  },
+  {
+   "seedId": "S057",
+   "title": "מכון ריאות, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ריאה ודרכי האוויר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/pulmonary-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/airways/"
+    }
+   ]
+  },
+  {
+   "seedId": "S058",
+   "title": "האגודה למלחמה בסרטן",
+   "kind": "association",
+   "text": "אגודה לחולי סרטן עם קבוצות תמיכה, פורומים וערוצי פנייה",
+   "links": [
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/6405/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/1171/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://welfare.cancer.org.il/ica-support-group-form/"
+    }
+   ]
+  },
+  {
+   "seedId": "S058",
+   "title": "פורומי האגודה למלחמה בסרטן",
+   "kind": "community",
+   "text": "פורומים למחלות אונקולוגיות שונות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://forums.cancer.org.il/forums/"
+    }
+   ]
+  },
+  {
+   "seedId": "S058",
+   "title": "לנשום, עמותת חולי ריאה",
+   "kind": "association",
+   "text": "עמותה עם קהילות ומפגשים לחולי ריאה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://lungs.org.il/join?community=copd"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/stories/pah-breath-together"
+    }
+   ]
+  },
+  {
+   "seedId": "S058",
+   "title": "המכון האונקולוגי, איכילוב",
+   "kind": "clinic",
+   "text": "שירותי טיפול במחלות סרטן",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/oncology-hospitalization/"
+    }
+   ]
+  },
+  {
+   "seedId": "S058",
+   "title": "מכון ריאות, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ריאה ודרכי האוויר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/pulmonary-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/airways/"
+    }
+   ]
+  },
+  {
+   "seedId": "S059",
+   "title": "לנשום, עמותת חולי ריאה",
+   "kind": "association",
+   "text": "עמותה עם קהילות ומפגשים לחולי ריאה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://lungs.org.il/join?community=copd"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/stories/pah-breath-together"
+    }
+   ]
+  },
+  {
+   "seedId": "S059",
+   "title": "מכון ריאות, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ריאה ודרכי האוויר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/pulmonary-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/airways/"
+    }
+   ]
+  },
+  {
+   "seedId": "S060",
+   "title": "מכון ריאות, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ריאה ודרכי האוויר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/pulmonary-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/airways/"
+    }
+   ]
+  },
+  {
+   "seedId": "S060",
+   "title": "לנשום, עמותת חולי ריאה",
+   "kind": "association",
+   "text": "עמותה עם קהילות ומפגשים לחולי ריאה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://lungs.org.il/join?community=copd"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/stories/pah-breath-together"
+    }
+   ]
+  },
+  {
+   "seedId": "S061",
+   "title": "לנשום, עמותת חולי ריאה",
+   "kind": "association",
+   "text": "עמותה עם קהילות ומפגשים לחולי ריאה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://lungs.org.il/join?community=copd"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/stories/pah-breath-together"
+    }
+   ]
+  },
+  {
+   "seedId": "S061",
+   "title": "מכון ריאות, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ריאה ודרכי האוויר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/pulmonary-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/airways/"
+    }
+   ]
+  },
+  {
+   "seedId": "S062",
+   "title": "לנשום, עמותת חולי ריאה",
+   "kind": "association",
+   "text": "עמותה עם קהילות ומפגשים לחולי ריאה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://lungs.org.il/join?community=copd"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/stories/pah-breath-together"
+    }
+   ]
+  },
+  {
+   "seedId": "S062",
+   "title": "מכון ריאות, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ריאה ודרכי האוויר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/pulmonary-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/airways/"
+    }
+   ]
+  },
+  {
+   "seedId": "S063",
+   "title": "לנשום, עמותת חולי ריאה",
+   "kind": "association",
+   "text": "עמותה עם קהילות ומפגשים לחולי ריאה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://lungs.org.il/join?community=copd"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://lungs.org.il/stories/pah-breath-together"
+    }
+   ]
+  },
+  {
+   "seedId": "S063",
+   "title": "מכון ריאות, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ריאה ודרכי האוויר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/pulmonary-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/pulmonary/airways/"
+    }
+   ]
+  },
+  {
+   "seedId": "S064",
+   "title": "מחלות זיהומיות, איכילוב",
+   "kind": "clinic",
+   "text": "מחלקה לטיפול במחלות זיהומיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/infectious-diseases/"
+    }
+   ]
+  },
+  {
+   "seedId": "S065",
+   "title": "מחלות זיהומיות, איכילוב",
+   "kind": "clinic",
+   "text": "מחלקה לטיפול במחלות זיהומיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/infectious-diseases/"
+    }
+   ]
+  },
+  {
+   "seedId": "S066",
+   "title": "מרפאת קטרקט, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה לניתוחי קטרקט",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/cataract/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/proceduresindex/procedures/ophthalmology/cataractsurgery/"
+    }
+   ]
+  },
+  {
+   "seedId": "S066",
+   "title": "עמותת לראות",
+   "kind": "association",
+   "text": "עמותה בנושאי בריאות העין ולקויות ראייה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.eyes.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.eyes.org.il/%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%93%D7%99%D7%A7%D7%95%D7%AA-%D7%A2%D7%99%D7%A0%D7%99%D7%99%D7%9D-%D7%91%D7%A7%D7%94%D7%99%D7%9C%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S066",
+   "title": "מרפאות עיניים, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות עיניים",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/general-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S067",
+   "title": "מרפאת גלאוקומה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה למעקב ולטיפול בגלאוקומה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/glaucom/"
+    }
+   ]
+  },
+  {
+   "seedId": "S067",
+   "title": "עמותת לראות",
+   "kind": "association",
+   "text": "עמותה בנושאי בריאות העין ולקויות ראייה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.eyes.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.eyes.org.il/%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%93%D7%99%D7%A7%D7%95%D7%AA-%D7%A2%D7%99%D7%A0%D7%99%D7%99%D7%9D-%D7%91%D7%A7%D7%94%D7%99%D7%9C%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S067",
+   "title": "מרפאות עיניים, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות עיניים",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/general-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S068",
+   "title": "מרפאות רשתית, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות רשתית והיפרדות רשתית",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/retina/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/proceduresindex/procedures/ophthalmology/retinaldetachment/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/opthalmology/retina-2023/"
+    }
+   ]
+  },
+  {
+   "seedId": "S068",
+   "title": "עמותת לראות",
+   "kind": "association",
+   "text": "עמותה בנושאי בריאות העין ולקויות ראייה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.eyes.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.eyes.org.il/%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%93%D7%99%D7%A7%D7%95%D7%AA-%D7%A2%D7%99%D7%A0%D7%99%D7%99%D7%9D-%D7%91%D7%A7%D7%94%D7%99%D7%9C%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S068",
+   "title": "מרפאות עיניים, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות עיניים",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/general-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S069",
+   "title": "מרפאות רשתית, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות רשתית והיפרדות רשתית",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/retina/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/proceduresindex/procedures/ophthalmology/retinaldetachment/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/opthalmology/retina-2023/"
+    }
+   ]
+  },
+  {
+   "seedId": "S069",
+   "title": "עמותת לראות",
+   "kind": "association",
+   "text": "עמותה בנושאי בריאות העין ולקויות ראייה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.eyes.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.eyes.org.il/%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%93%D7%99%D7%A7%D7%95%D7%AA-%D7%A2%D7%99%D7%A0%D7%99%D7%99%D7%9D-%D7%91%D7%A7%D7%94%D7%99%D7%9C%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S069",
+   "title": "מרפאות עיניים, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות עיניים",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/general-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S070",
+   "title": "מרפאות רשתית, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות רשתית והיפרדות רשתית",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/retina/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/proceduresindex/procedures/ophthalmology/retinaldetachment/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/opthalmology/retina-2023/"
+    }
+   ]
+  },
+  {
+   "seedId": "S070",
+   "title": "עמותת לראות",
+   "kind": "association",
+   "text": "עמותה בנושאי בריאות העין ולקויות ראייה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.eyes.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.eyes.org.il/%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%93%D7%99%D7%A7%D7%95%D7%AA-%D7%A2%D7%99%D7%A0%D7%99%D7%99%D7%9D-%D7%91%D7%A7%D7%94%D7%99%D7%9C%D7%94"
+    }
+   ]
+  },
+  {
+   "seedId": "S070",
+   "title": "מרפאות עיניים, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות עיניים",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/general-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/ophthalmology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S071",
+   "title": "אגודת הפסוריאזיס הישראלית",
+   "kind": "association",
+   "text": "עמותה וקבוצת חברים לחולי פסוריאזיס",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://psoriasis.org.il/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://psoriasis.org.il/%D7%A2%D7%9C-%D7%94%D7%90%D7%92%D7%95%D7%93%D7%94/%D7%90%D7%92%D7%95%D7%93%D7%AA-%D7%94%D7%A4%D7%A1%D7%95%D7%A8%D7%99%D7%90%D7%96%D7%99%D7%A1-%D7%94%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99%D7%AA/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://psoriasis.org.il/%D7%94%D7%A6%D7%98%D7%A8%D7%A4%D7%95%D7%AA-%D7%90%D7%9C-%D7%94%D7%90%D7%92%D7%95%D7%93%D7%94/"
+    }
+   ]
+  },
+  {
+   "seedId": "S071",
+   "title": "מרפאות עור, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות לטיפול במחלות עור",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/dermatology/dermatology-clinics/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/dermatology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/dermatology/dermo-hos/"
+    }
+   ]
+  },
+  {
+   "seedId": "S072",
+   "title": "מרפאות עור, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות לטיפול במחלות עור",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/dermatology/dermatology-clinics/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/dermatology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/dermatology/dermo-hos/"
+    }
+   ]
+  },
+  {
+   "seedId": "S072",
+   "title": "עור ילדים ומתבגרים, דנה־דואק",
+   "kind": "clinic",
+   "text": "מרפאת עור לילדים ומתבגרים",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/dana-dwek/unit-pediatric/hospitalization/peds-dermatology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S073",
+   "title": "מרפאת מלנומה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה ומערך ייעודי לגידולי עור",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/melanoma-center/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/dermatology/melanoma-clinic/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/dermatology/melanoma/"
+    }
+   ]
+  },
+  {
+   "seedId": "S073",
+   "title": "האגודה למלחמה בסרטן",
+   "kind": "association",
+   "text": "אגודה לחולי סרטן עם קבוצות תמיכה, פורומים וערוצי פנייה",
+   "links": [
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/6405/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/1171/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://welfare.cancer.org.il/ica-support-group-form/"
+    }
+   ]
+  },
+  {
+   "seedId": "S073",
+   "title": "מרפאות עור, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות לטיפול במחלות עור",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/dermatology/dermatology-clinics/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/dermatology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/dermatology/dermo-hos/"
+    }
+   ]
+  },
+  {
+   "seedId": "S074",
+   "title": "מרפאות עור, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות לטיפול במחלות עור",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/dermatology/dermatology-clinics/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/dermatology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/dermatology/dermo-hos/"
+    }
+   ]
+  },
+  {
+   "seedId": "S074",
+   "title": "עור ילדים ומתבגרים, דנה־דואק",
+   "kind": "clinic",
+   "text": "מרפאת עור לילדים ומתבגרים",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/dana-dwek/unit-pediatric/hospitalization/peds-dermatology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S075",
+   "title": "מרפאות עמוד השדרה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות לבעיות גב ועמוד שדרה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/neurosurgery/spinal-cord/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/orthopedics/scoliosis/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/neurosurgery/"
+    }
+   ]
+  },
+  {
+   "seedId": "S075",
+   "title": "מחלקת אורתופדיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות וטיפולים לפגיעות ומחלות אורתופדיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/orthopedics-hospitalization/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/orthopedic-trauma/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/"
+    }
+   ]
+  },
+  {
+   "seedId": "S076",
+   "title": "מחלקת אורתופדיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות וטיפולים לפגיעות ומחלות אורתופדיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/orthopedics-hospitalization/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/orthopedic-trauma/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/"
+    }
+   ]
+  },
+  {
+   "seedId": "S077",
+   "title": "מרפאות עמוד השדרה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות לבעיות גב ועמוד שדרה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/neurosurgery/spinal-cord/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/orthopedics/scoliosis/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/neurosurgery/"
+    }
+   ]
+  },
+  {
+   "seedId": "S077",
+   "title": "מחלקת אורתופדיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות וטיפולים לפגיעות ומחלות אורתופדיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/orthopedics-hospitalization/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/orthopedic-trauma/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/"
+    }
+   ]
+  },
+  {
+   "seedId": "S078",
+   "title": "מרפאות עמוד השדרה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות לבעיות גב ועמוד שדרה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/neurosurgery/spinal-cord/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/orthopedics/scoliosis/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/neurosurgery/"
+    }
+   ]
+  },
+  {
+   "seedId": "S078",
+   "title": "מחלקת אורתופדיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות וטיפולים לפגיעות ומחלות אורתופדיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/orthopedics-hospitalization/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/orthopedic-trauma/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/"
+    }
+   ]
+  },
+  {
+   "seedId": "S079",
+   "title": "מחלקת אורתופדיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות וטיפולים לפגיעות ומחלות אורתופדיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/orthopedics-hospitalization/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/orthopedic-trauma/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/orthopedics/"
+    }
+   ]
+  },
+  {
+   "seedId": "S080",
+   "title": "הוועד למלחמה באיידס",
+   "kind": "association",
+   "text": "עמותה למתמודדים עם HIV עם שירותים ויצירת קשר",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.aidsisrael.org.il/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.aidsisrael.org.il/%D7%94%D7%A9%D7%99%D7%A8%D7%95%D7%AA%D7%99%D7%9D%D7%A9%D7%9C%D7%A0%D7%95"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.aidsisrael.org.il/%D7%A6%D7%A2%D7%93%D7%99%D7%9D-%D7%A8%D7%90%D7%A9%D7%95%D7%A0%D7%99%D7%9D"
+    }
+   ]
+  },
+  {
+   "seedId": "S080",
+   "title": "מרפאת מחלות מין, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה לזיהומים המועברים במגע מיני",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/stds1/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/lgbt-medicine/"
+    }
+   ]
+  },
+  {
+   "seedId": "S081",
+   "title": "מרפאת מחלות מין, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה לזיהומים המועברים במגע מיני",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/stds1/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/lgbt-medicine/"
+    }
+   ]
+  },
+  {
+   "seedId": "S082",
+   "title": "מרפאת מחלות מין, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה לזיהומים המועברים במגע מיני",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/stds1/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/lgbt-medicine/"
+    }
+   ]
+  },
+  {
+   "seedId": "S083",
+   "title": "מרפאת מחלות מין, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה לזיהומים המועברים במגע מיני",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/stds1/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/lgbt-medicine/"
+    }
+   ]
+  },
+  {
+   "seedId": "S072",
+   "title": "מרפאת מחלות מין, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאה לזיהומים המועברים במגע מיני",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/infectious-diseases/stds1/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/lgbt-medicine/"
+    }
+   ]
+  },
+  {
+   "seedId": "S084",
+   "title": "אנדומטריוזיס ישראל",
+   "kind": "association",
+   "text": "עמותה עם קהילות דיגיטליות וקבוצות WhatsApp",
+   "links": [
+    {
+     "label": "יצירת קשר",
+     "url": "https://endoisrael.org/contact/"
+    },
+    {
+     "label": "WhatsApp",
+     "url": "https://endoisrael.org/whatsapp/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://endoisrael.org/digital/"
+    }
+   ]
+  },
+  {
+   "seedId": "S084",
+   "title": "מרכז אנדומטריוזיס, ליס",
+   "kind": "clinic",
+   "text": "מרפאה רב־תחומית לאנדומטריוזיס",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/lis/lis-units/gynecology/endometriosis/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/proceduresindex/procedures/lis/endo-ultrasound/"
+    }
+   ]
+  },
+  {
+   "seedId": "S084",
+   "title": "מרפאות נשים, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות לגינקולוגיה ובריאות האישה",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/lis/lis-units/women-center/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/lis/lis-units/gynecology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S085",
+   "title": "מרפאות נשים, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות לגינקולוגיה ובריאות האישה",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/lis/lis-units/women-center/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/lis/lis-units/gynecology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S086",
+   "title": "מרפאות נשים, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות לגינקולוגיה ובריאות האישה",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/lis/lis-units/women-center/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/lis/lis-units/gynecology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S087",
+   "title": "גמאני, עמותה לסרטנים נשיים",
+   "kind": "association",
+   "text": "עמותה לחולות במחלות סרטן נשיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://gamani.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S087",
+   "title": "גינקולוגיה אונקולוגית, ליס",
+   "kind": "clinic",
+   "text": "מרפאה לסרטן של מערכת המין הנשית",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/lis/lis-units/gyneco-oncology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S087",
+   "title": "האגודה למלחמה בסרטן",
+   "kind": "association",
+   "text": "אגודה לחולי סרטן עם קבוצות תמיכה, פורומים וערוצי פנייה",
+   "links": [
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/6405/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/1171/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://welfare.cancer.org.il/ica-support-group-form/"
+    }
+   ]
+  },
+  {
+   "seedId": "S087",
+   "title": "אורואונקולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "טיפול בגידולים במערכת השתן והערמונית",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/urology/uro-oncology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/orology-cancer/"
+    }
+   ]
+  },
+  {
+   "seedId": "S087",
+   "title": "מרפאות אורולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות מערכת השתן והערמונית",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/urology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/surgery/urology/minimal-invasive-urology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S087",
+   "title": "חיים עם סרטן הערמונית",
+   "kind": "association",
+   "text": "עמותה לחולי סרטן הערמונית",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://lwpc.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S087",
+   "title": "קבוצת סרטן הערמונית, האגודה למלחמה בסרטן",
+   "kind": "community",
+   "text": "קבוצת תמיכה ייעודית לחולי סרטן הערמונית",
+   "links": [
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://welfare.cancer.org.il/prostate-cancer-form/"
+    }
+   ]
+  },
+  {
+   "seedId": "S088",
+   "title": "קהילת לופוס, מפרקים צעירים",
+   "kind": "community",
+   "text": "קהילה ייעודית למתמודדים עם זאבת",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://mifrakim.org.il/articles/%D7%9C%D7%95%D7%A4%D7%95%D7%A1-%D7%A7%D7%95%D7%95%D7%99%D7%9D-%D7%9C%D7%93%D7%9E%D7%95%D7%AA%D7%94/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://mifrakim.org.il/communities/%D7%A7%D7%94%D7%99%D7%9C%D7%AA-%D7%9C%D7%95%D7%A4%D7%95%D7%A1-%D7%9C%D7%9B%D7%9C-%D7%94%D7%92%D7%99%D7%9C%D7%90%D7%99%D7%9D/"
+    }
+   ]
+  },
+  {
+   "seedId": "S088",
+   "title": "עמותת עינבר למחלות ראומטיות",
+   "kind": "association",
+   "text": "עמותה וקבוצות תמיכה למחלות דלקתיות ואוטואימוניות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.inbar.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.inbar.org.il/support-groups/"
+    }
+   ]
+  },
+  {
+   "seedId": "S088",
+   "title": "מרפאות ראומטולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ראומטיות ואוטואימוניות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/rheumatology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/rheumatology/rheumatology-daycare/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/rheumatology/rheumatology-nephrology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S089",
+   "title": "מרפאת בלוטת התריס וגרייבס, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות עיניים ואנדוקרינולוגיה במחלת גרייבס",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/go/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/things-thyroid-gland/"
+    }
+   ]
+  },
+  {
+   "seedId": "S089",
+   "title": "אנדוקרינולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות המתמחות במחלות הורמונליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/internal/endocrinology-clinics-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S090",
+   "title": "מרפאת בלוטת התריס וגרייבס, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות עיניים ואנדוקרינולוגיה במחלת גרייבס",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/go/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/health/endocrinology/things-thyroid-gland/"
+    }
+   ]
+  },
+  {
+   "seedId": "S090",
+   "title": "אנדוקרינולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות המתמחות במחלות הורמונליות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/neuroendocrinology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/endocrinology/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://he.hadassah.org.il/internal/endocrinology-clinics-enkarem/"
+    }
+   ]
+  },
+  {
+   "seedId": "S091",
+   "title": "מיאסטניה גרביס ישראל",
+   "kind": "association",
+   "text": "קהילת חולים עם אתר וערוץ פנייה",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.mgis22.com/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.mgis22.com/%D7%90%D7%95%D7%93%D7%95%D7%AA"
+    },
+    {
+     "label": "יצירת קשר",
+     "url": "https://www.mgis22.com/contact"
+    }
+   ]
+  },
+  {
+   "seedId": "S091",
+   "title": "מערך נוירולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מערך למחלות נוירולוגיות",
+   "links": [
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/neurology/neurology-daycare/"
+    }
+   ]
+  },
+  {
+   "seedId": "S091",
+   "title": "עמותת עינבר למחלות ראומטיות",
+   "kind": "association",
+   "text": "עמותה וקבוצות תמיכה למחלות דלקתיות ואוטואימוניות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.inbar.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.inbar.org.il/support-groups/"
+    }
+   ]
+  },
+  {
+   "seedId": "S091",
+   "title": "מרפאות ראומטולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ראומטיות ואוטואימוניות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/rheumatology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/rheumatology/rheumatology-daycare/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/rheumatology/rheumatology-nephrology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S092",
+   "title": "עמותת עינבר למחלות ראומטיות",
+   "kind": "association",
+   "text": "עמותה וקבוצות תמיכה למחלות דלקתיות ואוטואימוניות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.inbar.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.inbar.org.il/support-groups/"
+    }
+   ]
+  },
+  {
+   "seedId": "S092",
+   "title": "עמותת מפרקים צעירים",
+   "kind": "association",
+   "text": "קהילה צעירה למחלות מפרקים דלקתיות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://mifrakim.org.il/diseases/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://mifrakim.org.il/%D7%90%D7%95%D7%93%D7%95%D7%AA/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://mifrakim.org.il/"
+    }
+   ]
+  },
+  {
+   "seedId": "S092",
+   "title": "מרפאות ראומטולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ראומטיות ואוטואימוניות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/rheumatology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/rheumatology/rheumatology-daycare/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/rheumatology/rheumatology-nephrology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S093",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "קואליציית עמותות ורשת קשר למחלות נדירות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    },
+    {
+     "label": "יצירת קשר",
+     "url": "https://rdisrael.org.il/%D7%99%D7%A6%D7%99%D7%A8%D7%AA-%D7%A7%D7%A9%D7%A8/"
+    }
+   ]
+  },
+  {
+   "seedId": "S093",
+   "title": "עמותת עינבר למחלות ראומטיות",
+   "kind": "association",
+   "text": "עמותה וקבוצות תמיכה למחלות דלקתיות ואוטואימוניות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.inbar.org.il/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.inbar.org.il/support-groups/"
+    }
+   ]
+  },
+  {
+   "seedId": "S093",
+   "title": "מרפאות ראומטולוגיה, איכילוב",
+   "kind": "clinic",
+   "text": "מרפאות למחלות ראומטיות ואוטואימוניות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/rheumatology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/rheumatology/rheumatology-daycare/"
+    },
+    {
+     "label": "מרפאה",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/rheumatology/rheumatology-nephrology/"
+    }
+   ]
+  },
+  {
+   "seedId": "S094",
+   "title": "האגודה למלחמה בסרטן",
+   "kind": "association",
+   "text": "אגודה לחולי סרטן עם קבוצות תמיכה, פורומים וערוצי פנייה",
+   "links": [
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/6405/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://www.cancer.org.il/articles/1171/"
+    },
+    {
+     "label": "קהילה / קבוצות",
+     "url": "https://welfare.cancer.org.il/ica-support-group-form/"
+    }
+   ]
+  },
+  {
+   "seedId": "S094",
+   "title": "פורומי האגודה למלחמה בסרטן",
+   "kind": "community",
+   "text": "פורומים למחלות אונקולוגיות שונות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://forums.cancer.org.il/forums/"
+    }
+   ]
+  },
+  {
+   "seedId": "S094",
+   "title": "המכון האונקולוגי, איכילוב",
+   "kind": "clinic",
+   "text": "שירותי טיפול במחלות סרטן",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/"
+    },
+    {
+     "label": "אתר / מידע",
+     "url": "https://www.tasmc.org.il/unit-index-page/internalmed/oncology/oncology-hospitalization/"
+    }
+   ]
+  },
+  {
+   "seedId": "S094",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "קואליציית עמותות ורשת קשר למחלות נדירות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    },
+    {
+     "label": "יצירת קשר",
+     "url": "https://rdisrael.org.il/%D7%99%D7%A6%D7%99%D7%A8%D7%AA-%D7%A7%D7%A9%D7%A8/"
+    }
+   ]
+  },
+  {
+   "seedId": "S095",
+   "title": "הקואליציה למחלות נדירות בישראל",
+   "kind": "association",
+   "text": "קואליציית עמותות ורשת קשר למחלות נדירות",
+   "links": [
+    {
+     "label": "אתר / מידע",
+     "url": "https://rdisrael.org.il/"
+    },
+    {
+     "label": "יצירת קשר",
+     "url": "https://rdisrael.org.il/%D7%99%D7%A6%D7%99%D7%A8%D7%AA-%D7%A7%D7%A9%D7%A8/"
+    }
+   ]
+  }
+ ]
+}

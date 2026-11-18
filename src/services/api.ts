@@ -6,7 +6,7 @@ import { normEmail, EMAIL_RE, previewSchoolImport, previewTeacherImport } from '
 import { planSeedImport, SeedRecord } from '../domain/seedImport';
 import type {
   AcademicYear, AllowedTeacher, AuditEvent, Catalog, CatalogMeta, Group, NewItem, PublicSource, GroupStatus, PolicyQuestion,
-  Profile, PublicSuggestion, RecruitmentSource, RequestDoc, RequestKind, Role, RoleDoc, School, SchoolYearHistory, Settings, SourceReport, SystemDef, TagDef, Topic,
+  Profile, PublicSuggestion, RecruitmentSource, RequestDoc, RequestKind, Role, RoleDoc, School, SchoolYearHistory, Settings, SourceKind, SourceLink, SourceReport, SystemDef, TagDef, Topic,
 } from '../domain/types';
 import type { AuthService, AuthUser } from './auth';
 import { buildBundledCatalog, DEFAULT_TAGS, defaultSettings, defaultYears, SEED, SEED_AUX } from './bundled';
@@ -526,6 +526,43 @@ export class Api {
     const s: RecruitmentSource = stripUndefined({ id, ...chk.clean, createdBy: c.user!.uid, createdAt: this.now(), visible: true, reviewed: true, reviewedBy: c.user!.uid, reviewedAt: this.now() });
     await this.store.batch([{ op: 'set', path: `sources/${id}`, data: s }, this.audit('admin_add_source', id, c.user!.uid)]);
     return s;
+  }
+  // ───────── ייבוא מאגר הקישורים (חד־פעמי, בטוח להרצה חוזרת) ─────────
+  private async loadSourceSeed(): Promise<{ seedId: string; title: string; kind: SourceKind; text: string; links: SourceLink[] }[]> {
+    const m = await import('../../data/sources-seed.json');
+    return (m.default as { sources: { seedId: string; title: string; kind: SourceKind; text: string; links: SourceLink[] }[] }).sources;
+  }
+  private seedSourceId(seedId: string, title: string): string {
+    let h = 5381; for (const ch of title) h = ((h * 33) ^ ch.charCodeAt(0)) >>> 0;
+    return `s-sd-${seedId}-${h.toString(36)}`;
+  }
+  /** מה ייווצר: מקורות חדשים, מקורות שכבר קיימים (לא ייכתבו שוב), ומקורות שהנושא שלהם לא נמצא */
+  async adminSourceSeedPreview(): Promise<{ total: number; toAdd: number; existing: number; noTopic: number }> {
+    await this.need('admin');
+    const seed = await this.loadSourceSeed();
+    const [existing, topics] = await Promise.all([this.store.list<RecruitmentSource>('sources'), this.store.list<Topic>('topics')]);
+    const have = new Set(existing.map(s => s.id)), tids = new Set(topics.map(t => t.id));
+    let toAdd = 0, ex = 0, noTopic = 0;
+    for (const s of seed) { if (!tids.has(`t-${s.seedId}`)) noTopic++; else if (have.has(this.seedSourceId(s.seedId, s.title))) ex++; else toAdd++; }
+    return { total: seed.length, toAdd, existing: ex, noTopic };
+  }
+  async adminImportSourceSeed(): Promise<{ added: number }> {
+    const c = await this.need('admin');
+    const seed = await this.loadSourceSeed();
+    const [existing, topics] = await Promise.all([this.store.list<RecruitmentSource>('sources'), this.store.list<Topic>('topics')]);
+    const have = new Set(existing.map(s => s.id)), tids = new Set(topics.map(t => t.id));
+    const ops: BatchOp[] = [];
+    for (const s of seed) {
+      const topicId = `t-${s.seedId}`, id = this.seedSourceId(s.seedId, s.title);
+      if (!tids.has(topicId) || have.has(id)) continue;
+      const chk = checkSourceInput({ topicId, title: s.title, kind: s.kind, text: s.text, url: '', links: s.links, phone: '', region: '', population: '', confirmNoPatientData: true });
+      if (!chk.ok || !chk.clean) continue;
+      const doc: RecruitmentSource = stripUndefined({ id, ...chk.clean, createdBy: c.user!.uid, createdAt: this.now(), visible: true, reviewed: true, reviewedBy: c.user!.uid, reviewedAt: this.now() });
+      ops.push({ op: 'set', path: `sources/${id}`, data: doc });
+    }
+    for (let i = 0; i < ops.length; i += 200) await this.store.batch(ops.slice(i, i + 200));
+    if (ops.length) await this.store.batch([this.audit('admin_import_source_seed', `${ops.length}`, c.user!.uid)]);
+    return { added: ops.length };
   }
   async saveGeneralRules(rules: RuleSet) {
     const c = await this.need('admin');

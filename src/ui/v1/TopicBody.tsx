@@ -120,6 +120,7 @@ function SourceItem({ s }: { s: PublicSource }) {
       {s.text && <p style={{ whiteSpace: 'pre-wrap' }}>{s.text}</p>}
       <div className="row small">
         {url && <a href={url} target="_blank" rel="noopener noreferrer nofollow">{new URL(url).hostname}</a>}
+        {(s.links ?? []).map(l => { const lu = safeWebUrl(l.url); return lu && lu !== url ? <a key={lu} href={lu} target="_blank" rel="noopener noreferrer nofollow">{l.label} ({new URL(lu).hostname})</a> : null; })}
         {phone && <a href={`tel:${phone}`}><bdi className="ltr">{s.phone}</bdi></a>}
         {s.region && <span className="muted">אזור: {s.region}</span>}
         {s.population && <span className="muted">אוכלוסייה: {s.population}</span>}

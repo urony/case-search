@@ -1,10 +1,12 @@
-import type { RecruitmentSource, RequestDoc, SchoolYearHistory, Settings, SourceKind } from './types';
+import type { RecruitmentSource, RequestDoc, SchoolYearHistory, Settings, SourceKind, SourceLink } from './types';
 
 // ───────── מקורות איתור: קלט וקישורים (סעיף 13.3) ─────────
 
 export const SOURCE_KINDS: { id: SourceKind; label: string }[] = [
   { id: 'association', label: 'עמותה' },
   { id: 'website', label: 'אתר' },
+  { id: 'clinic', label: 'מרפאה או מכון' },
+  { id: 'community', label: 'קהילה, פורום או קבוצת תמיכה' },
   { id: 'facebook', label: 'קבוצת פייסבוק' },
   { id: 'social', label: 'חשבון או קבוצה ברשת חברתית' },
   { id: 'professional', label: 'איש מקצוע שמשתף פעולה' },
@@ -37,6 +39,7 @@ export function safePhone(input: string): string | null {
 
 export interface SourceInput {
   topicId: string; title: string; kind: SourceKind; text: string; url: string; phone: string; region: string; population: string;
+  links?: SourceLink[];
   confirmNoPatientData: boolean;
 }
 export interface SourceCheck { ok: boolean; errors: string[]; warnings: string[]; clean?: Omit<SourceInput, 'confirmNoPatientData'> }
@@ -59,16 +62,22 @@ export function checkSourceInput(i: SourceInput): SourceCheck {
     if (!u) errors.push('כתובת האתר אינה תקינה. מותרים רק קישורי http או https.');
     else url = u;
   }
+  const links: SourceLink[] = [];
+  for (const l of (i.links ?? []).slice(0, 8)) {
+    const lu = safeWebUrl(l.url);
+    if (!lu) { errors.push('אחד הקישורים אינו תקין. מותרים רק קישורי http או https.'); break; }
+    links.push({ label: l.label.trim().slice(0, 40) || 'אתר / מידע', url: lu });
+  }
   let phone = '';
   if (i.phone.trim()) {
     const p = safePhone(i.phone);
     if (!p) errors.push('מספר הטלפון אינו תקין.');
     else phone = p;
   }
-  if (!url && !phone && text.length < 10) errors.push('יש להוסיף כתובת, טלפון או הסבר של לפחות 10 תווים.');
+  if (!url && !phone && !links.length && text.length < 10) errors.push('יש להוסיף כתובת, טלפון או הסבר של לפחות 10 תווים.');
   if (looksLikePersonalData(`${title} ${text} ${i.region} ${i.population}`)) warnings.push('נראה שהטקסט מכיל מספר זיהוי או כתובת מייל. המאגר מיועד למקורות סיוע בלבד, לא לפרטי אנשים.');
   if (errors.length) return { ok: false, errors, warnings };
-  return { ok: true, errors, warnings, clean: { topicId: i.topicId, title, kind: i.kind, text, url, phone, region: i.region.trim().slice(0, 80), population: i.population.trim().slice(0, 120) } };
+  return { ok: true, errors, warnings, clean: { topicId: i.topicId, title, kind: i.kind, text, url, ...(links.length ? { links } : {}), phone, region: i.region.trim().slice(0, 80), population: i.population.trim().slice(0, 120) } };
 }
 
 export function visibleSources(all: RecruitmentSource[]): RecruitmentSource[] {

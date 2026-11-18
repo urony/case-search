@@ -8,7 +8,7 @@ export const CATALOG_CHUNK = 120;
 export const SOURCE_CHUNK = 150;
 
 export function toPublicSource(s: RecruitmentSource): PublicSource {
-  return { id: s.id, topicId: s.topicId, title: s.title, kind: s.kind, text: s.text, url: s.url, phone: s.phone, region: s.region, population: s.population, createdAt: s.createdAt };
+  return { id: s.id, topicId: s.topicId, title: s.title, kind: s.kind, text: s.text, url: s.url, ...(s.links?.length ? { links: s.links } : {}), phone: s.phone, region: s.region, population: s.population, createdAt: s.createdAt };
 }
 
 /**

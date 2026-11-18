@@ -301,3 +301,25 @@ describe('מנהל לפי רשימת מייל (admins)', () => {
     await expect(api.adminListNewItems()).rejects.toThrow(PermissionError);
   });
 });
+
+describe('ייבוא מאגר הקישורים', () => {
+  it('אורח ומורה אינם מייבאים; מנהל מייבא, ללא כפילויות, והקישורים מגיעים לעותק הציבורי', async () => {
+    auth.as('demo-teacher');
+    await expect(api.adminImportSourceSeed()).rejects.toThrow(PermissionError);
+    await expect(api.adminSourceSeedPreview()).rejects.toThrow(PermissionError);
+    auth.as('demo-admin'); api.clearCtxCache();
+    const p = await api.adminSourceSeedPreview();
+    expect(p.total).toBeGreaterThan(200);
+    expect(p.toAdd).toBeGreaterThan(0);
+    const r1 = await api.adminImportSourceSeed();
+    expect(r1.added).toBe(p.toAdd);
+    const r2 = await api.adminImportSourceSeed();
+    expect(r2.added).toBe(0);
+    const all = await api.adminListSources(false);
+    const withLinks = all.filter(s => s.links && s.links.length);
+    expect(withLinks.length).toBeGreaterThan(0);
+    for (const s of withLinks) for (const l of s.links!) expect(l.url).toMatch(/^https?:\/\//);
+    const pub = await api.publishCatalog();
+    expect(pub.sources).toBeGreaterThan(0);
+  });
+});

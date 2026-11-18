@@ -15,7 +15,7 @@ import { TopicCard } from './Home';
 import RuleSetEditor from './RuleEditor';
 import { BackupAdmin } from './AdminOps';
 import { V1 } from '../../features';
-import { AdminAddSource, DashboardV1, PublicSuggestionsAdmin, PublishAdmin, WhatsNewAdmin } from './AdminV1';
+import { AdminAddSource, SourceSeedImport, DashboardV1, PublicSuggestionsAdmin, PublishAdmin, WhatsNewAdmin } from './AdminV1';
 import { TopicBody } from '../v1/TopicBody';
 
 export default function Admin() {
@@ -404,6 +404,7 @@ function SourcesAdmin() {
       {V1 && <Notice kind="info">מקורות האיתור מוזנים כאן בידי מנהל. הוספה, עריכה או הסרה מופיעות לציבור אחרי <Link to="/admin/publish">פרסום</Link>.</Notice>}
       <div><button className="btn" onClick={() => setAdding(a => !a)}>{adding ? 'סגירה' : 'הוספת מקור'}</button></div>
       {adding && <AdminAddSource onDone={() => { setAdding(false); reload(); }} />}
+      {V1 && <SourceSeedImport onDone={reload} />}
       <p className="muted small">מקור שמורה מוסיף מתפרסם מיד, ומופיע כאן כ"חדש" עד שמסמנים "נבדק". רק מנהל יכול לערוך או להסיר. דיווח אינו מסתיר מקור אוטומטית. כל משתמש יכול להוסיף עד 5 מקורות ביום.</p>
       <div className="tabs-lite" role="group" aria-label="סינון מקורות"><button className="chip" aria-pressed={only === 'new'} onClick={() => setOnly('new')}>חדשים שטרם נבדקו</button><button className="chip" aria-pressed={only === 'all'} onClick={() => setOnly('all')}>כל המקורות</button></div>
       {unreviewed.length > 1 && <div><button className="btn small" disabled={busy} onClick={() => run(() => api.adminMarkSourcesReviewed(unreviewed.map(x => x.id))).then(reload)}>סימון כל החדשים כנבדקו ({unreviewed.length})</button></div>}

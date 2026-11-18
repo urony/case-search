@@ -123,6 +123,25 @@ export function WhatsNewAdmin() {
   );
 }
 
+/** ייבוא חד־פעמי של מאגר הקישורים (מסמך נובמבר 2026). בטוח להרצה חוזרת: מקור שכבר קיים אינו נכתב שוב. */
+export function SourceSeedImport({ onDone }: { onDone: () => void }) {
+  const { api } = useRT();
+  const [prev, setPrev] = useState<{ total: number; toAdd: number; existing: number; noTopic: number } | null>(null);
+  const [done, setDone] = useState<number | null>(null);
+  const { busy, error, run } = useBusy();
+  return (
+    <div className="card stack">
+      <h3 style={{ marginBlockStart: 0 }}>ייבוא מאגר הקישורים לפי מחלה</h3>
+      <p className="muted small">מוסיף מקורות איתור (עמותות, מרפאות, קהילות) מהמסמך שהוכן, לנושאים התואמים. המקורות מתפרסמים לציבור רק אחרי "פרסום". אפשר להריץ שוב בלי ליצור כפילויות.</p>
+      <div className="row"><button className="btn secondary" disabled={busy} onClick={async () => { const r = await run(() => api.adminSourceSeedPreview()); if (r) { setPrev(r); setDone(null); } }}>תצוגה מקדימה</button>
+        {prev && prev.toAdd > 0 && <button className="btn" disabled={busy} onClick={async () => { const r = await run(() => api.adminImportSourceSeed()); if (r) { setDone(r.added); setPrev(null); onDone(); } }}>אישור הייבוא ({prev.toAdd} מקורות)</button>}</div>
+      {prev && <p>במאגר {prev.total} מקורות · יתווספו {prev.toAdd} · כבר קיימים {prev.existing}{prev.noTopic > 0 ? ` · נושא לא נמצא (ידלגו): ${prev.noTopic}` : ''}. {prev.noTopic > 0 && 'ייתכן שטרם יובאו הנושאים.'}</p>}
+      {done !== null && <Notice kind="ok"><span role="status">נוספו {done} מקורות. כדי שיופיעו לציבור, היכנסו ל"פרסום לציבור".</span></Notice>}
+      {error && <p className="err" role="alert">{error}</p>}
+    </div>
+  );
+}
+
 /** הוספת מקור איתור בידי מנהל: ללא מכסה, מסומן כנבדק, מתפרסם לציבור בפרסום הבא. */
 export function AdminAddSource({ onDone }: { onDone: () => void }) {
   const { api } = useRT();

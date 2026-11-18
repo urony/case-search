@@ -63,7 +63,8 @@ export interface Topic {
 export interface SystemDef { id: string; label: string }
 export interface TagDef { id: string; label: string; description?: string }
 
-export type SourceKind = 'association' | 'website' | 'facebook' | 'social' | 'professional' | 'phone' | 'free';
+export type SourceKind = 'association' | 'website' | 'facebook' | 'social' | 'professional' | 'phone' | 'free' | 'clinic' | 'community';
+export interface SourceLink { label: string; url: string }
 export interface RecruitmentSource {
   id: string;
   topicId: string;
@@ -71,6 +72,8 @@ export interface RecruitmentSource {
   kind: SourceKind;
   text: string;
   url: string;
+  /** קישורים נוספים עם תווית (אתר, מרפאה, קהילה...). לא חובה */
+  links?: SourceLink[];
   phone: string;
   region: string;
   population: string;
@@ -206,7 +209,7 @@ export interface PublicSuggestion {
 }
 /** מקור איתור כפי שהוא מופיע בעותק הציבורי: בלי מזהי משתמש, בלי מצב בדיקה פנימי */
 export interface PublicSource {
-  id: string; topicId: string; title: string; kind: SourceKind; text: string; url: string; phone: string; region: string; population: string; createdAt: number;
+  id: string; topicId: string; title: string; kind: SourceKind; text: string; url: string; links?: SourceLink[]; phone: string; region: string; population: string; createdAt: number;
 }
 /** המסמך הראשי של העותק הציבורי: קריאה אחת בכל ביקור מספיקה כדי לדעת אם העותק המקומי עדכני */
 export interface CatalogMeta {
