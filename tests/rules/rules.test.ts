@@ -452,3 +452,31 @@ describe('הצעות מהציבור: אורח יוצר בלבד, מנהל קור
     await assertFails(ctx('admin1', false).doc('publicSuggestions/p-9').get());
   });
 });
+
+describe('מנהל לפי רשימת מייל (אוסף admins)', () => {
+  beforeEach(async () => {
+    await env.withSecurityRulesDisabled(async c => { await c.firestore().doc('admins/boss@x.test').set({ note: 'x' }); });
+  });
+  it('מייל ברשימה ומאומת: כותב נושא וקורא הצעות', async () => {
+    const db = ctx('uidboss', true, 'Boss@x.test');
+    await assertSucceeds(db.doc('topics/t-9').set({ he: 'נושא', publish: 'draft' }));
+    await assertSucceeds(db.collection('publicSuggestions').get());
+    await assertSucceeds(db.doc('admins/boss@x.test').get());
+  });
+  it('מייל ברשימה אך לא מאומת: אין גישה', async () => {
+    const db = ctx('uidboss', false, 'boss@x.test');
+    await assertFails(db.doc('topics/t-9').set({ he: 'נושא', publish: 'draft' }));
+    await assertFails(db.collection('publicSuggestions').get());
+  });
+  it('מייל שאינו ברשימה: אין גישה, אינו קורא את הרשימה ואינו מוסיף את עצמו', async () => {
+    const db = ctx('uidx', true, 'other@x.test');
+    await assertFails(db.doc('topics/t-9').set({ he: 'נושא', publish: 'draft' }));
+    await assertFails(db.collection('admins').get());
+    await assertFails(db.doc('admins/boss@x.test').get());
+    await assertFails(db.doc('admins/other@x.test').set({ note: 'x' }));
+  });
+  it('גם מנהל אינו כותב לרשימה מהאתר; אורח אינו קורא', async () => {
+    await assertFails(ctx('admin1').doc('admins/new@x.test').set({ note: 'x' }));
+    await assertFails(ctx(null).doc('admins/boss@x.test').get());
+  });
+});

@@ -288,3 +288,16 @@ describe('הצעות מהציבור (בלי כניסה, מתפרסמות רק ב
     expect((await inner.list('sources')).some((x: any) => x.title === good.title)).toBe(false);
   });
 });
+
+describe('מנהל לפי רשימת מייל (admins)', () => {
+  const pend = DEMO_ACCOUNTS.find(a => a.uid === 'demo-pending')!;
+  it('מייל ברשימה ומאומת: מנהל; לא מאומת או לא ברשימה: לא', async () => {
+    auth.as('demo-pending');
+    await expect(api.adminListNewItems()).rejects.toThrow(PermissionError);
+    await inner.set(`admins/${pend.email.toLowerCase()}`, { note: 'x' });
+    api.clearCtxCache();
+    await expect(api.adminListNewItems()).resolves.toBeDefined();
+    auth.as('demo-pending', false); api.clearCtxCache();
+    await expect(api.adminListNewItems()).rejects.toThrow(PermissionError);
+  });
+});

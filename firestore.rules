@@ -17,7 +17,9 @@ service cloud.firestore {
     function email() { return request.auth.token.email.lower(); }
     function roleExists() { return exists(/databases/$(database)/documents/roles/$(uid())); }
     function roleData() { return get(/databases/$(database)/documents/roles/$(uid())).data; }
-    function isAdmin() { return verified() && roleExists() && roleData().role == 'admin'; }
+    // מנהל: לפי roles/{uid} עם role=admin, או לפי כתובת מייל מאומתת שמופיעה באוסף admins (מסמך לכל כתובת, באותיות קטנות)
+    function adminListed() { return exists(/databases/$(database)/documents/admins/$(email())); }
+    function isAdmin() { return verified() && ((roleExists() && roleData().role == 'admin') || adminListed()); }
     function isCoord() { return verified() && roleExists() && roleData().role == 'coordinator'; }
     function isCoordOf(schoolId) { return isCoord() && roleData().schoolId == schoolId; }
     function allowPath() { return /databases/$(database)/documents/allowedTeachers/$(email()); }
@@ -81,6 +83,11 @@ service cloud.firestore {
     }
 
     // ── רשימת המורים המאושרים: המנהל כותב. המורה קורא רק את המסמך של כתובתו (לדעת אם אושר) ──
+    // רשימת מנהלים לפי מייל. נכתבת בקונסולה בלבד: אין כתיבה מהאתר, ואין קריאה למי שאינו מנהל (מנהל קורא רק את המסמך של עצמו)
+    match /admins/{key} {
+      allow get: if verified() && key == email();
+      allow list, write: if false;
+    }
     match /allowedTeachers/{key} {
       allow get: if (verified() && key == email()) || isAdmin();
       allow list: if isAdmin();

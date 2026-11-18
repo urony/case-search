@@ -61,6 +61,12 @@ export class Api {
     let roleDoc: RoleDoc | null = null;
     let allow: AllowedTeacher | null = null;
     try { roleDoc = await this.store.get<RoleDoc>(`roles/${user.uid}`); } catch { /* אין הרשאה/שירות */ }
+    // מנהל לפי רשימת כתובות (אוסף admins, נכתב בקונסולה). נדרש מייל מאומת
+    if (user.emailVerified && !roleDoc && user.email) {
+      let listed: unknown = null;
+      try { listed = await this.store.get<unknown>(`admins/${normEmail(user.email)}`); } catch { /* ללא הרשאה */ }
+      if (listed) roleDoc = { role: 'admin', grantedBy: 'email-list', grantedAt: this.now() };
+    }
     // אישור מראש לפי כתובת מייל מאומתת: ההקלדה בלבד אינה מספיקה, נדרש גם אימות שליטה בכתובת (token.email_verified)
     if (user.emailVerified && !roleDoc) { try { allow = await this.store.get<AllowedTeacher>(`allowedTeachers/${normEmail(user.email)}`); } catch { /* ללא הרשאה */ } }
     const allowed = !!allow && allow.active === true;
